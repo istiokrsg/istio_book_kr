@@ -8,7 +8,43 @@
 
 ## [Traffic Control Hands-on]() (트래픽 컨트롤 핸즈온 )
 
-* [Gateway](), 
+### 준비
+
+* istio install
+
+```bash
+$ istio install ...
+```
+
+* Bookinfo install
+
+```bash
+$ kubectl apply -f {ISTIO_HOME}/samples/bookinfo/platform/kube/bookinfo.yaml
+```
+
+### Gateway, Virtual Service install
+
+```bash
+$ kubectl apply -f {ISTIO_HOME}/samples/bookinfo/networking/bookinfo-gateway.yaml
+```
+
+### Virtual Service
+
+```bash
+$ kubectl ...
+```
+
+### Destination Rule
+
+```bash
+$ kubectl ...
+```
+
+### 트래픽 변경 적용
+
+```bash
+$ kubectl ...
+```
 
 ## [Concept]() (개념 이해하기)
 

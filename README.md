@@ -1,6 +1,12 @@
 # istio_book_kr
 이스티오 전문서적 한글판
 
+## 용어정리
+
+```txt
+
+```
+
 ## Ing...
 
 * chapter 1 or 7 김병민

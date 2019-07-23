@@ -22,12 +22,12 @@
 만약 많은 팀이 수십 개의 마이크로 서비스를 서로 독립적으로 배포하는 경우, 서비스의 [mesh]()전반에 걸친 의존성을 이해하는 것을 어렵게 만들 수 있습니다.
 If many teams are deploying their dozens of microservices, all independently of one another, it is often challenging to understand the dependencies across that“mesh” of services. 
 
-[Istio]()의 [Mixer]()는 배포 된 마이크로 서비스에서 [tracing]() 범위를 가져올 수 있는 기능을 기본적으로 제공합니다. 이것은 [tracing]()이 프로그래밍 언어에 무관하다는 것을 의미하므로 다른 마이크로 서비스가 있는 여러 팀이 서로 다른 프로그래밍 언어와 서로 다른 프레임 워크를 사용하여 여러 언어로 기능을 사용할 수 있는 것을 의미합니다.
+[Istio]()의 [Mixer]()는 배포된 마이크로 서비스에서 [tracing]() 범위를 가져올 수 있는 기능을 기본적으로 제공합니다. 이것은 [tracing]()이 프로그래밍 언어에 무관하다는 것을 의미하므로 다른 마이크로 서비스가 있는 여러 팀이 서로 다른 프로그래밍 언어와 서로 다른 프레임 워크를 사용하여 여러 언어로 기능을 사용할 수 있는 것을 의미합니다.
 
 Istio’s Mixer comes “out of the box” with the ability to pull tracing spans from your distributed microservices. This means that tracing is programming-language agnostic so that you can use this capability in a polyglot world where different teams, each with its own microservice, can be using different programming languages and frameworks.
 
-[Istio]()는 [Zipkin]()과 [Jaeger]()를 모두 지원하지만 우리는 [Jaeger]()에 중점을 둡니다. [Jaeger]()는 벤더 중립적 추적 [API]() 인 [OpenTracing]()을 구현합니다. [Jaeger]()는 [Uber Technologies]() 팀이 제공 한 독창적 인 오픈 소스 프로그램이었으며 특별히 마이크로 서비스 아키텍처에 중점을 둔 분산형 추적 시스템입니다.
-이해해야 할 한 가지 중요한 용어는 [span]()이며, [Jaeger]()는 [span]()을 "시스템에서 작업 이름, 시작 시간 및 지속 기간이 있는 논리적 작업 단위로 정의합니다. [span]()은 중첩되어 인과 관계를 모델링하게 하는 명령의 집합입니다. RPC 호출은 [span]()의 한 예입니다. "
+[Istio]()는 [Zipkin]()과 [Jaeger]()를 모두 지원하지만 우리는 [Jaeger]()에 중점을 둡니다. [Jaeger]()는 벤더 중립적 [tracing]() [API]() 인 [OpenTracing]()을 구현합니다. [Jaeger]()는 [Uber Technologies]() 팀이 제공 한 독창적 인 오픈 소스 프로그램이었으며 특별히 마이크로 서비스 아키텍처에 중점을 둔 분산형 추적 시스템입니다.
+이해해야 할 한 가지 중요한 용어는 [span]()이며, [Jaeger]()는 [span]()을 "시스템에서 작업 이름, 시작 시간 및 지속 기간이 있는 논리적 작업 단위로 정의합니다. [span]()은 중첩되어 인과 관계를 모델링하게 하는 명령의 집합입니다. [RPC]() 호출은 [span]()의 한 예입니다. "
 
 Although Istio supports both Zipkin and Jaeger, for our purposes we focus on
 Jaeger, which implements OpenTracing, a vendor neutral tracing API. Jaeger was
@@ -39,8 +39,9 @@ ation, and the duration. Spans can be nested and ordered to model causal rela‐
 tionships. An RPC call is an example of a span.”
 
 
-이해해야 할 또 다른 중요한 용어는 [trace]()이며 Jaeger는 [trace]()을 "시스템을 통한 데이터 / 실행 경로"로 정의하며 범위의 비순환 지시 그래프로 간주 할 수 있습니다.
-당시은 다음 명령을 사용하여 Jaeger 콘솔을 실행:
+이해해야 할 또 다른 중요한 용어는 [trace]()이며 [Jaeger]()는 [trace]()을 "시스템을 통한 데이터 / 실행 경로"로 정의하며 범위의 비순환 지시 그래프로 간주 할 수 있습니다.
+당시은 다음 명령을 사용하여 [Jaeger]() 콘솔을 실행:
+
 ```bash
 minishift openshift service jaeger-query --in-browser
 ```
@@ -48,7 +49,7 @@ minishift openshift service jaeger-query --in-browser
 
 Figure 6-1. Jaeger’s view of the customer-preference-recommendation trace 
 
-기억해야 할 한 가지 중요한 점은 프로그래밍 로직에 모든 외부 호출 시에 [OpenTracing]() 헤더를 함께 전달하는 코드를 작성해야 합니다.
+기억해야 할 한 가지 중요한 점은 프로그래밍 로직에 모든 외부 호출 시에 [OpenTracing]() [HTTP]() 헤더를 함께 전달하는 코드를 작성해야 합니다.
 ```bash
 x-request-id
 x-b3-traceid

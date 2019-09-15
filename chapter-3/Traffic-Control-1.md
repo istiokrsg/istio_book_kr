@@ -2,9 +2,9 @@
 
 ## 개요
 
-이스티오의 대표 기능은 트래픽 컨트롤이다. 이제 2장에서 셋팅한 샘플 어플리케이션 [Bookinfo]() 의 트래픽을 제어하며 이스티오의 기능을 경험해보자.
+이스티오의 대표 기능은 트래픽 컨트롤입니다. 이제 2장에서 셋팅한 샘플 어플리케이션 [Bookinfo]() 의 트래픽을 제어하며 이스티오의 기능을 경험해보겠습니다.
 
-이 장에서는 이스티오 설치때 정의한 [CRDs]() (Custom Resource DefinitionS) 중 [Gateway](), [Virtual Service](), [Destination Rule]() 을 이용하여 트래픽 컨트롤 기능을 간단히 경험해본다. 이후 트래픽 컨트롤을 담당하는 이스티오의 구성요소 [Pilot](), [Envoy]() 에 대해 살펴본다. 마지막으로 트래픽 컨트롤을 활용하여 [Continuous Deploy]() 의 대표적인 방법인 [Canary Deploy](), [Dark Launch](), [A/B Test]() 등의 방식을 어떻게 실현할 수 있는지 알아본다.
+이 장에서는 이스티오 설치때 정의한 [CRDs]() (Custom Resource DefinitionS) 중 [Gateway](), [Virtual Service](), [Destination Rule]() 을 이용하여 트래픽 컨트롤 기능을 간단히 실행해보겠습니다. 이후 트래픽 컨트롤을 담당하는 이스티오의 구성요소 [Pilot](), [Envoy]() 에 대해 살펴봅니다. 마지막으로 트래픽 컨트롤을 활용하여 [Continuous Deploy]() 의 대표적인 방법인 [Canary Deploy](), [Dark Launch](), [A/B Test]() 등의 방식을 어떻게 실현할 수 있는지 알아보겠습니다.
 
 ## [Traffic Control Hands-on]() (트래픽 컨트롤 핸즈온 )
 
@@ -71,6 +71,14 @@ Rules API, Network API 등을 사용하여 Pilot 에게 더욱 구체적인 conf
 ### Envoy proxy
 
 * [Envoy]() 는 L7 Layer 수준의 proxy 를 구현하는 open source 이다.
+* Istio 의 트래픽은 데이터 플레인 트래픽 및 컨트롤 플레인 트래픽으로 분류된다.
+  * 데이터 플레인 트래픽은 워크로드의 비즈니스 로직이 조작하는 데이터를 말합니다.
+  * 컨트롤 플레인 트래픽은 메시의 동작을 프로그래밍하기 위해 Istio 구성 요소간에 전송되는 구성 및 제어 데이터를 말합니다.
+  * Istio의 트래픽 관리는 전적으로 데이터 플레인 트래픽을 말합니다.
+
+* Envoy 프록시는 데이터 평면 트래픽과 상호 작용하는 유일한 Istio 구성 요소입니다. Envoy 프록시는 데이터 플레인 트래픽을 메시를 통해 라우팅하고 서비스가 알 필요없이 구성 및 트래픽 규칙을 시행합니다. Envoy 프록시는 메시의 모든 서비스에 대한 모든 인바운드 및 아웃 바운드 트래픽을 중재합니다.
+
+
 * ... 블라블라
 
 ## 활용하여 Continuous Deploy 구현하기

@@ -1,4 +1,5 @@
 # istio_book_kr
+
 이스티오 전문서적 한글판
 
 ## 용어정리
@@ -18,37 +19,47 @@
 ```
 
 ### 영문화로 표시해야 될 영어 -> []()
+
 - 김병민
+
 ```txt
 
 ```
+
 - 문형권
+
 ```txt
 ```
+
 - 김잠제
+
 ```txt
 ```
+
 - 강승형
+
 ```txt
 ```
+
 - 하승완
+
 ```txt
 ```
+
 - 윤평호
+
 ```txt
 ```
 
+## Ing
 
-
-## Ing...
-
-* chapter 1 or 7 김병민
-* chapter 2 문형권
-* chapter 3 김잠제
-* chapter 4 강승형
-* chapter 5 하승완
-* chapter 6 윤평호
+- chapter 1 or 7 김병민
+- chapter 2 문형권
+- chapter 3 김잠제
+- chapter 4 강승형
+- chapter 5 하승완
+- chapter 6 윤평호
 
 ## 공동집필
 
-* 문형권, 하승완, 강승형, 김병민, 윤평호, 김잠제
+- 문형권, 하승완, 강승형, 김병민, 윤평호, 김잠제

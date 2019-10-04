@@ -1,5 +1,6 @@
 ## 1. Traffic Shifting
-이번 장에서는 Istio에서 Traffic을 Old version에서 New version으로 점진적으로 전환하는 방법을 살펴볼 것이다. Istio에서 route rules에 있는 traffic의 percent 설정을 조절하여 Traffic Shifting 기능을 가능하게 해준다. 이번 장에서 우리는 `reviews:v1`에서 `reviews:v3`로 Traffic의 50%만 보내다가, 100%로 변경하여 `reviews:v3`로 traffic을 완전히 전환하는 방법을 살펴보도록 하자.
+이번 장에서는 Istio에서 Traffic을 Old version에서 New version으로 점진적으로 전환하는 방법을 살펴볼 것이다. 에를 들면, 서비스에 변경이 생기거나 버그를 고치는등 변경 사항을 배포할때 한꺼번에 배포를 완료하지 않고 아주 적은 일부 트래픽에 대해서만 우선 적용해보고(Canary 배포) 전체 트래픽으로 확대해나가는 방법을 사용할 수 있다. 이런 방식을 사용하게 되면 새로운 변경사항으로 인해 발생되는 nagative impact를 일부 트래픽에 대해서만 적용하므로써, 새로운 버전의 릴리즈로 인해 발생하는 리스크를 줄일 수 있다. 
+Istio에서 route rules에 있는 traffic의 percent 설정을 조절하여 Traffic Shifting 기능을 가능하게 해준다. 이번 장에서 우리는 `reviews:v1`에서 `reviews:v3`로 Traffic의 50%만 보내다가, 100%로 변경하여 `reviews:v3`로 traffic을 완전히 전환하는 방법을 살펴보도록 하자.
 
 ### 준비
 - [Istio 설치]()
@@ -72,8 +73,8 @@ istio를 이용한 Autoscaling에 관심이 있다면, [Canary Deployments using
 
 
 ## 2. Mirroring
-"shadowing"이라고도 불리는 Traffic mirroring은 아주 적은 risk로 어떤 변경사항을 production으로 배포할 수 있게 해준다. 
-Mirroring은 live traffic을 복사해서 mirroed serivce로 똑같이 보내준다. 이러한 mirrored traffic은 특정 service의 path에 대해 실제로는 처리되지 않는 다른 영역(out of band)에서 발생하게된다.
+Mirroring은 먼저 설명한 [Traffic Shifting]()과 비슷하게 일부 Live 트래픽에 대해서 먼저 릴리즈를 적용하므로써 발생하는 리스크를 줄일 수 있다. 하지만 [Traffic Shifting]()과는 달리 Live 트래픽을 새로운 버전으로 온전히 처리하는것이 아니라, 트래픽을 복사하여 새로운 버전을 적용시켜보는 것이며 발생되는 응답은 폐기되므로 적용된 트래픽에도 전혀 영향을 미치지 않는다. 
+따라서 "shadowing"이라고도 불리우며 아주 적은 risk로 어떤 변경사항을 production으로 릴리즈할 수 있게 해준다. 실제 Real 트래픽을 가지고 실제 User에게 새로운 버전을 적용했을때 발생할 수 있는 이슈를 릴리즈하기 전에 미리 확인할 수 있게된다. Mirroring은 live 트래픽을 복사해서 mirroed serivce로 똑같이 보내주는데 이러한 mirrored 트래픽은 실제로는 처리되는 영역 밖(out of band)에서 발생하기 때문이다.
 이번 장에서는, 우선 모든 트래픽을 테스트를 위해`v1`으로 모두 보낸 상태에서 `v2`로 미러링을 적용해보자.
 
 ### 준비
@@ -272,7 +273,7 @@ EOF
   - 위 처럼 spec.http.route.mirror 설정을 통해서, `httpbin` 서비스의 `v2`라는 pod으로 미러링 트래픽을 전송할 수 있게 된다.
   - 이러한 미러링 트래픽의 경우에는, `Host`/`Authority` header에 `-shodow`라는 접미(postfix)가 추가된다.
     - 예를 들면, `cluster-1`라는 값은 `cluster-1-shadow`처럼 되는 것이다.
-    - 또한 _"fire and forget"_ 라는 전략에 따라서 미러링 요청에 대한 response는 무시된다.
+    - 또한 _"fire and forget"_ 라는 전략에 따라서 미러링 요청에 대한 response는 무시된다. 
 
 2. 트래픽을 전송하자.
 ```console
@@ -411,9 +412,6 @@ Kubernetes환경에서 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/
 #### Ingress란?
 Networking community에서 나온 용어로 외부로부터 내부 네트워크의 외부에서 안쪽으로 들어오는 트래픽을 의미하며, 트래픽이 내부 네트워크 상에서 최초로 통과하는 부분을 Ingress Point라고 한다. 이 Ingress point를 통하지 않는다면, 내부 네트워크로 트래픽이 인입될 수 없다. 또한 Ingress point는 내부 네트워크의 특정 endpoint로 proxy해주는 역할을 한다.
 
-#### Reverse proxy
-Ingress는 reverse proxy와 동일한 역할을 수행하며, 외부의 요청에 대해서 Cluster 내부의 service로 proxy해주며, service 단위의 로드밸런싱 기능도 제공해준다.
-
 #### Istio Gateway
 Istio에서는 이런 Ingress 역할을 담당하는 것이 Gateway이다. 즉 Ingress point 역할을 수행해서 cluster 외부에서 내부로 트래픽을 전달하고, load balancing, virtual-host routing 등을 수행한다.
 
@@ -460,9 +458,41 @@ $ kubectl get svc istio-ingressgateway -o json -n istio-system
 }
 ```
 
-#### Gateway, VirtualService
+#### 클러스터 내부로 트래픽을 인입시키는 두가지 설정 : Gateway, VirtualService
 - Gateway : 클러스터 외부에 내부로 트래픽을 허용하는 설정
 - VirtualService : 클러스터 내부로 들어온 트래픽을 특정 서비스로 라우팅하는 설정
+```
+$ INGRESS_POD=$(kubectl get pod -n istio-system | grep ingressgateway | cut -d ' ' -f 1)
+$ istioctl proxy-config route $INGRESS_POD -o json  -n istio-system
+[
+    {
+        "name": "http.80",
+        "virtualHosts": [
+            {
+                "name": "blackhole:80",
+                "domains": [
+                    "*"
+                ],
+                "routes": [
+                    {
+                        "match": {
+                            "prefix": "/"
+                        },
+                        "directResponse": {
+                            "status": 404
+                        },
+                        "perFilterConfig": {
+                            "mixer": {}
+                        }
+                    }
+                ]
+            }
+        ],
+        "validateClusters": false
+    }
+]
+```
+  - VirtualService 설정을 하지 않은 상태라면, 기본적으로 "blackhole"이라는 곳으로 라우팅되는것 확인할 수 있다. (모든 요청에 대해서 404로 라우팅한다) 
 
 #### Istio는 왜 Kubernetes의 Ingress를 사용하지 않은 것인가?
 Istio도 초기에는 Kubernetes의 Ingerss를 사용했지만, 아래과 같은 이유로 Gateway를 만들었다고 한다.
@@ -545,6 +575,7 @@ spec:
     - "httpbin.example.com"
 EOF
 ```
+  - spec.selector.istio를 통해서 gateway의 구현체를 명시한다. 위에서는 istio를 초기화할때 생성된 istio-ingressgateway(istio=ingressgateway 라벨링되어 있음)를 사용한다. 
 
 2. `Gateway`를 통해서 인입되는 트래픽에 대한 routing을 설정한다. 
 ```console

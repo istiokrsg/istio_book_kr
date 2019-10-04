@@ -576,8 +576,16 @@ spec:
 EOF
 ```
   - spec.selector.istio를 통해서 gateway의 구현체를 명시한다. 위에서는 istio를 초기화할때 생성된 istio-ingressgateway(istio=ingressgateway 라벨링되어 있음)를 사용한다. 
+  - 또한 80번 포트로 외부에서 접근 가능하도록 설정했으며, `httpbin.example.com`라는 host 주소로 접근할 수 있도록 설정하였다. 
+  
+  - 아래 커맨드를 통해서 80번 포트로 HTTP 프로토콜을 노출시킨것을 확인할 수 있다.
+```
+$ istioctl proxy-config listener $INGRESS_POD  -n istio-system
+ADDRESS     PORT     TYPE
+0.0.0.0          80          HTTP
+```
 
-2. `Gateway`를 통해서 인입되는 트래픽에 대한 routing을 설정한다. 
+2. `Gateway`으로부터 인입되는 트래픽에 대한 routing을 설정한다. 
 ```console
 $ kubectl apply -f - <<EOF
 apiVersion: networking.istio.io/v1alpha3

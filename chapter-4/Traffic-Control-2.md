@@ -423,11 +423,13 @@ Kubernetes환경에서 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/
 ### Ingress Concept
 #### Ingress란?
 Networking community에서 나온 용어로 외부로부터 내부 네트워크의 외부에서 안쪽으로 들어오는 트래픽을 의미하며, 트래픽이 내부 네트워크 상에서 최초로 통과하는 부분을 Ingress Point라고 한다. 이 Ingress point를 통하지 않는다면, 내부 네트워크로 트래픽이 인입될 수 없다. 또한 Ingress point는 내부 네트워크의 특정 endpoint로 proxy해주는 역할을 한다.
+
 <img src="#" alt="3-1. Ingress" /> 
 
 #### Istio Gateway
 Istio에서는 이런 Ingress 역할을 담당하는 것이 Gateway이다. 즉 Ingress point 역할을 수행해서 cluster 외부에서 내부로 트래픽을 전달하고, load balancing, virtual-host routing 등을 수행한다.
 또한 Istio Gateway는 Istio의 control plane 중 하나로, ingress proxy를 구현하는데 Envoy를 사용한다. 
+
 <img src="#" alt="3-2. Istio Gateway" /> 
 
 Istio를 설치했다면, 초기화 과정에서 이미 ingress의 구현체가 설치되어 있을 것이다.
@@ -724,6 +726,7 @@ $ kubectl get ingress --all-namespaces
 
 ## 4. Egress
 Istio내의 pod으로부터 나가는 모든 outbound 트래픽은 기본적으로 sidecar proxy로 redirecdt된다. cluster 외부로의 접근은 proxy의 설정에 따라 달라질 수 있다. Istio에서는 기본적으로 Envoy proxy가 unknown service에 대한 요청을 그냥 흘려보낸다. 하지만 이런 방법이 편할 수는 있지만, 좀더 strict한 설정이 보통 사용될 것이다.
+
 <img src="#" alt="4-1. bypass by envoy proxy" /> 
 
 이번 장에서는 external service에 접근하는 3가지 방법에 대해서 살펴볼 것이다.
@@ -781,6 +784,7 @@ HTTP/2 200
 
 ### Controlled access to external services
 Istio의 `ServiceEntry`설정을 이용해서, Istio cluster 내부에서 어떠한 service로든 접근이 가능하다. 이번에는 어떻게 httpbin.org와 같은 external HTTP service로 접근할 수 있게 설정하는지 살펴볼것이다. www.google.com 같은 HTTPS service도 마찬가지이며, monitoring과 control과 같은 기능도 가능하게 할것이다.
+
 <img src="#" alt="4-2. Controlled access" /> 
 
 #### blocking-by-default policy 변경

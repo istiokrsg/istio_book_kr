@@ -1,6 +1,8 @@
 ## 1. Traffic Shifting
 이번 장에서는 Istio에서 Traffic을 Old version에서 New version으로 점진적으로 전환하는 방법을 살펴볼 것이다. 에를 들면, 서비스에 변경이 생기거나 버그를 고치는등 변경 사항을 배포할때 한꺼번에 배포를 완료하지 않고 아주 적은 일부 트래픽에 대해서만 우선 적용해보고(Canary 배포) 전체 트래픽으로 확대해나가는 방법을 사용할 수 있다. 이런 방식을 사용하게 되면 새로운 변경사항으로 인해 발생되는 nagative impact를 일부 트래픽에 대해서만 적용하므로써, 새로운 버전의 릴리즈로 인해 발생하는 리스크를 줄일 수 있다. 
 Istio에서 route rules에 있는 traffic의 percent 설정을 조절하여 Traffic Shifting 기능을 가능하게 해준다. 이번 장에서 우리는 `reviews:v1`에서 `reviews:v3`로 Traffic의 50%만 보내다가, 100%로 변경하여 `reviews:v3`로 traffic을 완전히 전환하는 방법을 살펴보도록 하자.
+<img src="#" alt="1-1. v1->v3로 전환" />
+
 
 ### 준비
 - [Istio 설치]()
@@ -16,6 +18,7 @@ Bookinfo에서의 destination rule을 설정하지 않았다면, [Apply Default 
 ```console
 $ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 ```
+<img src="#" alt="1-2. v1 100%" />
 
 2. 브라우저에서 `http://$GATEWAY_URL/productpage` 페이지를 열어보자.
   - 이때 `$GATEWAY_URL` 환경변수는 [Bookinfo Sample]()에서 먼저 설명했듯이, ingress를 이용해서 외부에서 접근가능한 External IP(혹은 Host Name)이다.
@@ -26,6 +29,7 @@ $ kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
 $ kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-50-v3.yaml
 ```
   - 새로운 rule들이 전파되는데 몇초 정도 기다리자. 
+<img src="#" alt="1-3. v1 50%,v3 50%" /> 
 
 4. 위에서 적용한 virtualservice 내용을 확인해보자.
 ```console
@@ -54,15 +58,18 @@ spec:
   - spec.http.route.desitination.weight의 값을 조정한것을 볼 수 있다. 위에서는 destination인 `v1`, `v3`의 weight값을 각각 50으로 설정한다.
 
 5. `/productpage`를 브라우저에서 새로고침해보면, 약 50%의 확률로 red star가 보이게 될 것이다. 왜냐하면 `v3` 버전에서는 start rating에 접근하지만, `v1` 버전은 그렇지 않기 때문이다.
+<img src="#" alt="1-4. 50% red stars" /> 
 ```
 주의 : 최신 Envoy side의 구현에 따르면, /product 페이지를 많이 새로고침(15번 이상)해야 배포된 설정이 적용된것을 확인할 수 있을것이다. 또한 v3로의 weight를 90%로 설정을 한다면, red stars를 더 자주 보게 될것이다.
 ```
+
 
 6. 만약 `reviews:v3`에 대해서 안정된 버전이라는 것이 검증되었다면, 이제 트래픽을 100%로 변경해야할 차례이다.
 ```console
 $ kubectl apply -f samples/bookinfo/networking/virtual-service-reviews-v3.yaml
 ```
   - 이제 부터는 `/productpage`로 새로고침해보면, red start만이 보이게 될 것이다.
+<img src="#" alt="1-5. v3 100%" /> 
 
 ### 정리
 이번장에서는 `reviews` 서비스에 대해서 `old` version에서 `new` version으로 트래픽을 전환하기 위해서 istio의 weighted routing 기능을 사용해보았다.
@@ -76,6 +83,8 @@ istio를 이용한 Autoscaling에 관심이 있다면, [Canary Deployments using
 Mirroring은 먼저 설명한 [Traffic Shifting]()과 비슷하게 일부 Live 트래픽에 대해서 먼저 릴리즈를 적용하므로써 발생하는 리스크를 줄일 수 있다. 하지만 [Traffic Shifting]()과는 달리 Live 트래픽을 새로운 버전으로 온전히 처리하는것이 아니라, 트래픽을 복사하여 새로운 버전을 적용시켜보는 것이며 발생되는 응답은 폐기되므로 적용된 트래픽에도 전혀 영향을 미치지 않는다. 
 따라서 "shadowing"이라고도 불리우며 아주 적은 risk로 어떤 변경사항을 production으로 릴리즈할 수 있게 해준다. 실제 Real 트래픽을 가지고 실제 User에게 새로운 버전을 적용했을때 발생할 수 있는 이슈를 릴리즈하기 전에 미리 확인할 수 있게된다. Mirroring은 live 트래픽을 복사해서 mirroed serivce로 똑같이 보내주는데 이러한 mirrored 트래픽은 실제로는 처리되는 영역 밖(out of band)에서 발생하기 때문이다.
 이번 장에서는, 우선 모든 트래픽을 테스트를 위해`v1`으로 모두 보낸 상태에서 `v2`로 미러링을 적용해보자.
+<img src="#" alt="2-1. Mirroring" /> 
+
 
 ### 준비
 - [Istio 설치]()
@@ -212,6 +221,7 @@ spec:
 EOF
 ```
   - 이제 `httpbin:v1`으로 모든 트래픽을 전송될 것이다.
+<img src="#" alt="2-2. v1 100%" /> 
 
 2. 일부 트래픽을 해당 서비스로 보내보자.
 ```console
@@ -274,6 +284,8 @@ EOF
   - 이러한 미러링 트래픽의 경우에는, `Host`/`Authority` header에 `-shodow`라는 접미(postfix)가 추가된다.
     - 예를 들면, `cluster-1`라는 값은 `cluster-1-shadow`처럼 되는 것이다.
     - 또한 _"fire and forget"_ 라는 전략에 따라서 미러링 요청에 대한 response는 무시된다. 
+
+<img src="#" alt="2-3. v2 Mirroring" /> 
 
 2. 트래픽을 전송하자.
 ```console
@@ -402,7 +414,6 @@ E..4..X.X...
   
 
 
-
 ## 3. Ingress
 Kubernetes환경에서 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/)라는 리소스는 cluster 외부에서 노출할 서비스를 지정하는데 사용한다. Istio에서는 좀더 낳은 접근(Kubernetes나 다른 환경 모두에서 동작하는) 방법을 사용할 수 있다. 그것이 바로 [Istio Gateway](https://istio.io/docs/reference/config/networking/v1alpha3/gateway/)라는 것이다. `Gateway`라는 것을 통해서 cluster로 들어오는 트래픽에 대한 monitoring이나 route rule과 같은 기능을 가능하게 해준다.
 
@@ -411,11 +422,13 @@ Kubernetes환경에서 [Kubernetes Ingress](https://kubernetes.io/docs/concepts/
 ### Ingress Concept
 #### Ingress란?
 Networking community에서 나온 용어로 외부로부터 내부 네트워크의 외부에서 안쪽으로 들어오는 트래픽을 의미하며, 트래픽이 내부 네트워크 상에서 최초로 통과하는 부분을 Ingress Point라고 한다. 이 Ingress point를 통하지 않는다면, 내부 네트워크로 트래픽이 인입될 수 없다. 또한 Ingress point는 내부 네트워크의 특정 endpoint로 proxy해주는 역할을 한다.
+<img src="#" alt="3-1. Ingress" /> 
 
 #### Istio Gateway
 Istio에서는 이런 Ingress 역할을 담당하는 것이 Gateway이다. 즉 Ingress point 역할을 수행해서 cluster 외부에서 내부로 트래픽을 전달하고, load balancing, virtual-host routing 등을 수행한다.
-
 또한 Istio Gateway는 Istio의 control plane 중 하나로, ingress proxy를 구현하는데 Envoy를 사용한다. 
+<img src="#" alt="3-2. Istio Gateway" /> 
+
 Istio를 설치했다면, 초기화 과정에서 이미 ingress의 구현체가 설치되어 있을 것이다.
 ```console
 $ kubectl get pod -n istio-system
@@ -612,6 +625,7 @@ EOF
 ```
   - 위처럼 `/status`와 `/delay`라는 두개의 path에 대해서 routing rules를 가지는 `httpbin` 서비스에 대해서 `virtual service`를 설정하였다. 
   - 위의 `gateways` 설정에서 `httpbin-gateway`라고 설정하면 해당 `gateway`으로부터 인입되는 트래픽만 허용한다는 의미하며, 그 이외의 트래픽은 모두 404로 응답한다.
+<img src="#" alt="3-3. gateway to virtualservice" /> 
   
   - 만약 다른 서비스로부터 `internal 요청`이 들어오게 되면, 위에서 설정한 rules이 적용되지 않는다. 대신에 default round-robin routing이 실행될 것이다. 따라서 위에서 설정한 rules에 대해서 internal 요청에도 적용하려면, special value인 `mesh`라는 값을 `gateways`리스트에 추가해주면 된다. 
   - 만약 `Internal hostname`으로 요청했을 경우에도 (예를 들면, `httpbin.default.svc.cluster.local`), `hosts` 리스트에 요청한 호스트가 추가되어야한다. 더 자세한 사항은 [troubleshooting guid](https://istio.io/help/ops/traffic-management/troubleshooting/#route-rules-have-no-effect-on-ingress-gateway-requests)를 참고하자.
@@ -638,6 +652,7 @@ date: Mon, 29 Jan 2018 04:45:49 GMT
 server: envoy
 content-length: 0
 ```
+<img src="#" alt="3-4. route to 404" /> 
 
 ### 브라우저로 ingress service에 접근
 브라우저에서 `httpbin`서비스 URL로 접속해보면 동작하지 않을텐데 이건 브라우저가 위의 curl 명령처럼 host가 `httpbin.example.com`인것처럼 동작하지 않기때문이다. 하지만 real world에서는 host를 정확히 입력할뿐만 아니라 DNS에서도 resolve될것이기 때문에 문제가 되지 않을것이다. 그러므로 `https://httpbin.example.com/status/200`처럼 host domain name을 사용하면 된다.
@@ -708,6 +723,7 @@ $ kubectl get ingress --all-namespaces
 
 ## 4. Egress
 Istio내의 pod으로부터 나가는 모든 outbound 트래픽은 기본적으로 sidecar proxy로 redirecdt된다. cluster 외부로의 접근은 proxy의 설정에 따라 달라질 수 있다. Istio에서는 기본적으로 Envoy proxy가 unknown service에 대한 요청을 그냥 흘려보낸다. 하지만 이런 방법이 편할 수는 있지만, 좀더 strict한 설정이 보통 사용될 것이다.
+<img src="#" alt="4-1. bypass by envoy proxy" /> 
 
 이번 장에서는 external service에 접근하는 3가지 방법에 대해서 살펴볼 것이다.
 1. Envoy proxy가 mesh 내부에 설정하지 않은 service로의 접근을 허용하는 방법
@@ -764,6 +780,7 @@ HTTP/2 200
 
 ### Controlled access to external services
 Istio의 `ServiceEntry`설정을 이용해서, Istio cluster 내부에서 어떠한 service로든 접근이 가능하다. 이번에는 어떻게 httpbin.org와 같은 external HTTP service로 접근할 수 있게 설정하는지 살펴볼것이다. www.google.com 같은 HTTPS service도 마찬가지이며, monitoring과 control과 같은 기능도 가능하게 할것이다.
+<img src="#" alt="4-2. Controlled access" /> 
 
 #### blocking-by-default policy 변경
 external service로의 접근을 제어하는 방법을 사용하려면, `global.outboundTrafficPolicy.mode` 옵션을 `ALLOW_ANY`에서 `REGISTRY_ONLY`로 변경해야한다.
@@ -879,6 +896,7 @@ user    0m0.003s
 sys     0m0.003s
 ```
   - `200 OK`를 받기까지는 약 5초의 시간이 소요된다.
+<img src="#" alt="4-3. 5s dealy" />
   
 2. source pod에서 나와서, `kubectl`을 사용하여 `httpbin.org`라는 external service에 대한 timeout을 `3초`로 설정해보자.
 ```console
@@ -910,6 +928,7 @@ user    0m0.004s
 sys     0m0.004s
 ```
   - 이번에는 3초가 지난후에 `504 Gateway Timeout`을 받게 될 것이다. httpbin.org의 경우 5초를 기다리겠지만, Istio는 3초만에 요청를 끊어버린다.
+<img src="#" alt="4-4. 3s Timeout" />
 
 
 ### External service로 바로 접근하기

@@ -2,7 +2,7 @@
 
 ## 개요
 
-이스티오의 대표 기능은 트래픽 컨트롤입니다. 이제 2장에서 셋팅한 샘플 어플리케이션 [Bookinfo](traffic-control-1.md) 의 트래픽을 제어하며 이스티오의 기능을 경험해보겠습니다. dkdkdk
+이스티오의 대표 기능은 트래픽 컨트롤입니다. 이제 2장에서 셋팅한 샘플 어플리케이션 [Bookinfo](traffic-control-1.md) 의 트래픽을 제어하며 이스티오의 기능을 경험해보겠습니다.
 
 이 장에서는 이스티오 설치때 정의한 [CRDs](traffic-control-1.md) \(Custom Resource DefinitionS\) 중 [Gateway](traffic-control-1.md), [Virtual Service](traffic-control-1.md), [Destination Rule](traffic-control-1.md) 을 이용하여 트래픽 컨트롤 기능을 간단히 실행해보겠습니다. 이후 트래픽 컨트롤을 담당하는 이스티오의 구성요소 [Pilot](traffic-control-1.md), [Envoy](traffic-control-1.md) 에 대해 살펴봅니다. 마지막으로 트래픽 컨트롤을 활용하여 [Continuous Deploy](traffic-control-1.md) 의 대표적인 방법인 [Canary Deploy](traffic-control-1.md), [Dark Launch](traffic-control-1.md), [A/B Test](traffic-control-1.md) 등의 방식을 어떻게 실현할 수 있는지 알아보겠습니다.
 

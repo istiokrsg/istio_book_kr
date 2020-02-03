@@ -20,13 +20,23 @@
 
 github 에 로그인하는 과정까지 마치고 나면 다음과 같이 선택해줍니다.
 
+![](.gitbook/assets/gitbook4.png)
+
 master branch 에서 공동작업 할것이기 때문에 master branch only 를 선택해줍시다.
+
+![](.gitbook/assets/gitbook5.png)
 
 우리는 github 에 이미 내용이 있고 gitbook 으로 옮겨와서 작업할 것입니다. github 에 있는 컨텐츠를 gitbook 으로 가져오도록 선택합시다.
 
+![](.gitbook/assets/gitbook6.png)
+
 열심히 컨텐츠를 가져오는군요
 
+![](.gitbook/assets/gitbook7.png)
+
 이제 작업할 준비가 완료되었습니다.
+
+![](.gitbook/assets/gitbooksync_complete.png)
 
 진행중 잘 안되시면 문의주세요. gelius7@gmail.com
 

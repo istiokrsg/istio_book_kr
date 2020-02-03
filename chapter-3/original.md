@@ -1,6 +1,5 @@
 # Traffic Management
-
-29 MINUTE READ
+ 29 MINUTE READ
 
 * Overview and terminology: Learn about Pilot, Istio’s core traffic management component and Envoy proxies and how they enable service discovery and traffic control for services in the mesh.
 
@@ -24,8 +23,11 @@ Istio’s traffic management model relies on the following two components:
 
 `Istio의 트래픽 관리 모델은 다음 두 가지 구성 요소에 의존합니다.`
 
-* Pilot, the core traffic management component. `파일럿, 핵심 트래픽 관리 구성 요소`
-* Envoy proxies, which enforce configurations and policies set through Pilot. `Envoy 프록시 : Pilot을 통해 설정된 구성 및 정책을 시행합니다.`
+* Pilot, the core traffic management component.
+`파일럿, 핵심 트래픽 관리 구성 요소`
+
+* Envoy proxies, which enforce configurations and policies set through Pilot.
+`Envoy 프록시 : Pilot을 통해 설정된 구성 및 정책을 시행합니다.`
 
 These components enable the following Istio traffic management features:
 
@@ -39,7 +41,8 @@ These components enable the following Istio traffic management features:
 
 The following diagram shows the Pilot architecture:
 
-![Pilot architecture](../.gitbook/assets/pilot-arch.svg) Pilot architecture
+![Pilot architecture](./images/pilot-arch.svg)
+Pilot architecture
 
 As the diagram illustrates, Pilot maintains an abstract model of all the services in the mesh. Platform-specific adapters in Pilot translate the abstract model appropriately for your platform. For example, the Kubernetes adapter implements controllers to watch the Kubernetes API server for changes to pod registration information and service resources. The Kubernetes adapter translates this data for the abstract model.
 
@@ -105,7 +108,8 @@ The following diagram shows how the platform adapters and Envoy proxies interact
 
 `다음 다이어그램은 플랫폼 어댑터와 Envoy 프록시가 상호 작용하는 방식을 보여줍니다.`
 
-![Service discovery](../.gitbook/assets/discovery.svg) Service discovery
+![Service discovery](./images/discovery.svg)
+Service discovery
 
 Because the service discovery feature is platform-independent, a service mesh can include services across multiple platforms.
 
@@ -190,6 +194,7 @@ You can use these resources to configure fine-grained traffic control for a rang
 `TLS 설정 및 이상 값 감지를 구성하십시오.`
 
 * Set up load balancers and define service subsets as destinations in the mesh.
+
 * Set up canary rollouts, circuit breakers, timeouts, and retries to test network resilience.
 
 `네트워크 탄력성을 테스트하기 위해 카나리아 롤아웃, 회로 차단기, 시간 초과 및 재 시도를 설정하십시오.`
@@ -288,16 +293,20 @@ Your mesh can require multiple virtual services or none depending on your use ca
 
 * 1:1 relationship: Virtual service A configures routing rules for traffic to reach service X.
 
-![1 : 1 relationship](../.gitbook/assets/virtual-services-1.svg) 1 : 1 relationship
+![1 : 1 relationship](./images/virtual-services-1.svg)
+1 : 1 relationship
 
 * 1:many relationship:
+
   * Virtual service B configures routing rules for traffic to reach services Y and Z.
 
-![1 : multiple services](../.gitbook/assets/virtual-services-2.svg) 1 : multiple services
+![1 : multiple services](./images/virtual-services-2.svg)
+1 : multiple services
 
-* Virtual service C configures routing rules for traffic to reach different versions of service W.
+  * Virtual service C configures routing rules for traffic to reach different versions of service W.
 
-![1 : multiple versions](../.gitbook/assets/virtual-services-3.svg) 1 : multiple versions
+![1 : multiple versions](./images/virtual-services-3.svg)
+1 : multiple versions
 
 You can use virtual services to perform the following types of tasks:
 
@@ -342,11 +351,11 @@ spec:
         subset: v1
 ```
 
-In the example, under spec, hosts lists the virtual service’s hosts. In this case, the hosts are _.my-co.org, where_  is a wildcard prefix indicating that this virtual service handles routing for any DNS name ending with .my-co.org.
+In the example, under spec, hosts lists the virtual service’s hosts. In this case, the hosts are *.my-co.org, where * is a wildcard prefix indicating that this virtual service handles routing for any DNS name ending with .my-co.org.
 
 `예에서 사양 아래에 hosts는 가상 서비스의 호스트를 나열합니다. 이 경우 호스트는 * .my-co.org입니다. 여기서 *는이 가상 서비스가 .my-co.org로 끝나는 모든 DNS 이름에 대한 라우팅을 처리한다는 것을 나타내는 와일드 카드 접두사입니다.`
 
-You can specify user-addressable hosts by using any DNS name or an internal mesh service name as long as the name resolves, implicitly or explicitly, to one or more fully qualified domain names \(FQDN\). To specify multiple hosts, you can use wildcards.
+You can specify user-addressable hosts by using any DNS name or an internal mesh service name as long as the name resolves, implicitly or explicitly, to one or more fully qualified domain names (FQDN). To specify multiple hosts, you can use wildcards.
 
 `이름이 암시 적 또는 명시 적으로 하나 이상의 FQDN (정규화 된 도메인 이름)으로 확인되는 한 DNS 이름 또는 내부 메시 서비스 이름을 사용하여 사용자 주소 지정 가능 호스트를 지정할 수 있습니다. 여러 개의 호스트를 지정하기 위해 와일드 카드를 사용할 수 있습니다.`
 
@@ -364,7 +373,8 @@ You use the destination’s host to specify where you want the traffic to be sen
 
 The following diagram shows the configured rule:
 
-![Configurable traffic route to send traffic to a specific subset](../.gitbook/assets/virtual-services-4.svg) Configurable traffic route to send traffic to a specific subset
+![Configurable traffic route to send traffic to a specific subset](./images/virtual-services-4.svg)
+Configurable traffic route to send traffic to a specific subset
 
 ### Route requests to services in a Kubernetes namespace
 
@@ -414,10 +424,12 @@ A virtual service consists of an ordered list of routing rules to define the pat
 `가상 서비스는 요청이 메시 내에서 따르는 경로를 정의하기 위해 정렬 된 라우팅 규칙 목록으로 구성됩니다. 가상 서비스를 사용하여 라우팅 규칙을 구성합니다. 라우팅 규칙은 사용 사례에 따라 대상과 0 개 이상의 조건으로 구성됩니다. 라우팅 규칙을 사용하여 트래픽에 대한 일부 작업을 수행 할 수도 있습니다 (예 :`
 
 * Append or remove headers.
+
 * Rewrite the URL.
+
 * Set a retry policy.
 
-To learn more about the actions available, see the virtual service reference documentation. \([https://istio.io/docs/reference/config/networking/v1alpha3/virtual-service/\#HTTPRoute](https://istio.io/docs/reference/config/networking/v1alpha3/virtual-service/#HTTPRoute)\)
+To learn more about the actions available, see the virtual service reference documentation. (https://istio.io/docs/reference/config/networking/v1alpha3/virtual-service/#HTTPRoute)
 
 #### Routing rule for HTTP traffic
 
@@ -457,12 +469,19 @@ The first routing rule begins with the match field:
 `첫 번째 라우팅 규칙은 일치 필드로 시작합니다.`
 
 * `match` Lists the routing rule’s matching conditions.
+
 * `headers` Specifies to look for a match in the header of the request.
+
 * `cookie` Specifies to look for a match in the header’s cookie.
+
 * `regex` Specifies the regular expression used to determine a match.
+
 * `route` Specifies where to route the traffic matching the condition. In this case, that traffic is HTTP traffic with the username jason in the cookie of the request’s header.
+
 * `destination` Specifies the route destination for the traffic matching the rule conditions.
+
 * `host` Specifies the destination’s host, my-svc.
+
 * `subset` Specifies the destination’s subset for the traffic matching the conditions, v2 in this case.
 
 The configuration of the second routing rule in the example begins with the route field with a leading -. This rule applies to all traffic that doesn’t match the conditions specified in the first routing rule.
@@ -470,15 +489,19 @@ The configuration of the second routing rule in the example begins with the rout
 `이 예제에서 두 번째 라우팅 규칙의 구성은 경로 필드로 시작하고-로 시작합니다. 이 규칙은 첫 번째 라우팅 규칙에 지정된 조건과 일치하지 않는 모든 트래픽에 적용됩니다.`
 
 * `route` Specifies where to route all traffic except for HTTP traffic matching the condition of the previous rule.
+
 * `destination` Specifies the routing rule’s destination.
+
 * `host` Specifies the destination’s host, my-svc.
+
 * `subset` Specifies the destination’s subset, v1 in this case.
 
 The following diagram shows the configured traffic routes for the matched traffic and for all other traffic:
 
-![Configurable traffic route based on the namespace of two application services](../.gitbook/assets/virtual-services-6.svg) Configurable traffic route based on the namespace of two application services
+![Configurable traffic route based on the namespace of two application services](./images/virtual-services-6.svg)
+Configurable traffic route based on the namespace of two application services
 
-Routing rules are evaluated in a specific order. For details, refer to Precedence.\([https://istio.io/docs/concepts/traffic-management/\#precedence](https://istio.io/docs/concepts/traffic-management/#precedence)\)
+Routing rules are evaluated in a specific order. For details, refer to Precedence.(https://istio.io/docs/concepts/traffic-management/#precedence)
 
 `라우팅 규칙은 특정 순서로 평가됩니다. 자세한 내용은 우선 순위를 참조하십시오.`
 
@@ -609,8 +632,11 @@ A best practice pattern to specify routing rules is as follows:
 
 `라우팅 규칙을 지정하는 가장 좋은 방법은 다음과 같습니다`
 
-1. Provide one or more higher priority rules that match various conditions. `다양한 조건과 일치하는 하나 이상의 우선 순위 규칙을 제공하십시오.`
-2. Provide a single weight-based rule with no match condition last. This rule provides the weighted distribution of traffic for all other cases. `마지막으로 일치 조건이없는 단일 가중치 기반 규칙을 제공하십시오. 이 규칙은 다른 모든 경우에 대한 가중 트래픽 분포를 제공합니다.`
+1. Provide one or more higher priority rules that match various conditions.
+`다양한 조건과 일치하는 하나 이상의 우선 순위 규칙을 제공하십시오.`
+
+1. Provide a single weight-based rule with no match condition last. This rule provides the weighted distribution of traffic for all other cases.
+`마지막으로 일치 조건이없는 단일 가중치 기반 규칙을 제공하십시오. 이 규칙은 다른 모든 경우에 대한 가중 트래픽 분포를 제공합니다.`
 
 #### Precedence example with 2 rules
 
@@ -663,9 +689,14 @@ You specify explicit routing rules to service subsets. This model allows you to:
 
 `서비스 서브 세트에 대한 명시 적 라우팅 규칙을 지정합니다. 이 모델을 사용하면 다음을 수행 할 수 있습니다.`
 
-* Cleanly refer to a specific service version across different virtual services. `여러 가상 서비스에서 특정 서비스 버전을 명확하게 참조하십시오.`
-* Simplify the stats that the Istio proxies emit. `Istio 프록시가 방출하는 통계를 단순화하십시오.`
-* Encode subsets in Server Name Indication \(SNI\) headers. `SNI (Server Name Indication) 헤더에서 서브 세트를 인코딩하십시오.`
+* Cleanly refer to a specific service version across different virtual services.
+`여러 가상 서비스에서 특정 서비스 버전을 명확하게 참조하십시오.`
+
+* Simplify the stats that the Istio proxies emit.
+`Istio 프록시가 방출하는 통계를 단순화하십시오.`
+
+* Encode subsets in Server Name Indication (SNI) headers.
+`SNI (Server Name Indication) 헤더에서 서브 세트를 인코딩하십시오.`
 
 ### Load balancing 3 subsets
 
@@ -712,8 +743,11 @@ Service subsets subdivide and label the instances of a service. To define the di
 
 `서비스 서브 세트는 서비스 인스턴스를 세분화하고 레이블을 지정합니다. 구분과 레이블을 정의하려면 대상 규칙의 하위 집합 섹션을 사용하십시오. 예를 들어 하위 집합을 사용하여 다음과 같은 트래픽 라우팅 시나리오를 구성 할 수 있습니다.`
 
-* Use subsets to route traffic to different versions of a service. `서브 세트를 사용하여 트래픽을 다른 버전의 서비스로 라우팅하십시오`
-* Use subsets to route traffic to the same service in different environments. `서브 세트를 사용하여 다른 환경에서 동일한 서비스로 트래픽을 라우팅하십시오.`
+* Use subsets to route traffic to different versions of a service.
+`서브 세트를 사용하여 트래픽을 다른 버전의 서비스로 라우팅하십시오`
+
+* Use subsets to route traffic to the same service in different environments.
+`서브 세트를 사용하여 다른 환경에서 동일한 서비스로 트래픽을 라우팅하십시오.`
 
 You use service subsets in the routing rules of virtual services to control the traffic to your services. You can also use subsets to customize Envoy’s traffic policies when calling particular versions of a service.
 
@@ -723,8 +757,9 @@ Understanding service subsets in Istio allows you to configure the communication
 
 `Istio의 서비스 서브 세트를 이해하면 메시 내의 여러 버전으로 서비스와의 통신을 구성하고 다음과 같은 일반적인 사용 사례를 구성 할 수 있습니다.`
 
-* Splitting traffic between versions for A/B testing \([https://istio.io/docs/concepts/traffic-management/\#routing-subset](https://istio.io/docs/concepts/traffic-management/#routing-subset)\)
-* Canary rollout \([https://istio.io/docs/concepts/traffic-management/\#canary](https://istio.io/docs/concepts/traffic-management/#canary)\)
+* Splitting traffic between versions for A/B testing (https://istio.io/docs/concepts/traffic-management/#routing-subset)
+
+* Canary rollout (https://istio.io/docs/concepts/traffic-management/#canary)
 
 To learn how you can use service subsets to configure failure handling use cases, visit our Network resilience and testing concept.
 
@@ -762,7 +797,8 @@ You can use egress gateways to limit which services can or should access externa
 
 `예를 들어, 송신 게이트웨이를 사용하여 외부 네트워크에 액세스 할 수있는 서비스를 제한하거나 송신 트래픽을 안전하게 제어하여 메시에 보안을 추가 할 수 있습니다. 다음 다이어그램은 수신 게이트웨이 및 송신 게이트웨이가있는 서비스 메시를 통해 흐르는 요청의 기본 모델을 보여줍니다.`
 
-![Request flow](../.gitbook/assets/gateways-1.svg) Request flow
+![Request flow](./images/gateways-1.svg)
+Request flow
 
 All traffic enters the mesh through an ingress gateway workload. To configure the traffic, use an Istio gateway and a virtual service. You bind the virtual service to the gateway to use standard Istio routing rules to control HTTP requests and TCP traffic entering the mesh.
 
@@ -849,7 +885,7 @@ A service entry is used to add an entry to Istio’s abstract model, or service 
 
 `외부 대상에 대한 재시도, 시간 초과 및 결함 주입 정책을 정의하십시오.`
 
-* Add a service running in a Virtual Machine \(VM\) to the mesh to expand your mesh.
+* Add a service running in a Virtual Machine (VM) to the mesh to expand your mesh.
 
 `가상 머신 (VM)에서 실행중인 서비스를 메시에 추가하여 메시를 확장하십시오.`
 
@@ -873,7 +909,7 @@ You can use service entries to perform the following configurations:
 
 `송신 게이트웨이와 함께 모든 외부 서비스가 단일 종료점을 통해 액세스되는지 확인하십시오.`
 
-Refer to the Egress task topic for details. \([https://istio.io/docs/tasks/traffic-management/egress/](https://istio.io/docs/tasks/traffic-management/egress/)\)
+Refer to the Egress task topic for details. (https://istio.io/docs/tasks/traffic-management/egress/)
 
 ## Add an external dependency securely
 
@@ -958,7 +994,7 @@ A Sidecar resource can be used to configure one or more sidecar proxies selected
 
 ### Enable namespace isolation
 
-For example, the following Sidecar configures all services in the bookinfo namespace to only reach services running in the same namespace thanks to the ./\* value of the hosts: field:
+For example, the following Sidecar configures all services in the bookinfo namespace to only reach services running in the same namespace thanks to the ./* value of the hosts: field:
 
 `예를 들어, 다음 사이드카는 bookinfo 네임 스페이스의 모든 서비스가 호스트의 ./* 값으로 인해 동일한 네임 스페이스에서 실행되는 서비스에만 도달하도록 구성합니다.`
 
@@ -1075,6 +1111,7 @@ Consumers of a service can also override timeout and retry defaults with request
 `서비스 소비자는 특수 HTTP 헤더를 통해 요청 수준을 재정 의하여 시간 초과를 재정의하고 기본값을 다시 시도 할 수 있습니다. Envoy 프록시 구현은 다음 헤더를 사용 가능하게합니다.`
 
 * Timeouts: x-envoy-upstream-rq-timeout-ms
+
 * Retries: X-envoy-max-retries
 
 ## Circuit breakers
@@ -1225,7 +1262,6 @@ For detailed instructions on how to configure delays and aborts, visit our fault
 `지연 및 중단을 구성하는 방법에 대한 자세한 지침은 결함 주입 작업을 방문하십시오.`
 
 ## Compatibility with application-level fault handling
-
 Istio failure recovery features are completely transparent to the application. Applications don’t know if an Envoy sidecar proxy is handling failures for a called upstream service, before returning a response.
 
 `Istio 오류 복구 기능은 애플리케이션에 완전히 투명합니다. 응답을 반환하기 전에 Envoy 사이드카 프록시가 호출 된 업스트림 서비스의 실패를 처리하는지 응용 프로그램이 알지 못합니다.`
@@ -1237,4 +1273,3 @@ When you use application-level fault tolerance libraries and Envoy proxy failure
 For example: Suppose you can have two timeouts, one configured in a virtual service and another in the application. The application sets a 2 second timeout for an API call to a service. However, you configured a 3 second timeout with 1 retry in your virtual service. In this case, the application’s timeout kicks in first, so your Envoy timeout and retry attempt has no affect.
 
 `예를 들어, 하나는 가상 서비스에 구성되고 다른 하나는 응용 프로그램에 제한 시간이 두 개 있다고 가정합니다. 애플리케이션은 서비스에 대한 API 호출에 대해 2 초 제한 시간을 설정합니다. 그러나 가상 서비스에서 1 번의 재시 도로 3 초 시간 초과를 구성했습니다. 이 경우 응용 프로그램의 시간 초과가 먼저 시작되므로 Envoy 시간 초과 및 재 시도는 영향을 미치지 않습니다.`
-

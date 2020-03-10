@@ -37,7 +37,7 @@ minishift openshift service jaeger-query --in-browser
 
 [Customer](observability.md)라는 값을 콥보박스에서 선택하고, [Figure 6-1](observability.md)처럼 [trace](observability.md)를 볼 수 있습니다.
 
- Figure 6-1. Jaeger’s view of the customer-preference-recommendation trace
+Figure 6-1. Jaeger’s view of the customer-preference-recommendation trace
 
 여러분이 꼭 기억해야 할 한가지 중요한 점은 프로그래밍 로직에 모든 외부 호출 시에 [OpenTracing](observability.md)하기 위해서는 코드에서 [HTTP](observability.md)헤더를 전달하는 로직을 만들어야 합니다.
 

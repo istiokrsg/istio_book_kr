@@ -58,7 +58,7 @@ $ kubectl ...
 
 ### Pilot
 
-![pilot architecture](../.gitbook/assets/pilot_architecture.png)
+![pilot architecture](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/pilot_architecture.png)
 
 위 그림은 이스티오 공식 문서에 나와있다. 그림에서 보면 [Abstract model](traffic-control-1.md) 을 통해 [Kubernetes](traffic-control-1.md) 뿐 아니라 다른 플랫폼 위에서도 트래픽 컨트롤 기능을 제공할 수 있음을 알수 있다. 예를 들어, Kubernetes 어댑터는 Kubernetes API 서버에서 pod 등록 정보 및 서비스 리소스를 변경하는 것을 watch 하는 컨트롤러를 구현했다. Kubernetes 어댑터는 이 데이터를 [Abstract model](traffic-control-1.md) 로 변환한다.
 

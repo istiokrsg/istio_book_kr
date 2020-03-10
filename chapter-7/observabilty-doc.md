@@ -76,7 +76,7 @@ More information about Distributed Tracing with Istio is found in our FAQ on Dis
 
 Example Istio-generated distributed trace for a single request:
 
- 그림 Distributed Trace for a single request
+그림 Distributed Trace for a single request
 
 ## Access Logs
 

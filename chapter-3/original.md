@@ -39,7 +39,7 @@ These components enable the following Istio traffic management features:
 
 The following diagram shows the Pilot architecture:
 
-![Pilot architecture](../.gitbook/assets/pilot-arch.svg) Pilot architecture
+![Pilot architecture](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/pilot-arch.svg) Pilot architecture
 
 As the diagram illustrates, Pilot maintains an abstract model of all the services in the mesh. Platform-specific adapters in Pilot translate the abstract model appropriately for your platform. For example, the Kubernetes adapter implements controllers to watch the Kubernetes API server for changes to pod registration information and service resources. The Kubernetes adapter translates this data for the abstract model.
 
@@ -105,7 +105,7 @@ The following diagram shows how the platform adapters and Envoy proxies interact
 
 `다음 다이어그램은 플랫폼 어댑터와 Envoy 프록시가 상호 작용하는 방식을 보여줍니다.`
 
-![Service discovery](../.gitbook/assets/discovery.svg) Service discovery
+![Service discovery](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/discovery.svg) Service discovery
 
 Because the service discovery feature is platform-independent, a service mesh can include services across multiple platforms.
 
@@ -288,16 +288,16 @@ Your mesh can require multiple virtual services or none depending on your use ca
 
 * 1:1 relationship: Virtual service A configures routing rules for traffic to reach service X.
 
-![1 : 1 relationship](../.gitbook/assets/virtual-services-1.svg) 1 : 1 relationship
+![1 : 1 relationship](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/virtual-services-1.svg) 1 : 1 relationship
 
 * 1:many relationship:
   * Virtual service B configures routing rules for traffic to reach services Y and Z.
 
-![1 : multiple services](../.gitbook/assets/virtual-services-2.svg) 1 : multiple services
+![1 : multiple services](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/virtual-services-2.svg) 1 : multiple services
 
 * Virtual service C configures routing rules for traffic to reach different versions of service W.
 
-![1 : multiple versions](../.gitbook/assets/virtual-services-3.svg) 1 : multiple versions
+![1 : multiple versions](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/virtual-services-3.svg) 1 : multiple versions
 
 You can use virtual services to perform the following types of tasks:
 
@@ -342,7 +342,7 @@ spec:
         subset: v1
 ```
 
-In the example, under spec, hosts lists the virtual service’s hosts. In this case, the hosts are _.my-co.org, where_  is a wildcard prefix indicating that this virtual service handles routing for any DNS name ending with .my-co.org.
+In the example, under spec, hosts lists the virtual service’s hosts. In this case, the hosts are _.my-co.org, where_ is a wildcard prefix indicating that this virtual service handles routing for any DNS name ending with .my-co.org.
 
 `예에서 사양 아래에 hosts는 가상 서비스의 호스트를 나열합니다. 이 경우 호스트는 * .my-co.org입니다. 여기서 *는이 가상 서비스가 .my-co.org로 끝나는 모든 DNS 이름에 대한 라우팅을 처리한다는 것을 나타내는 와일드 카드 접두사입니다.`
 
@@ -364,7 +364,7 @@ You use the destination’s host to specify where you want the traffic to be sen
 
 The following diagram shows the configured rule:
 
-![Configurable traffic route to send traffic to a specific subset](../.gitbook/assets/virtual-services-4.svg) Configurable traffic route to send traffic to a specific subset
+![Configurable traffic route to send traffic to a specific subset](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/virtual-services-4.svg) Configurable traffic route to send traffic to a specific subset
 
 ### Route requests to services in a Kubernetes namespace
 
@@ -476,7 +476,7 @@ The configuration of the second routing rule in the example begins with the rout
 
 The following diagram shows the configured traffic routes for the matched traffic and for all other traffic:
 
-![Configurable traffic route based on the namespace of two application services](../.gitbook/assets/virtual-services-6.svg) Configurable traffic route based on the namespace of two application services
+![Configurable traffic route based on the namespace of two application services](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/virtual-services-6.svg) Configurable traffic route based on the namespace of two application services
 
 Routing rules are evaluated in a specific order. For details, refer to Precedence.\([https://istio.io/docs/concepts/traffic-management/\#precedence](https://istio.io/docs/concepts/traffic-management/#precedence)\)
 
@@ -762,7 +762,7 @@ You can use egress gateways to limit which services can or should access externa
 
 `예를 들어, 송신 게이트웨이를 사용하여 외부 네트워크에 액세스 할 수있는 서비스를 제한하거나 송신 트래픽을 안전하게 제어하여 메시에 보안을 추가 할 수 있습니다. 다음 다이어그램은 수신 게이트웨이 및 송신 게이트웨이가있는 서비스 메시를 통해 흐르는 요청의 기본 모델을 보여줍니다.`
 
-![Request flow](../.gitbook/assets/gateways-1.svg) Request flow
+![Request flow](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/gateways-1.svg) Request flow
 
 All traffic enters the mesh through an ingress gateway workload. To configure the traffic, use an Istio gateway and a virtual service. You bind the virtual service to the gateway to use standard Istio routing rules to control HTTP requests and TCP traffic entering the mesh.
 

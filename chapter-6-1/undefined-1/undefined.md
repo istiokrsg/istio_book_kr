@@ -20,7 +20,7 @@ spec:
       fixedDelay: 7s
 ```
 
-Use the istioctl create command to apply the new RouteRule: 
+Use the istioctl create command to apply the new RouteRule:
 
 ```bash
 istioctl create -f istiofiles/route-rule-recommendation-delay.yml \
@@ -43,7 +43,7 @@ Notice that many requests to the customer end point now have a delay. If you are
 stern recommendation -n tutorial
 ```
 
-Clean up: 
+Clean up:
 
 ```bash
 istioctl delete -f istiofiles/route-rule-recommendation-delay.yml -n tutorial

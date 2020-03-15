@@ -34,15 +34,15 @@ cd handson/2-bookinfo
 위 스크립트는 다음 3가지 동작을 수행합니다.
 
 1. default namespace 에 label 을 지정합니다.
-    1. kubectl label namespace default istio-injection=enabled
-1. application 배포
-    1. kubectl apply -f ${ISTIO_HOME}/samples/bookinfo/platform/kube/bookinfo.yaml
-1. istio ingress gateway 설치
-    1. kubectl apply -f ${ISTIO_HOME}/samples/bookinfo/networking/bookinfo-gateway.yaml
+   1. kubectl label namespace default istio-injection=enabled
+2. application 배포
+   1. kubectl apply -f ${ISTIO\_HOME}/samples/bookinfo/platform/kube/bookinfo.yaml
+3. istio ingress gateway 설치
+   1. kubectl apply -f ${ISTIO\_HOME}/samples/bookinfo/networking/bookinfo-gateway.yaml
 
 ### Gateway, Virtual Service install
 
-여기서 gateway 설치를 통해 클러스터 외부에서 클러스터 내부 어플리케이션으로의 통신 (ingress) 을 가능하게 합니다.
+여기서 gateway 설치를 통해 클러스터 외부에서 클러스터 내부 어플리케이션으로의 통신 \(ingress\) 을 가능하게 합니다.
 
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -59,7 +59,6 @@ spec:
       protocol: HTTP
     hosts:
     - "*"
-
 ```
 
 Gateway spec 에서 `selector.istio : ingressgateway` 는 labels 의 정보에 `istio : ingressgateway` 가 있는 `istio-ingressgateway` 서비스에 대해 gateway 역할을 한다는 의미입니다.
@@ -80,9 +79,10 @@ $ kubectl get svc -n istio-system istio-ingressgateway -o json | jq -r '.metadat
 ```
 
 따라서 Gateway spec 은 다음과 같이 해석할 수 있습니다.
+
 > `localhost 로 들어오는 모든(*) hosts 주소에 대해 80 port http 프로토콜로 들어오는 모든 트래픽을 받아들인다`
 
-Gateway 를 통해 들어온 트래픽을 어떤 경로로 전달하는지(Route)를 가리키는 것이 VirtualService 입니다.
+Gateway 를 통해 들어온 트래픽을 어떤 경로로 전달하는지\(Route\)를 가리키는 것이 VirtualService 입니다.
 
 ```yaml
 apiVersion: networking.istio.io/v1alpha3
@@ -129,9 +129,8 @@ productpage   ClusterIP   10.104.71.146   <none>        9080/TCP   105m
 ```
 
 따라서 VirtualService spec 은 다음과 같이 해석할 수 있습니다.
+
 > `bookinfo-gateway 를 통해 들어오는 트래픽중에 uri 가 /productpage, login, logout 과 일치하거나, static, api/v1/products 로 시작하는 트래픽들은 productpage 서비스의 9080 port 로 전달한다`
-
-
 
 ### Virtual Service
 

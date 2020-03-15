@@ -12,21 +12,126 @@
 
 * istio install
 
+Istio 설치는 2 장을 참고하세요. 빠른 진행을 위해 설치에 필요한 스크립트를 제공합니다.
+
 ```bash
-$ istio install ...
+git clone https://github.com/istiokrsg/handson.git
+cd handson/1-install
+./install.sh
 ```
+
+위 스크립트는 handson/download/istio/istio-${VERSION} 에 istio release 버전을 다운받아 동작합니다.
 
 * Bookinfo install
 
+Sample application 동작을 실행해보겠습니다.
+
 ```bash
-$ kubectl apply -f {ISTIO_HOME}/samples/bookinfo/platform/kube/bookinfo.yaml
+cd handson/2-bookinfo
+./bookinfo.sh
 ```
+
+위 스크립트는 다음 3가지 동작을 수행합니다.
+
+1. default namespace 에 label 을 지정합니다.
+    1. kubectl label namespace default istio-injection=enabled
+1. application 배포
+    1. kubectl apply -f ${ISTIO_HOME}/samples/bookinfo/platform/kube/bookinfo.yaml
+1. istio ingress gateway 설치
+    1. kubectl apply -f ${ISTIO_HOME}/samples/bookinfo/networking/bookinfo-gateway.yaml
 
 ### Gateway, Virtual Service install
 
-```bash
-$ kubectl apply -f {ISTIO_HOME}/samples/bookinfo/networking/bookinfo-gateway.yaml
+여기서 gateway 설치를 통해 클러스터 외부에서 클러스터 내부 어플리케이션으로의 통신 (ingress) 을 가능하게 합니다.
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+
 ```
+
+Gateway spec 에서 `selector.istio : ingressgateway` 는 labels 의 정보에 `istio : ingressgateway` 가 있는 `istio-ingressgateway` 서비스에 대해 gateway 역할을 한다는 의미입니다.
+
+```bash
+$ kubectl get svc -n istio-system istio-ingressgateway
+NAME                   TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)                                                                                                                                      AGE
+istio-ingressgateway   LoadBalancer   10.106.36.98   localhost     15020:31669/TCP,80:31380/TCP,443:31390/TCP,31400:31400/TCP,15029:31974/TCP,15030:31207/TCP,15031:30405/TCP,15032:32696/TCP,15443:30447/TCP   19h
+
+$ kubectl get svc -n istio-system istio-ingressgateway -o json | jq -r '.metadata.labels'
+{
+  "app": "istio-ingressgateway",
+  "chart": "gateways",
+  "heritage": "Tiller",
+  "istio": "ingressgateway",
+  "release": "istio"
+}
+```
+
+따라서 Gateway spec 은 다음과 같이 해석할 수 있습니다.
+> `localhost 로 들어오는 모든(*) hosts 주소에 대해 80 port http 프로토콜로 들어오는 모든 트래픽을 받아들인다`
+
+Gateway 를 통해 들어온 트래픽을 어떤 경로로 전달하는지(Route)를 가리키는 것이 VirtualService 입니다.
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        prefix: /static
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
+```
+
+여기서 `spec.gateways` 는 `.metadata.name` 을 찾습니다.
+
+```bash
+$ kubectl get gateway bookinfo-gateway -o json | jq -r '.metadata.name'
+bookinfo-gateway
+```
+
+또한 uri 가 일치해야만 경로를 지정할 수 있음을 유추할 수 있습니다. 경로는 destination 을 통해 가리키고 있는데 이때 host 는 service 명을 적어야 합니다.
+
+```bash
+$ kubectl get svc productpage
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+productpage   ClusterIP   10.104.71.146   <none>        9080/TCP   105m
+```
+
+따라서 VirtualService spec 은 다음과 같이 해석할 수 있습니다.
+> `bookinfo-gateway 를 통해 들어오는 트래픽중에 uri 가 /productpage, login, logout 과 일치하거나, static, api/v1/products 로 시작하는 트래픽들은 productpage 서비스의 9080 port 로 전달한다`
+
+
 
 ### Virtual Service
 

@@ -19,14 +19,14 @@
 * [chapter-5](chapter-5/README.md)
   * [Untitled](chapter-5/untitled.md)
   * [개요](chapter-5/5.-service_resiliency.md)
+* [chapter-7](chapter-7/README.md)
+  * [Observability](chapter-7/observabilty-doc.md)
+  * [Observability](chapter-7/observability.md)
 * [chapter-6](chapter-6-1/README.md)
   * [카오스 엔지니어링이란?](chapter-6-1/undefined-2.md)
   * [장애 주입](chapter-6-1/undefined-1/README.md)
     * [HTTP 오류](chapter-6-1/undefined-1/http.md)
     * [네트워크 지연](chapter-6-1/undefined-1/undefined.md)
-* [chapter-7](chapter-7/README.md)
-  * [Observability](chapter-7/observabilty-doc.md)
-  * [Observability](chapter-7/observability.md)
 * [References](references-1.md)
 
 ## howto <a id="references"></a>

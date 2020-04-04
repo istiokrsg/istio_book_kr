@@ -1,3 +1,6 @@
+# Traffic Control
+
+
 ## 1. Traffic Shifting
 이번 장에서는 Istio에서 Traffic을 Old version에서 New version으로 점진적으로 전환하는 방법을 살펴볼 것이다. 에를 들면, 서비스에 변경이 생기거나 버그를 고치는등 변경 사항을 배포할때 한꺼번에 배포를 완료하지 않고 아주 적은 일부 트래픽에 대해서만 우선 적용해보고(Canary 배포) 전체 트래픽으로 확대해나가는 방법을 사용할 수 있다. 이런 방식을 사용하게 되면 새로운 변경사항으로 인해 발생되는 nagative impact를 일부 트래픽에 대해서만 적용하므로써, 새로운 버전의 릴리즈로 인해 발생하는 리스크를 줄일 수 있다. 
 Istio에서 route rules에 있는 traffic의 percent 설정을 조절하여 Traffic Shifting 기능을 가능하게 해준다. 이번 장에서 우리는 `reviews:v1`에서 `reviews:v3`로 Traffic의 50%만 보내다가, 100%로 변경하여 `reviews:v3`로 traffic을 완전히 전환하는 방법을 살펴보도록 하자.

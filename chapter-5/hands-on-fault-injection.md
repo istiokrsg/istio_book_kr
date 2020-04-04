@@ -2,8 +2,8 @@
 
 ### 준비 작업
 
-* 설치 안내서의 지침에 따라 Istio를 설정하세요.   \([https://istio.io/docs/setup/kubernetes/install/](https://istio.io/docs/setup/kubernetes/install/)\)
-* 기본 대상 규칙\(default destination rules\)이 포함된 Bookinfo 샘플 어플리케이션\(Application\)을 배포합니다.  \([https://istio.io/docs/examples/bookinfo/](https://istio.io/docs/examples/bookinfo/)\)
+* 설치 안내서의 지침에 따라 Istio를 설정하세요.   [https://istio.io/docs/setup/kubernetes/install/](https://istio.io/docs/setup/kubernetes/install/)
+* 기본 대상 규칙\(default destination rules\)이 포함된 Bookinfo 샘플 어플리케이션\(Application\)을 배포합니다.  [https://istio.io/docs/examples/bookinfo/](https://istio.io/docs/examples/bookinfo/)
 * 시작하기 전에 서비스 복원성\(Service Resiliency\)에서 결함주입\(Fault Injection\)을 다시 한번 보세요.
 * 요청 라우팅 작업\(request routing task\)을 수행하거나 다음 명령을 실행하여 어플리케이션 버전 별 전송 경로\(routing\)를 적용합니다.
 

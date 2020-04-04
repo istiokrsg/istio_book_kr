@@ -28,6 +28,8 @@
   * [결함 주입 \(Fault injection\)](chapter-5/fault-injection.md)
   * [어플리케이션 수준의 결함 처리와의 호환성](chapter-5/undefined.md)
   * [Hands-on : 결함주입\(Fault Injection\)](chapter-5/hands-on-fault-injection.md)
+  * [Hands-on : 시간 초과 요청 \(Request timeouts\)](chapter-5/hands-on-request-timeouts.md)
+  * [Hands-on : 전송 경로 차단 \(회로 차단, Circuit Breaking\)](chapter-5/hands-on-circuit-breaking.md)
 * [chapter-6](chapter-6-1/README.md)
   * [카오스 엔지니어링이란?](chapter-6-1/undefined-2.md)
   * [장애 주입](chapter-6-1/undefined-1/README.md)

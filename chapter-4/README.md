@@ -34,7 +34,7 @@ Istio 내부에 있는 DNS 인증서를 관리하고, 프로비저닝하는 방�
 
 Istio Security는 이러한 문제를 해결하기위한 포괄적 인 보안 솔루션을 제공합니다. 이 페이지는 Istio 보안 기능을 사용하여 서비스를 어디에서 실행 하든 보안을 유지하는 방법에 대한 개요를 제공합니다. 특히, Istio 보안은 데이터, 엔드 포인트, 통신 및 플랫폼에 대한 내부 및 외부 위협을 모두 완화합니다.
 
-![Security Overview](../.gitbook/assets/image-13.png)
+![Security Overview](https://github.com/istiokrsg/istio_book_kr/tree/1af2b5f9951a626f106187996fd427f6523d7102/.gitbook/assets/image-13.png)
 
 Istio 보안 기능은 강력한 ID, 강력한 정책, 투명한 TLS 암호화 및 AAA \(인증, 권한 부여 및 감사\) 도구를 제공하여 서비스와 데이터를 보호합니다. Istio 보안의 목표는 다음과 같습니다.
 
@@ -56,7 +56,7 @@ Istio의 보안에는 여러 구성 요소가 포함됩니다.
 
 Control Plane은 API 서버의 구성을 처리하고 Data Plane 에서 PEP를 구성합니다. PEP는 Envoy를 사용하여 구현됩니다. 다음 다이어그램은 아키텍처를 보여줍니다.
 
-![Security Architecture](../.gitbook/assets/image-19.png)
+![Security Architecture](https://github.com/istiokrsg/istio_book_kr/tree/1af2b5f9951a626f106187996fd427f6523d7102/.gitbook/assets/image-19.png)
 
 이어지는 다음 장에서 istio 보안 주요기능에 대해 더 자세히 소개하겠습니다.
 
@@ -78,7 +78,7 @@ Istio ID 모델은 일류 서비스 ID를 사용하여 요청 출처의 ID를 �
 
 Istio PKI는 X.509 인증서를 사용하여 모든 워크로드에 강력한 ID를 안전하게 프로비저닝합니다. PKI는 규모에 따라 키 및 인증서 순환을 자동화하기 위해 인증서 및 키 프로비저닝을 위해 각 Envoy 프록시와 함께 Istio 에이전트를 실행합니다. 다음 다이어그램은 자격 증명 제공 흐름을 보여줍니다.
 
-![Identity Provision](../.gitbook/assets/image-9.png)
+![Identity Provision](https://github.com/istiokrsg/istio_book_kr/tree/1af2b5f9951a626f106187996fd427f6523d7102/.gitbook/assets/image-9.png)
 
 Istio는 다음 흐름을 사용하여 비밀 검색 서비스 SDS\(Secret Discovery Service\) 를 통해 ID를 제공합니다.
 

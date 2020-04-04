@@ -96,9 +96,7 @@
   위의 설정을 통한 요청 흐름 방식은 다음과 같습니다. 
 
 * productpage -&gt; review:v2 -&gt; ratings \(사용자가 jason인 경우\) 
-* productpage -&gt; review:v1 \(이외 모든 사용자인 경우\) 
-
- 
+* productpage -&gt; review:v1 \(이외 모든 사용자인 경우\)  
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts26.png)
 

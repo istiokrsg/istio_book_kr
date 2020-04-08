@@ -6,8 +6,8 @@
 
 최적의 시간 초과 설정으로 사용하기 위하여 Istio를 사용하면 서비스 코드를 수정하지 않고도 Istio 트래픽 제어 관련 가상 서비스 \(Virtual Service\)를 사용하여 서비스별로 쉽게 시간 초과를 동적으로 조정할 수 있는 Istio의 장점을 활용할 수 있습니다.
 
-* Zero Code Change
-* Policy Driven
+* 어플리케이션 소스 코드 변경없이 구성 가능 \(Zero Code Change\)
+* 정책 기반의 구성 \(Policy Driven\)
 
 다음 예제는 ratings 서비스 대상으로 v1 이라는 하위 집합\(subset\) 대상으로 호출\(Call\)의 10초 시간 초과\(timeout\)를 설정하는 가상 서비스입니다.
 

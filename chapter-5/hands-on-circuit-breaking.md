@@ -8,7 +8,7 @@
 
 ### 준비 작업
 
-* 아래 사이트에 있는 설치 안내서의 지침에 따라 Istio를 설정하세요.
+* 아래 사이트에 있는 설치 안내서의 지침에 따라 Istio를 설정하세요. [https://istio.io/docs/setup/kubernetes/install/](https://istio.io/docs/setup/kubernetes/install/)
 * httpbin 샘플을 실행하세요. 자동 사이드카 주입 \(automatic sidecar injection\)을 사용하고 있다면 다음과 같이 httpbin 서비스를 배포\(deploy\)하세요.
 
   ```bash
@@ -177,7 +177,7 @@ consecutivegatewayerrors 및 consecutive5xxerrors는 개별적으로 또는 함�
 
 ### 클라이언트 추가 \(Adding a client\)
 
-httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다.. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트\(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출\(outgoing HTTP calls\)에 대한 연결\(connections\) 갯수, 동시성\(concurrency\) 및 지연\(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙\(Destination Rule\)에서 설정 한 전송 경로 차단기 \(회로 차단기 정책, circuit breaker policies\)을 "개폐\(trip\)" 합니다.
+httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다.. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트\(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출\(outgoing HTTP calls\)에 대한 연결\(connections\) 갯수, 동시성\(concurrency\) 및 시간 지연\(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙\(Destination Rule\)에서 설정 한 전송 경로 차단기 \(회로 차단기 정책, circuit breaker policies\)을 "개폐\(trip\)" 합니다.
 
 Inject the client with the Istio sidecar proxy so network interactions are governed by Istio.
 
@@ -275,7 +275,7 @@ x-envoy-upstream-service-time: 36
 
 ### 전송경로 차단기 개폐 \(회로 차단기 개폐, Tripping the circuit breaker\)
 
-대상 규칙\(Destination Rule\) 설정\(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 지정했습니다.이 규칙은 둘 이상의 연결과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 요청 및 연결\(connection and request\)에 대해 전송 경로\(회로, circuit\)를 오픈할 때 오류가 \(failures\) 발생하는 것을 볼 수 있습니다.
+대상 규칙\(Destination Rule\) 설정\(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설했습니다.이 규칙은 둘 이상의 연결과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 요청 및 연결\(connection and request\)에 대해 전송 경로\(회로, circuit\)를 오픈할 때 오류가 \(failures\) 발생하는 것을 볼 수 있습니다.
 
 1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자\(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 연결\(concurrent connections\)로 서비스를 호출\(call\)하고 20개의 요청을 보냅니다.
 

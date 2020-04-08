@@ -1,10 +1,10 @@
 # 결함 주입 \(Fault injection\)
 
-장애 복구 정책 \(failure recovery policies\)을 포함하여 네트워크를 구성한 후 Istio의 결함 주입 메커니즘\(fault injection mechanisms\)을 사용하여 어플리케이션의 전체 장애 복구 용량\(failure recovery capacity\)을 테스트 할 수 있습니다.
+장애 복구 정책 \(failure recovery policies\)을 포함하여 네트워크를 구성한 후 Istio의 결함 주입 메커니즘\(fault injection mechanisms\)을 사용하여 어플리케이션의 전체 장애 복구 능력\(failure recovery capacity\)을 테스트 할 수 있습니다.
 
-결함 주입\(Fault injection\)은 시스템에 오류\(errors\)를 도입하여 오류 조건\(error conditions\)을 극복하고 복구할 수 있도록 하는 테스트 방법 입니다.
+결함 주입\(Fault injection\)은 시스템 내부에 오류\(errors\)를 주입하여 해당 오류 조건 \(error conditions\)에 대한 극복 및 복구할 수 있도록 하는 테스트 방법 입니다.
 
-결함 주입을 사용하는 것은 장애 복구 정책\(failure recovery policies\)이 비호환적이거나 너무 제한적이지 않다는 것이고 잠재적으로 중요한 서비스의 비가용한 상태를 야기 않는 것을 확인할 수 있습니다.
+결함 주입을 사용하는 것은 장애 복구 정책\(failure recovery policies\)이 비호환적이거나 너무 제한적이지 않다는 것이고 잠재적으로 중요한 서비스의 비가용한 상태가 되지 않는 것을 확인할 수 있습니다.
 
 네트워크 계층에서 패킷 지연 또는 파드\(pod\) 종료와 같은 오류\(errors\)를 발생시키는 다른 메커니즘과 달리 Istio를 사용하면 어플리케이션\(Application\) 계층에 결함\(fault\)을 주입 할 수 있습니다. 이를 통해 HTTP 오류 코드 \(error codes\)와 같은 관련성 높은 오류\(failures\)를 삽입하여 보다 관련성 높은 결과를 얻을 수 있습니다.
 
@@ -23,7 +23,7 @@
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts14.png)
 
-지연\(delay\)과 중단\(abort\) 결함\(fault\)을 함께 사용할 수 있는 예제로 review 서비스의 v2 하위집합\(subnet\)에서 ratings 서비스의 v1 하위집합\(Subset\)까지의 모든 Http 요청\(Request\)에 대해 5초 지연\(Delay\)을 발생시키고 그 중 10%에 대한 중단\(Abort\) 시켜 Http 400 오류\(error\)를 발생시킵니다. 
+지연\(delay\)과 중단\(abort\) 결함\(fault\)을 함께 사용할 수 있는 예제로 review 서비스의 v2 하위집합\(subset\)에서 ratings 서비스의 v1 하위집합\(Subset\)까지의 모든 HTTP 요청\(Request\)에 대해 5초 지연\(Delay\)을 발생시키고 그 중 10%에 대한 중단\(Abort\) 시켜 HTTP 400 오류\(error\)를 발생시킵니다. 
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts15.png)
 

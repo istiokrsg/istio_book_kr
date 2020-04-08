@@ -1,6 +1,6 @@
 # Hands-on : 시간 초과 요청 \(Request timeouts\)
 
-예제는 Istio를 사용하여 사이드카 프록시\(Envoy proxy, sidecar proxy\)에서 요청 시간 초과를 설정하는 방법을 보여줍니다.
+해당 Hands-on은 Istio를 사용하여 사이드카 프록시\(Envoy proxy, sidecar proxy\)에서 요청 시간 초과를 설정하는 방법을 보여줍니다.
 
 좀 더 상세하게 예제를 설명하면 어플리케이션에서 시간 초과\(Timeout\)을 통하여 서비스 복원성\(Service Resiliency\)를 추가하는 방법을 보여주는 예제로 ratings 서비스에 대하여 2초의 시간 지연\(delay fault Injection\)을 설정하여 reviews 서비스가 1초 이내에 응답하지 않으면 productpage 웹페이지에서 reviews 서비스에 대한 오류 메세지를 보여줍니다.
 
@@ -79,7 +79,7 @@
 
 ### 요청 시간 초과 \(Request timeouts\)
 
-전송 경로 규칙\(route rule\)의 제한 시간 필드\(timeout field\)를 사용하여 HTTP 요청에 대한 제한 시간을 설정할 수 있습니다. 기본적으로 시간 초과\(timeout\)는 비활성화되어 있지만 이 작업에서는 reviews 서비스 시간 초과\(service timeout\)를 1초로 설정합니다. 그러나 그 효과를 확인하기 위해서는 ratings 서비스 호출\(call\)에 에 대하여 2초 지연\(delay\)을 설정해야 합니다.
+전송 경로 규칙\(route rule\)의 제한 시간 필드\(timeout field\)를 사용하여 HTTP 요청에 대한 제한 시간을 설정할 수 있습니다. 기본적으로 시간 초과\(timeout\)는 비활성화되어 있지만 이 작업에서는 reviews 서비스 시간 초과\(service timeout\)를 1초로 설정합니다. 그러나 그 효과를 확인하기 위해서는 ratings 서비스 호출\(call\)에 에 대하여 2초의 시간 지연\(delay\)을 설정해야 합니다.
 
 1. ratings 서비스를 호출하는 reviews:v2 서비스쪽으로 요청\(Request\)을 보낼 수 있는 가상서비스 \(Virtual Service\)를 설정합니다.
 
@@ -100,7 +100,7 @@
     EOF
    ```
 
-2. ratings 서비스 호출\(call\)될 때 2초 지연\(delay\)이 발생되도록 가상서비스\(Virtual Service\)를 설정합니다.
+2. ratings 서비스 호출\(call\)될 때 2초의 시간 지연\(delay\)이 발생되도록 가상서비스\(Virtual Service\)를 설정합니다.
 
    ```bash
     $ kubectl apply -f - <<EOF
@@ -123,17 +123,17 @@
     EOF
    ```
 
-3. 브라우저에서 Bookinfo URL\([http://$GATEWAY\_URL/productpage\)를](http://$GATEWAY_URL/productpage%29를) 접속하여 서비스를 확인합니다.
+3. 브라우저에서 Bookinfo에 대한 URL\([http://$GATEWAY\_URL/productpage\)를](http://$GATEWAY_URL/productpage%29를) 접속하여 서비스를 확인합니다.
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts7.png)
 
-   Bookinfo 어플리케이션이 정상적으로 작동하는 것을 볼 수 있지만 \(ratings서비스의 별들이 표시됨\) 페이지를 리플레쉬\(refresh\)할 때 마다 2초 지연\(delay\)되고 이유는 아래와 같습니다.
+   Bookinfo 어플리케이션이 정상적으로 작동하는 것을 볼 수 있지만 \(ratings서비스의 별들이 표시됨\) 페이지를 리플레쉬\(refresh\)할 때 마다 2초의 시간 지연 \(delay\) 되고 이유는 아래와 같습니다.
 
    위의 \(1\)번 설정에서는 모든 요청\(request\)를 reviews 서비스의 v2으로 전송\(routing\)하고 위의 \(2\)번 설정에서는 ratings 서비스 호출할 때 2초 지연 결함을 주입\(delay Fault Injection\)했기 때문입니다.
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200327_204754.png)
 
-4. 이제는 reviews 서비스 호출에 0.5초의 요청 시간 제한\(request timeout\)을 추가합니다.
+4. 이제는 reviews 서비스 호출 대상으로  0.5초의 요청 시간 제한\(request timeout\)을 추가합니다.
 
    ```bash
     $ kubectl apply -f - <<EOF

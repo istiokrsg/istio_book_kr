@@ -93,7 +93,7 @@
             subset: v1
   ```
 
-  위의 설정을 통한 요청 흐름 방식은 다음과 같습니다. 
+  위의 설정으로 요청 흐름 방식은 다음과 같습니다. 
 
 * productpage -&gt; review:v2 -&gt; ratings \(사용자가 jason인 경우\) 
 * productpage -&gt; review:v1 \(이외 모든 사용자인 경우\)  
@@ -104,9 +104,9 @@
 
 ### HTTP 지연 결함 주입하기 \(Injecting an HTTP delay fault\)
 
-서비스 복원성\(service resiliency\)을 위한 Bookinfo 어플리케이션\(Application\) 마이크로 서비스\(Microservice\)를 테스트하기 위해서 사용자가 jason인 경우 reviews:v2와 ratings 마이크로 서비스 사이에 7초 지연 \(delay\)을 주입\(inject\)한 테스트는 Bookinfo 어플리케이션에 의도적으로 주입된 결함을 발견할 수 있습니다.
+서비스 복원성\(service resiliency\)을 위한 Bookinfo 어플리케이션\(Application\) 마이크로 서비스\(Microservice\)를 테스트하기 위해서 사용자가 jason인 경우 reviews:v2와 ratings 마이크로 서비스 사이에 7초의 시간 지연 \(delay\)을 주입\(inject\)한 테스트는 Bookinfo 어플리케이션에 의도적으로 주입된 결함을 발견할 수 있습니다.
 
-reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 제한 \(connection timeout\)을 10초로 어플리케이션내 **하드 코딩 \(hard-coded\)** 되어 있는 것을 주의하세요. 적용한 7초 지연 시간 \(delay\)에도 불구하고 여전히 오류\(errors\)없이 종단 간 흐름\(end-to-end flow\)을 계속 진행되는 것을 기대합니다.
+reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 제한 \(connection timeout\)을 10초로 어플리케이션내 **하드 코딩 \(hard-coded\)** 되어 있다는 것을 주의하세요. 적용한 7초의 지연 시간 \(delay\)에도 불구하고 여전히 오류\(errors\)없이 종단 간 흐름\(end-to-end flow\)을 계속 진행되는 것을 기대합니다.
 
 1. 테스트 사용자인 jason에서 오는 트래픽을 지연시키는 결함 주입 규칙\(fault injection rule\)을 설정합니다.
 
@@ -151,7 +151,7 @@ reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 �
 
 ### 지연 설정 테스트 하기 \(Testing the delay configuration\)
 
-1. 웹 브라우저에서 Bookinfo 웹 애플리케이션 \(Application\)을 엽니다.
+1. 웹 브라우저에서 Bookinfo 웹 어플리케이션 \(Application\)을 엽니다.
 2. /productpage 웹페이지에서 사용자 jason으로 로그인하세요.
 
 #### 로그인 화면
@@ -175,7 +175,7 @@ reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 �
 
 ### 무슨 일이 일어났는지를 이해하기 \(Understanding what happened\)
 
-reviews 서비스에 있는 시간 초과\(timeout\)의 하드 코딩\(hard-coded\) 때문에 서비스 실패를 야기하는 버그\(bug\)를 발견할 수 있습니다.
+reviews 서비스에 있는 시간 초과\(timeout\)의 하드 코딩\(hard-coded\) 때문에 서비스 실패를 발생시키는 버그 \(bug\)를 발견할 수 있습니다.
 
 예상되는 것은 \(1\) reviews와 ratings 서비스 간의 시간 제한\(timeout\)이 10 초로 하드 코딩\(hard coded\)되어 있기 때문에 \(2\) 적용된 7초 지연\(delay\)은 reviews 서비스에는 영향이 없을 것입니다. 
 
@@ -328,7 +328,7 @@ Integer timeout = star_color.equals("black") ? 10000 : 2500
 
 ### 정리
 
-* 어플리케이션 전송 경로 규칙\(routing rule\)제거
+* 어플리케이션 전송 경로 규칙\(routing rule\) 제거
 
   ```bash
     $kubectl delete -f samples/bookinfo/networking/virtual-service-all-v1.yaml

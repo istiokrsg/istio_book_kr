@@ -24,7 +24,7 @@
   * [Service Resiliency 개요](chapter-5/5.-service_resiliency.md)
   * [시간 초과 \(Timeouts\)](chapter-5/timeouts.md)
   * [재시도 \(Retries\)](chapter-5/retries.md)
-  * [전송 경로 차단기 \(회로 차단기, Circuit breakers\)](chapter-5/circuit-breakers.md)
+  * [전송 경로 차단기 \(써킷 브레이커, Circuit breakers\)](chapter-5/circuit-breakers.md)
   * [결함 주입 \(Fault injection\)](chapter-5/fault-injection.md)
   * [어플리케이션 수준의 결함 처리와의 호환성](chapter-5/undefined.md)
   * [Hands-on : 결함주입\(Fault Injection\)](chapter-5/hands-on-fault-injection.md)

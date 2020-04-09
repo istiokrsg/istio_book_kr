@@ -1,10 +1,10 @@
 # Hands-on : 써킷 브레이킹 \(Circuit Breaking\)
 
-이 예제에서는 연결\(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 써킷 브레킹 \(circuit breaking\)을 구성하는 방법을 보여줍니다.
+이 예제에서는 커넥\(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 써킷 브레킹 \(circuit breaking\)을 구성하는 방법을 보여줍니다.
 
 써킷 브레이킹 \(circuit breaking\)은 복원력 있는 마이크로 서비스 어플리케이션 \(resilient microservice application\)을 만드는데 중요한 패턴입니다. 써킷 브레킹을 사용하면 장애 \(failure\), 대기 시간 스파이크 \(latency spike\) 및 기타 네트워크 특성의 바람직하지 않은 영향으로 인한 영향을 제한하는 어플리케이션을 작성할 수 있습니다.
 
-또한 이 예제에서는 써킷 브레이킹 \(circuit breaking\)을 구성한 다음 써킷 브레이커 \(circuit breaker\)를 의도적으로 "개폐\(tripping\)"하여 구성한 것을 테스트 합니다.
+또한 이 예제에서는 써킷 브레이킹 \(circuit breaking\)을 구성한 다음 써킷 브레이커 \(circuit breaker\)를 의도적으로 "개폐 \(tripping\)"하여 구성한 것을 테스트 합니다.
 
 ### 준비 작업
 
@@ -50,9 +50,9 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
     EOF
    ```
 
-   상호 TLS 인증\(mutual TLS authentication\)을 사용하여 Istio를 설치/구성한 경우에는 적용 전에 대상 규칙\(Destination Rule\)에 TLS 트래픽 정책 모드 \(TLS traffic policy mode, trafficPolicy\)에 ISTIO\_MUTUAL을 추가해야 합니다. 그렇지 않으면 요청\(request\)은 아래에서 설명한 대로 503 오류\(errors\)가 발생됩니다.  
+   상호 TLS 인증 \(mutual TLS authentication\)을 사용하여 Istio를 설치/구성한 경우에는 적용 전에 대상 규칙 \(Destination Rule\)에 TLS 트래픽 정책 모드 \(TLS traffic policy mode, trafficPolicy\)에 ISTIO\_MUTUAL을 추가해야 합니다. 그렇지 않으면 요청 \(request\)은 아래에서 설명한 대로 503 오류 \(errors\)가 발생됩니다.  
 
-2. 대상 규칙\(destination rule\)이 올바르게 설정되었는지를 확인하세요.
+2. 대상 규칙 \(destination rule\)이 올바르게 설정되었는지를 확인하세요.
 
    ```bash
     $kubectl get destinationrule httpbin -o yaml
@@ -89,13 +89,13 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
      mode: ISTIO_MUTUAL
 ```
 
-그렇지 않으면, 기본적으로 모드는 사용 안함\(DISABLE\)으로 설정되기 때문에 클라이언트 프록시 사이드카\(client proxy sidecars\)가 TLS 암호화된 요청 대신 일반적인\(암호화 안된\) HTTP 요청을 합니다. 하지만 서버 프록시\(server proxy\)는 암호화된 요청을 기대하고 있기 때문에 요청이 서버 프록시\(server proxy\)에 제대로 전송이 안됩니다.
+그렇지 않으면, 기본적으로 모드는 사용 안함 \(DISABLE\)으로 설정되기 때문에 클라이언트 프록시 사이드카 \(client proxy sidecars\)가 TLS 암호화된 요청 대신 일반적인 \(암호화 안된\) HTTP 요청을 합니다. 하지만 서버 프록시\(server proxy\)는 암호화된 요청을 기대하고 있기 때문에 요청이 서버 프록시\(server proxy\)에 제대로 전송이 안됩니다.
 
-대상 규칙\(Destination Rule\)을 적용할 때마다 트래픽 정책\(trafficPolicy\) TLS 모드가 전역적인\(global\) 서버 구성과 일치하는지를 확인하세요.
+대상 규칙 \(Destination Rule\)을 적용할 때마다 트래픽 정책 \(trafficPolicy\) TLS 모드가 전역적인 \(global\) 서버 구성과 일치하는지를 확인하세요.
 
 ### 써킷 브레이커 \(circuit breaker\)
 
-사이드카 프록시\(sidecar proxy, Envoy proxy\)는 어플리케이션의 서비스에서 활용할 사용 가능한 사전 동의 오류 복구 기능 \(opt-in failure recovery features\)을 제공합니다. 동시 연결의 갯수와 요청 대기 갯수를 제한할 수 있어서 시스템이 과도한 요청으로 인한 장애 상태가 되지 않도록 합니다.
+사이드카 프록시 \(sidecar proxy, Envoy proxy\)는 어플리케이션의 서비스에서 활용할 사용 가능한 사전 동의 오류 복구 기능 \(opt-in failure recovery features\)을 제공합니다. 동시 연결의 갯수와 요청 대기 갯수를 제한할 수 있어서 시스템이 과도한 요청으로 인한 장애 상태가 되지 않도록 합니다.
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_074845.png)
 
@@ -125,19 +125,19 @@ HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 
 ### 이상치 감지 \(Outlier Detection\)
 
-이상치 탐지\(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트\(unhealthy host\)를 방출\(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트\(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성\(availability\)을 높일 수 있습니다.
+이상치 탐지 \(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트\(unhealthy host\)를 방출 \(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트 \(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성 \(availability\)을 높일 수 있습니다.
 
 업스트림 서비스에서 각 개별 호스트의 상태를 추적하는 써킷 브레이커 \(circuit breaker\) 로서 HTTP 및 TCP 서비스 모두에 적용 가능합니다.
 
 * HTTP 서비스의 경우 API 호출에 대해 5xx 오류와 같은 연속적인 오류\(consecutive error\)를 반환하는 호스트는 사전 정의 된 기간\(baseEjectionTime\) 동안 로드 밸런싱 풀에서 방출\(eject\)됩니다. 
-* TCP 서비스의 경우 연속적인 오류 메트릭\(consecutive errors metric\)을 측정 할 때 지정된 호스트에 대한 연결 시간 초과\(connection timeouts\) 또는 연결 실패 \(connection failures\)가 오류\(error\)로 계산됩니다.
+* TCP 서비스의 경우 연속적인 오류 메트릭 \(consecutive errors metric\)을 측정 할 때 지정된 호스트에 대한 연결 시간 초과 \(connection timeouts\) 또는 연결 실패 \(connection failures\)가 오류 \(error\)로 계산됩니다.
 
-아래 설정을 사용하면 업스트림 서비스\(upstream service, 종속 서비스/dependent service\)가 1초 마다 검색\(scan\)되고 5xx 오류 코드\(error code\)로 1번 이상 실패\(fail\)하는 호스트\(host\)가 있으면 로드 밸런스 풀\(load-balanced pool\)에서 3분 동안 방출\(eject\)됩니다.
+아래 설정을 사용하면 업스트림 서비스 \(upstream service, 종속 서비스/dependent service\)가 1초 마다 검색 \(scan\)되고 5xx 오류 코드 \(error code\)로 1번 이상 실패 \(fail\)하는 호스트 \(host\)가 있으면 로드 밸런스 풀\(load-balanced pool\)에서 3분 동안 방출 \(eject\)됩니다.
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_073751.png)
 
-* consecutiveGatewayErrors: 연결 풀에서 호스트를 방출\(eject\) 전의 게이트웨이 오류\(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류\(gateway errors\)로 규정하고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 연결 오류/실패 이벤트\(connection error/failure events\)가 게이트웨이 오류\(connect timeouts\)로 간주되며 이 기능은 기본적으로\(default\) 또는 값 0으로 설정되면 비활성화됩니다.
-* consecutive5xxErrors : 호스트가 연결 풀에서 방출\(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료\(connect timeouts\), 연결 오류/실패\(connection error/failure\) 및 요청 실패 이벤트\(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
+* consecutiveGatewayErrors: 커넥션 풀에서 호스트를 방출 \(eject\) 전의 게이트웨이 오류 \(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류 \(gateway errors\)로 규정하고 불명확한 TCP 커넥션 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 커넥션 오류/실패 이벤트 \(connection error/failure events\)가 게이트웨이 오류 \(connect timeouts\)로 간주되며 이 기능은 기본적으로 \(default\) 또는 값 0으로 설정되면 비활성화됩니다.
+* consecutive5xxErrors : 호스트가 커넥션 풀에서 방출 \(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료 \(connect timeouts\), 커넥션 오류/실패\(connection error/failure\) 및 요청 실패 이벤트\(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
 
 \[참고사항\] consecutiveGatewayErrors/consecutive5xxErrors
 
@@ -147,14 +147,14 @@ consecutivegatewayerrors 및 consecutive5xxerrors는 개별적으로 또는 함�
 
 * baseEjectionTime : 최소 방출 시간 \(maximum ejection duration\)으로 호스트는 최소 방출 지속 시간과 호스트 방출 횟수와 같은 기간 동안 방출 상태를 유지하며 이 기술을 통해 시스템은 비정상 업스트림 서버의 방출 기간을 자동으로 늘릴 수 있습니다. 형식은 "1 h/1 m/1 s/1 ms" 이고 1 ms 이상이여야 하며 기본값은 30초입니다.
 * interval : 방출 분석 \(ejection sweep analysis\) 사이의 시간 간격이고 형식은 "1 h/1 m/1 s/1 ms" 가지며 최소 1 ms 이상으로 기본값은 10입니다.
-* maxEjectionPercent : 로드 밸런싱 풀\(load-balanced pool\)에서 방출할 수 있는 \(eject\) 호스트의 최대 비율로 기본값은 10% 이고 예를 들어 이 파라미터\(parameter\)를 100으로 설정하면 연속적인 오류를 발생시키는 비정상적인 호스트\(unhealthy host\)를 방출\(eject\) 할 수 있고 요청은 다시 정상적인 호스트\(healthy host\) 경로로 다시 전송합니다.
-* minHealthPercent : 연관된 로드 밸런싱 풀 \(load balancing pool\)에 정상 모드\(healthy mode\)에서 최소 상태 백분율 \(min-health percent, minHealthPercent\) 호스트가 있으면 이상치 감지\(Outlier detection\)가 사용 가능합니다.  로드 밸런싱 풀 \(load balancing pool\)의 정상 호스트\(healthy hosts \) 백분율이 임계값\(threshold\) 아래로 떨어지면 이상치 감지가\(Outlier detection\) 비활성화되고 프록시는 풀\(pool\)내 비정상 호스트\(unhealthy host\)를 포함한 모든 호스트 대상으로 부하분산\(load balance\)을 수행합니다. 임계값\(threshold\)은 0%로 설정하여 비활성화 할 수 있고 서비스별 포드 수가 적은 K8S 환경에서는 일반적으로 적용할 수 없으므로 기본값은 0%입니다.
+* maxEjectionPercent : 로드 밸런싱 풀 \(load-balanced pool\)에서 방출할 수 있는 \(eject\) 호스트의 최대 비율로 기본값은 10% 이고 예를 들어 이 파라미터 \(parameter\)를 100으로 설정하면 연속적인 오류를 발생시키는 비정상적인 호스트 \(unhealthy host\)를 방출 \(eject\) 할 수 있고 요청은 다시 정상적인 호스트 \(healthy host\) 경로로 다시 전송합니다.
+* minHealthPercent : 연관된 로드 밸런싱 풀 \(load balancing pool\)에 정상 모드\(healthy mode\)에서 최소 상태 백분율 \(min-health percent, minHealthPercent\) 호스트가 있으면 이상치 감지 \(Outlier detection\)가 사용 가능합니다.  로드 밸런싱 풀 \(load balancing pool\)의 정상 호스트\(healthy hosts \) 백분율이 임계값 \(threshold\) 아래로 떨어지면 이상치 감지 \(Outlier detection\) 가 비활성화되고 프록시는 풀 \(pool\)내 비정상 호스트 \(unhealthy host\)를 포함한 모든 호스트 대상으로 로드 밸런싱 \(load balance\) 을 수행합니다. 임계값 \(threshold\)은 0%로 설정하여 비활성화 할 수 있고 서비스별 포드 수가 적은 Kubernetes 환경에서는 일반적으로 적용할 수 없으므로 기본값은 0%입니다.
 
-이상치 감지\(Outlier Detection\)는 로드 밸런싱 풀 \(load balancing pool\)에 연결된 최소 수의 정상 호스트\(healthy host\)가 있을 때까지 사용 가능하게 됩니다.
+이상치 감지 \(Outlier Detection\)는 로드 밸런싱 풀 \(load balancing pool\)에 연결된 최소 수의 정상 호스트 \(healthy host\)가 있을 때까지 사용 가능하게 됩니다.
 
 ### 클라이언트 추가 \(Adding a client\)
 
-httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트\(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출 \(outgoing HTTP calls\)에 대한 커넥션 \(connections\) 갯수, 동시성 \(concurrency\) 및 시간 지연 \(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙 \(Destination Rule\)에서 설정 한 써킷 브레이커 정책 \(회로 차단기 정책, circuit breaker policies\)을 "개폐 \(trip\)" 합니다.
+httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트 \(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출 \(outgoing HTTP calls\)에 대한 커넥션 \(connections\) 갯수, 동시성 \(concurrency\) 및 시간 지연 \(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙 \(Destination Rule\)에서 설정 한 써킷 브레이커 정책 \(회로 차단기 정책, circuit breaker policies\)을 "개폐 \(trip\)" 합니다.
 
 1. 네트워크 상호 작용이 Istio에 의해 통제되도록 클라이언트에 Istio 사이드카 프록시 \(Istio sidecar proxy\)를 주입 \(inject\)하세요.
 
@@ -250,7 +250,7 @@ x-envoy-upstream-service-time: 36
 
 ### 써킷 브레이커 개폐 \(Tripping the circuit breaker\)
 
-대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로\(circuit\)를 오픈할 때 오류가 \(failures\) 발생하는 것을 볼 수 있습니다.
+대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로 \(circuit\)를 오픈할 때 오류 \(failures\) 가 발생하는 것을 볼 수 있습니다.
 
 1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자 \(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 커넥션\(concurrent connections\) 으로 서비스를 호출 \(call\)하고 20개의 요청을 보냅니다.
 

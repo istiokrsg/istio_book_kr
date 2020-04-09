@@ -1,14 +1,14 @@
 # 재시도 \(Retries\)
 
-재시도\(retry\) 설정은 초기 호출이 실패 할 경우 사이드카 프록시\(Envoy proxy, sidecar proxy\)가 서비스에 연결을 시도하는 최대 횟수를 설정합니다. 재시도는 일시적으로 과부하 된 서비스 또는 네트워크와 같은 일시적인 문제로 인해 호출이 영구적으로 실패하지 않도록 하여 서비스 가용성\(service availability\)과 애플리케이션 성능\(Application Performance\)을 향상시킬 수 있습니다.
+재시도 \(retry\) 설정은 초기 호출이 실패 할 경우 사이드카 프록시 \(Envoy proxy, sidecar proxy\)가 서비스에 연결을 시도하는 최대 횟수를 설정합니다. 재시도는 일시적으로 과부하 된 서비스 또는 네트워크와 같은 일시적인 문제로 인해 호출이 영구적으로 실패하지 않도록 하여 서비스 가용성 \(service availability\)과 애플리케이션 성능 \(Application Performance\)을 향상시킬 수 있습니다.
 
-재시도 시간 간격 \(25ms 이상\)은 가변적이며 Istio에 의해 자동으로 결정되므로 호출된 서비스를 과도한 요청을 방지할 수 있고 기본적으로 Envoy 프록시는 서비스 연결을 실패\(first failure\)하면 서비스를 다시 연결하려고 시도하지 않습니다.
+재시도 시간 간격 \(25ms 이상\)은 가변적이며 Istio에 의해 자동으로 결정되므로 호출된 서비스를 과도한 요청을 방지할 수 있고 기본적으로 Envoy 프록시는 서비스 연결을 실패 \(first failure\)하면 서비스를 다시 연결하려고 시도하지 않습니다.
 
-시간 초과\(timeout\)와 마찬가지로 Istio의 기본 재시도 \(default retry\) 동작은 대기 시간 \(Latency, 서비스에 실패한 서비스를 너무 많은 재시도하면 속도가 느려 질 수 있음\) 또는 가용성 \(Availability\) 측면에서 어플리케이션 요구에 적합하지 않을 수 있습니다.
+시간 초과 \(timeout\)와 마찬가지로 Istio의 기본 재시도 \(default retry\) 동작은 대기 시간 \(Latency, 서비스에 실패한 서비스를 너무 많은 재시도하면 속도가 느려 질 수 있음\) 또는 가용성 \(Availability\) 측면에서 어플리케이션 요구에 적합하지 않을 수 있습니다.
 
 시간 초과 \(timeout\)와 마찬가지로 서비스 코드를 수정없이 가상 서비스\(Virtual Service\)에서 서비스별로 재시도 \(retry\) 설정을 조정할 수 있고 재시도별 시간 초과 \(per-retry timeout\)를 추가하여 각 재시도가 서비스에 성공적으로 연결할 시간을 설정하여 재시도 동작 \(retry behavior\)을 추가적으로 세분화 할 수 있습니다.
 
-가상 서비스 \(Virtual Service\)에서 HTTP 요청의 최대 재시도\(Retry\) 횟수를 설정할 수 있으며 재시도에 특정한 시간 초과\(timeout\)를 제공하여 호출한 서비스가 성공 또는 실패 여부를 예측 가능한 시간 내에 확인할 수 있습니다.
+가상 서비스 \(Virtual Service\)에서 HTTP 요청의 최대 재시도 \(Retry\) 횟수를 설정할 수 있으며 재시도에 특정한 시간 초과 \(timeout\)를 제공하여 호출한 서비스가 성공 또는 실패 여부를 예측 가능한 시간 내에 확인할 수 있습니다.
 
 다음 예제는 초기 호출 실패 \(initial call failure\)하면 매 2초의 시간 초과\(timeout\)가 있는 서비스 하위 집합 대상으로 연결하기 위하여 최대 3번의 재시도를 설정한 것입니다.
 
@@ -35,57 +35,13 @@ spec:
 
 #### 재시도 관련 파라미터 
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left">&#xD30C;&#xB77C;&#xBBF8;</th>
-      <th style="text-align:left">&#xB370;&#xC774;&#xD130;&#xD0C0;</th>
-      <th style="text-align:left">&#xD544;&#xC218;&#xC5EC;</th>
-      <th style="text-align:left">&#xC124;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left">attempts</td>
-      <td style="text-align:left">int32</td>
-      <td style="text-align:left">&#xD544;&#xC218;</td>
-      <td style="text-align:left">
-        <p>&#xD638;&#xCD9C;&#xD55C; &#xC694;&#xCCAD;&#xC5D0; &#xB300;&#xD55C; &#xC7AC;&#xC2DC;&#xB3C4;
-          &#xD69F;&#xC218;&#xC774;&#xACE0; &#xC7AC;&#xC2DC;&#xB3C4; &#xAC04;&#xACA9;&#xC740;</p>
-        <p>&#xC790;&#xB3D9;&#xC73C;&#xB85C; &#xACB0;&#xC815;&#xB418;&#xBA70; (25
-          ms +) &#xC2DC;&#xB3C4;&#xD55C; &#xC2E4;&#xC81C; &#xC7AC;&#xC2DC;&#xB3C4;
-          &#xD69F;&#xC218;&#xB294;</p>
-        <p>HTTP &#xACBD;&#xB85C; (HTTP route)&#xC758; &#xC694;&#xCCAD; &#xC2DC;&#xAC04;
-          &#xCD08;&#xACFC;(timeout)&#xC5D0; &#xB530;&#xB77C;</p>
-        <p>&#xB2E4;&#xB985;&#xB2C8;&#xB2E4;.</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align:left">perTryTimeout</td>
-      <td style="text-align:left">Duration</td>
-      <td style="text-align:left">&#xC120;&#xD0DD;</td>
-      <td style="text-align:left">
-        <p>&#xD638;&#xCD9C;&#xD55C; &#xC694;&#xCCAD;&#xC5D0; &#xB300;&#xD55C; &#xC7AC;
-          &#xC2DC;&#xB3C4;&#xB2F9; &#xC2DC;&#xAC04; &#xCD08;&#xACFC;&#xC774;&#xACE0;</p>
-        <p>&#xD615;&#xC2DD;&#xC73C;&#xB85C;&#xB294; &quot;1 h/1 m/1 s/1 ms&quot;
-          &#xC73C;&#xB85C; 1 ms &#xC774;&#xC0C1;&#xC774;&#xC5EC;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align:left">retryOn</td>
-      <td style="text-align:left">string</td>
-      <td style="text-align:left">&#xC120;&#xD0DD;</td>
-      <td style="text-align:left">
-        <p>&#xC7AC;&#xC2DC;&#xB3C4; &#xC870;&#xAC74;&#xC744; &#xC124;&#xC815;&#xD558;&#xB294;
-          &#xAC83;&#xC73C;&#xB85C; &#xCF54;&#xB9C8; &quot;,&quot; &#xAD6C;&#xBD84;&#xC73C;&#xB85C;
-          &#xBAA9;&#xB85D;&#xC744;</p>
-        <p>&#xC0AC;&#xC6A9;&#xD560; &#xC218; &#xC788;&#xC73C;&#xBA70; &#xD558;&#xB098;
-          &#xC774;&#xC0C1;&#xC758; &#xC815;&#xCC45;&#xC744; &#xC124;&#xC815;&#xD560;
-          &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
-      </td>
-    </tr>
-  </tbody>
-</table>**HTTP 재시도 정책**
+| 파라미 | 데이터타 | 필수여 | 설 |
+| :--- | :--- | :--- | :--- |
+| attempts  | int32 | 필수 | 호출한 요청에 대한 재시도 횟수이고 재시도 간격은 자동으로 결정되며 \(25 ms +\) 시도한 실제 재시도 횟수는 HTTP 경로 \(HTTP route\)의 요청 시간 초과\(timeout\)에 따라 다릅니다. |
+| perTryTimeout  | Duration  | 선택 | 호출한 요청에 대한 재 시도당 시간 초과이고 형식으로는 "1 h/1 m/1 s/1 ms" 으로 1 ms 이상이여야 합니다. |
+| retryOn | string  | 선택 | 재시도 조건을 설정하는 것으로 코마 "," 구분으로 목록을 사용할 수 있으며 하나 이상의 정책을 설정할 수 있습니다. |
+
+**HTTP 재시도 정책**
 
 <table>
   <thead>

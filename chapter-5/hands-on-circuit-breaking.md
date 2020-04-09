@@ -1,6 +1,6 @@
 # Hands-on : 써킷 브레이킹 \(Circuit Breaking\)
 
-이 예제에서는 커넥\(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 써킷 브레킹 \(circuit breaking\)을 구성하는 방법을 보여줍니다.
+이 예제에서는 커넥션 \(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 써킷 브레킹 \(circuit breaking\)을 구성하는 방법을 보여줍니다.
 
 써킷 브레이킹 \(circuit breaking\)은 복원력 있는 마이크로 서비스 어플리케이션 \(resilient microservice application\)을 만드는데 중요한 패턴입니다. 써킷 브레킹을 사용하면 장애 \(failure\), 대기 시간 스파이크 \(latency spike\) 및 기타 네트워크 특성의 바람직하지 않은 영향으로 인한 영향을 제한하는 어플리케이션을 작성할 수 있습니다.
 
@@ -125,11 +125,11 @@ HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 
 ### 이상치 감지 \(Outlier Detection\)
 
-이상치 탐지 \(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트\(unhealthy host\)를 방출 \(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트 \(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성 \(availability\)을 높일 수 있습니다.
+이상치 탐지 \(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트 \(unhealthy host\)를 방출 \(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트 \(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성 \(availability\)을 높일 수 있습니다.
 
 업스트림 서비스에서 각 개별 호스트의 상태를 추적하는 써킷 브레이커 \(circuit breaker\) 로서 HTTP 및 TCP 서비스 모두에 적용 가능합니다.
 
-* HTTP 서비스의 경우 API 호출에 대해 5xx 오류와 같은 연속적인 오류\(consecutive error\)를 반환하는 호스트는 사전 정의 된 기간\(baseEjectionTime\) 동안 로드 밸런싱 풀에서 방출\(eject\)됩니다. 
+* HTTP 서비스의 경우 API 호출에 대해 5xx 오류와 같은 연속적인 오류 \(consecutive error\)를 반환하는 호스트는 사전 정의 된 기간 \(baseEjectionTime\) 동안 로드 밸런싱 풀에서 방출 \(eject\)됩니다. 
 * TCP 서비스의 경우 연속적인 오류 메트릭 \(consecutive errors metric\)을 측정 할 때 지정된 호스트에 대한 연결 시간 초과 \(connection timeouts\) 또는 연결 실패 \(connection failures\)가 오류 \(error\)로 계산됩니다.
 
 아래 설정을 사용하면 업스트림 서비스 \(upstream service, 종속 서비스/dependent service\)가 1초 마다 검색 \(scan\)되고 5xx 오류 코드 \(error code\)로 1번 이상 실패 \(fail\)하는 호스트 \(host\)가 있으면 로드 밸런스 풀\(load-balanced pool\)에서 3분 동안 방출 \(eject\)됩니다.
@@ -137,7 +137,7 @@ HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_073751.png)
 
 * consecutiveGatewayErrors: 커넥션 풀에서 호스트를 방출 \(eject\) 전의 게이트웨이 오류 \(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류 \(gateway errors\)로 규정하고 불명확한 TCP 커넥션 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 커넥션 오류/실패 이벤트 \(connection error/failure events\)가 게이트웨이 오류 \(connect timeouts\)로 간주되며 이 기능은 기본적으로 \(default\) 또는 값 0으로 설정되면 비활성화됩니다.
-* consecutive5xxErrors : 호스트가 커넥션 풀에서 방출 \(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료 \(connect timeouts\), 커넥션 오류/실패\(connection error/failure\) 및 요청 실패 이벤트\(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
+* consecutive5xxErrors : 호스트가 커넥션 풀에서 방출 \(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료 \(connect timeouts\), 커넥션 오류/실패 \(connection error/failure\) 및 요청 실패 이벤트 \(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
 
 \[참고사항\] consecutiveGatewayErrors/consecutive5xxErrors
 
@@ -250,9 +250,9 @@ x-envoy-upstream-service-time: 36
 
 ### 써킷 브레이커 개폐 \(Tripping the circuit breaker\)
 
-대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로 \(circuit\)를 오픈할 때 오류 \(failures\) 가 발생하는 것을 볼 수 있습니다.
+대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청 \(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로 \(circuit\)를 오픈할 때 오류 \(failures\) 가 발생하는 것을 볼 수 있습니다.
 
-1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자 \(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 커넥션\(concurrent connections\) 으로 서비스를 호출 \(call\)하고 20개의 요청을 보냅니다.
+1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자 \(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 커넥션 \(concurrent connections\) 으로 서비스를 호출 \(call\)하고 20개의 요청을 보냅니다.
 
    ```bash
     $kubectl exec -it $FORTIO_POD  -c fortio /usr/bin/fortio -- load -c 2 -qps 0 -n 20 -loglevel Warning http://httpbin:8000/get

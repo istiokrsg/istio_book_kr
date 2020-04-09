@@ -123,17 +123,17 @@
     EOF
    ```
 
-3. 브라우저에서 Bookinfo에 대한 URL\([http://$GATEWAY\_URL/productpage\)를](http://$GATEWAY_URL/productpage%29를) 접속하여 서비스를 확인합니다.
+3. 브라우저에서 Bookinfo에 대한 URL \([http://$GATEWAY\_URL/productpage\)를](http://$GATEWAY_URL/productpage%29를) 접속하여 서비스를 확인합니다.
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts7.png)
 
    Bookinfo 어플리케이션이 정상적으로 작동하는 것을 볼 수 있지만 \(ratings서비스의 별들이 표시됨\) 페이지를 리플레쉬\(refresh\)할 때 마다 2초의 시간 지연 \(delay\) 되고 이유는 아래와 같습니다.
 
-   위의 \(1\)번 설정에서는 모든 요청 \(request\)을 reviews 서비스의 v2으로 전송\(routing\)하고 위의 \(2\)번 설정에서는 ratings 서비스 호출할 때 2초 시간 지연 결함을 주입\(delay Fault Injection\)했기 때문입니다.
+   위의 \(1\)번 설정에서는 모든 요청 \(request\)을 reviews 서비스의 v2으로 전송 \(routing\)하고 위의 \(2\)번 설정에서는 ratings 서비스 호출할 때 2초 시간 지연 결함을 주입 \(delay Fault Injection\)했기 때문입니다.
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200327_204754.png)
 
-4. 이제는 reviews 서비스 호출 대상으로  0.5초의 요청 시간 제한\(request timeout\)을 추가합니다.
+4. 이제는 reviews 서비스 호출 대상으로  0.5초의 요청 시간 제한 \(request timeout\)을 추가합니다.
 
    ```bash
     $ kubectl apply -f - <<EOF
@@ -153,13 +153,13 @@
     EOF
    ```
 
-5. Bookinfo 웹페이지를 리플레쉬\(refresh\) 하면 2초가 아닌 약 1초 후에 반환되며 reviews는 사용할 수 없음을 알 수 있습니다.
+5. Bookinfo 웹페이지를 리플레쉬 \(refresh\) 하면 2초가 아닌 약 1초 후에 반환되며 reviews는 사용할 수 없음을 알 수 있습니다.
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts6.png)
 
    ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts8.png)
 
-   시간 초과\(timeout\)가 0.5초로 구성되어 있어도 응답이 1초가 걸리는 이유는 productpage 서비스에 하드 코딩 된 재시도 \(hard-coded retry\)가 있기 때문에 리턴하기 전에 시간 초과된 reviews 서비스 \(timing out\)를 두 번 호출\(call\)하기 때문입니다.
+   시간 초과 \(timeout\)가 0.5초로 구성되어 있어도 응답이 1초가 걸리는 이유는 productpage 서비스에 하드 코딩 된 재시도 \(hard-coded retry\)가 있기 때문에 리턴하기 전에 시간 초과된 reviews 서비스 \(timing out\)를 두 번 호출 \(call\)하기 때문입니다.
 
 #### \[참고사항\] istio/samples/bookinfo/src/productpage/productpage.py 에서 reviews 서비스 호출 부분 
 
@@ -181,11 +181,11 @@ reviews 데이터를 보여주는 대신 Bookinfo product 페이지 \(페이지�
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200328_072046.png)
 
-결함 주입 작업\(fault injection task\)을 검토하면 productpage 마이크로 서비스에는 또한 reviews 마이크로 서비스 호출을 위한 자체 어플리케이션 레벨 시간 초과 \(3초\)가 있음을 알 수 있습니다. 이 작업에서는 Istio 전송 라우트 룰\(Istio route rule\)을 사용하여 시간 초과 \(timeout\)를 0.5초로 설정했습니다. 대신에 시간 제한을 3초 \(예 : 4초\) 보다 큰 값으로 설정 한 경우 시간 제한\(timeout\)이 좀 더 제한적이기 때문에 시간 제한\(timeout\)에 영향을 미치지 않습니다.
+결함 주입 작업 \(fault injection task\)을 검토하면 productpage 마이크로 서비스에는 또한 reviews 마이크로 서비스 호출을 위한 자체 어플리케이션 레벨 시간 초과 \(3초\)가 있음을 알 수 있습니다. 이 작업에서는 Istio 라우트 룰 \(Istio route rule\)을 사용하여 시간 초과 \(timeout\)를 0.5초로 설정했습니다. 대신에 시간 제한을 3초 \(예 : 4초\) 보다 큰 값으로 설정 한 경우 시간 제한 \(timeout\)이 좀 더 제한적이기 때문에 시간 제한\(timeout\)에 영향을 미치지 않습니다.
 
 #### \[참고사항\] istio/samples/bookinfo/src/productpage/productpage.py 에서 reviews 서비스 호출 부분 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200327_202543%20%281%29.png)
 
-Istio에서 시간 초과 \(timeout\)에 대해 한 가지 더 주의사항은 작업 같이 라우트 룰 \(route rule\)에서 시간 초과\(timeout\)를 재정의하는 것 외에도 어플리케이션에서 아웃바운드 요청 \(outbound request\)의 헤더에서 "x-envoy-upstream-rq-timeout-ms"는 시간 초과\(timeout\)는 초\(second\)가 아닌 밀리 초\(milliseconds\)로 설정합니다.
+Istio에서 시간 초과 \(timeout\)에 대해 한 가지 더 주의사항은 작업 같이 라우트 룰 \(route rule\)에서 시간 초과\(timeout\)를 재정의하는 것 외에도 어플리케이션에서 아웃바운드 요청 \(outbound request\)의 헤더에서 "x-envoy-upstream-rq-timeout-ms"는 시간 초과 \(timeout\)는 초 \(second\)가 아닌 밀리 초 \(milliseconds\)로 설정합니다.
 
 ### 정리
 

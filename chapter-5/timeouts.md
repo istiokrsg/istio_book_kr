@@ -9,7 +9,7 @@
 * 어플리케이션 소스 코드 변경없이 구성 가능 \(Zero Code Change\)
 * 정책 기반의 구성 \(Policy Driven\)
 
-다음 예제는 ratings 서비스 대상으로 v1 이라는 하위 집합\(subset\) 대상으로 호출\(Call\)의 10초 시간 초과\(timeout\)를 설정하는 가상 서비스입니다.
+다음 예제는 ratings 서비스 대상으로 v1 이라는 하위 집합\(subset\) 대상으로 호출 \(Call\)의 10초 시간 초과 \(timeout\)를 설정하는 가상 서비스입니다.
 
 ![\[&#xADF8;&#xB9BC;\] &#xC2DC;&#xAC04;&#xCD08;&#xACFC; \(Timeout\)](../.gitbook/assets/requesttimeouts11.png)
 

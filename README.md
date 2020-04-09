@@ -54,11 +54,11 @@ description: 이스티오 전문서적 한글판
 - Browser : 브라우저
 - bug : 버그
 - Call : 호출
-- Circuit : 전송 경로 : 서킷
-- Circuit breaker : 전송 경로 차단기 : 회로차단기 : 서킷브레이커
+- Circuit : 전송 경로 : 써킷
+- Circuit breaker : 써킷브레이커
 - configuration : 설정
 - Defult : 기본값
-- Delay  : 지연
+- Delay  : 시간 지연
 - Destination Rule : 대상규칙
 - eject : 방출
 - End to End : 종단간
@@ -77,8 +77,8 @@ description: 이스티오 전문서적 한글판
 - Lastency  : 대기
 - Layer : 계층
 - limit : 제한 : 한계
-- load balancing : 부하분산 : 로드밸런싱
-- load balancing pool : 로드 밸런싱 풀 : 부하분산풀
+- load balancing : 로드 밸런싱
+- load balancing pool : 로드 밸런싱 풀 
 - Logic : 로직
 - Management : 관리
 - mesh : 메시
@@ -86,8 +86,8 @@ description: 이스티오 전문서적 한글판
 - opt-in : 사전동의 : 명시적인
 - packet : 패킷
 - Page : 페이지
-- parameter : 파라미터 : 매개변수
-- pod : 파드 : 포드
+- parameter : 파라미터
+- pod : 파드 
 - pool  : 풀
 - Proxy : 프록시
 - recovery  : 복구
@@ -97,8 +97,8 @@ description: 이스티오 전문서적 한글판
 - resilient : 복원력이 있는
 - retry : 재시도
 - rollout : 출시
-- route : 전송 경로 : 라우트
-- Routing Rule : 라우팅 규칙
+- route : 라우트
+- Routing Rule : 라우팅 룰
 - rule  : 규칙
 - Service : 서비스
 - sidecar : 사이드카

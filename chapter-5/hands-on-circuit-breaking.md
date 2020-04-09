@@ -1,10 +1,10 @@
-# Hands-on : 전송 경로 차단 \(회로 차단, Circuit Breaking\)
+# Hands-on : 써킷 브레이킹 \(Circuit Breaking\)
 
-이 예제에서는 연결\(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 전송 경로 차단\(회로 차단, circuit breaking\)을 구성하는 방법을 보여줍니다.
+이 예제에서는 연결\(connections\), 요청 \(request\) 및 이상 값 탐지 \(outlier detection\)에 대한 써킷 브레킹 \(circuit breaking\)을 구성하는 방법을 보여줍니다.
 
-전송 경로 차단\(회로 차단, circuit breaking\)은 복원력 있는 마이크로 서비스 어플리케이션 \(resilient microservice application\)을 만드는데 중요한 패턴입니다. 전송 경로 차단을 사용하면 장애\(failure\), 대기 시간 스파이크 \(latency spike\) 및 기타 네트워크 특성의 바람직하지 않은 영향으로 인한 영향을 제한하는 어플리케이션을 작성할 수 있습니다.
+써킷 브레이킹 \(circuit breaking\)은 복원력 있는 마이크로 서비스 어플리케이션 \(resilient microservice application\)을 만드는데 중요한 패턴입니다. 써킷 브레킹을 사용하면 장애 \(failure\), 대기 시간 스파이크 \(latency spike\) 및 기타 네트워크 특성의 바람직하지 않은 영향으로 인한 영향을 제한하는 어플리케이션을 작성할 수 있습니다.
 
-또한 이 예제에서는 전송 경로 차단 규칙 \(회로 차단 규칙, circuit breaking rules\)을 구성한 다음 전송 경로 차단기\(회로 차단기, circuit breaker\)를 의도적으로 "개폐\(tripping\)"하여 구성한 것을 테스트 합니다.
+또한 이 예제에서는 써킷 브레이킹 \(circuit breaking\)을 구성한 다음 써킷 브레이커 \(circuit breaker\)를 의도적으로 "개폐\(tripping\)"하여 구성한 것을 테스트 합니다.
 
 ### 준비 작업
 
@@ -15,7 +15,7 @@
   $kubectl apply -f samples/httpbin/httpbin.yaml
   ```
 
-  그렇지 않으면 httpbin 어플리케이션을 배포\(deploy\)하기 전에 수동으로 사이드카\(sidecar\)를 주입\(inject\) 해야 합니다.
+  그렇지 않으면 httpbin 어플리케이션을 배포 \(deploy\)하기 전에 수동으로 사이드카 \(sidecar\)를 주입 \(inject\) 해야 합니다.
 
   ```bash
   $kubectl apply -f <(istioctl kube-inject -f samples/httpbin/httpbin.yaml)
@@ -23,9 +23,9 @@
 
 httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 합니다.
 
-### 전송 경로 차단을 구성하기 \(회로 차단을 구성하기, Configuring the circuit breaker\)
+### 써킷 브레이커을 구성하기 \(Configuring the circuit breaker\)
 
-1. httpbin 서비스를 호출 할 때 전송 경로 차단 \(회로 차단, circuit breaking\)설정을 적용 할 대상 규칙\(destination rule\)을 설정하세요.
+1. httpbin 서비스를 호출 할 때 써킷 브레이킹 \(circuit breaking\) 설정을 적용 할 대상 규칙\(destination rule\)을 설정하세요.
 
    ```bash
     $kubectl apply -f - <<EOF
@@ -79,9 +79,9 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
 
 #### **대상 규칙 \(destination rule\) 적용 후 503 오류가 발생하는 경우**
 
-대상 규칙\(Destination Rule\)을 적용한 후 서비스 요청\(service request\)으로 HTTP 503 오류가 바로 발생하기 시작하면 대상 규칙\(Destination Rule\)을 제거하거나 되돌릴 때까지 오류\(errors\)가 계속된다면 대상 규칙\(Destination Rule\)이 서비스에 대해 TLS 충돌을 발생시킬 수 있습니다.
+대상 규칙 \(Destination Rule\)을 적용한 후 서비스 요청 \(service request\)으로 HTTP 503 오류가 바로 발생하기 시작하면 대상 규칙 \(Destination Rule\)을 제거하거나 되돌릴 때까지 오류 \(errors\)가 계속된다면 대상 규칙 \(Destination Rule\)이 서비스에 대해 TLS 충돌을 발생시킬 수 있습니다.
 
-예를 들어 클러스터에서 상호 TLS\(mutual TLS\)를 전역적\(globally\)으로 구성하는 경우 대상규칙\(Destination Rule\)에는 다음 트래픽 정책\(trafficPolicy\)가 포함해야 합니다.
+예를 들어 클러스터에서 상호 TLS \(mutual TLS\)를 전역적 \(globally\)으로 구성하는 경우 대상규칙 \(Destination Rule\)에는 다음 트래픽 정책 \(trafficPolicy\)가 포함해야 합니다.
 
 ```text
  trafficPolicy:
@@ -93,50 +93,27 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
 
 대상 규칙\(Destination Rule\)을 적용할 때마다 트래픽 정책\(trafficPolicy\) TLS 모드가 전역적인\(global\) 서버 구성과 일치하는지를 확인하세요.
 
-### 전송 경로 차단기 \(회로 차단기, circuit breaker\)
+### 써킷 브레이커 \(circuit breaker\)
 
 사이드카 프록시\(sidecar proxy, Envoy proxy\)는 어플리케이션의 서비스에서 활용할 사용 가능한 사전 동의 오류 복구 기능 \(opt-in failure recovery features\)을 제공합니다. 동시 연결의 갯수와 요청 대기 갯수를 제한할 수 있어서 시스템이 과도한 요청으로 인한 장애 상태가 되지 않도록 합니다.
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_074845.png)
 
-전송 경로 차단기\(회로 차단기, circuit breaker\)는 대상 규칙\(Destination Rule\)의 트래픽 정책\(trafficPolicy\)에서 연결풀\(connection pool\)에서 아래와 같이 설정할 수 있습니다.
+써킷 브레이커 \(circuit breaker\)는 대상 규칙\(Destination Rule\)의 트래픽 정책\(trafficPolicy\)에서 커넥션 풀\(connection pool\)에서 아래와 같이 설정할 수 있습니다.
 
-#### TCP 연결풀 설정
+#### TCP 커넥션 풀 설정
 
-HTTP 및 TCP 업스트림 연결\(upstream connection\)에 대한 공통적인 설정
+HTTP 및 TCP 업스트림 커넥션\(upstream connection\)에 대한 공통적인 설정
 
-<table>
-  <thead>
-    <tr>
-      <th style="text-align:left">&#xD30C;&#xB77C;&#xBBF8;&#xD130;</th>
-      <th style="text-align:left">&#xC124;</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="text-align:left">maxConnections</td>
-      <td style="text-align:left">
-        <p>&#xB300;&#xC0C1; &#xD638;&#xC2A4;&#xD2B8;(destination host)&#xC5D0; &#xB300;&#xD55C;
-          &#xCD5C;&#xB300; HTTP1 / TCP &#xC5F0;&#xACB0; &#xAC2F;&#xC218;&#xC774;&#xACE0;</p>
-        <p>&#xAE30;&#xBCF8;&#xAC12;(default)&#xC740; 2 ^ 32-1 &#xAC1C; &#xC785;&#xB2C8;&#xB2E4;.</p>
-      </td>
-    </tr>
-    <tr>
-      <td style="text-align:left">connectTimeout</td>
-      <td style="text-align:left">TCP &#xC5F0;&#xACB0; &#xC2DC;&#xAC04; &#xCD08;&#xACFC; (connection timeout)</td>
-    </tr>
-    <tr>
-      <td style="text-align:left">tcpKeepalive</td>
-      <td style="text-align:left">
-        <p>&#xD574;&#xB2F9; &#xC18D;&#xC131;&#xC774; &#xC124;&#xC815;&#xB41C; &#xACBD;&#xC6B0;
-          TCP Keepalives&#xB97C; &#xC0AC;&#xC6A9;&#xD558;&#xAE30; &#xC704;&#xD574;&#xC11C;&#xB294;</p>
-        <p>&#xC18C;&#xCF13;(socket)&#xC5D0;&#xC11C; SO_KEEPALIVE&#xB97C; &#xC124;&#xC815;&#xD558;&#xC138;&#xC694;.</p>
-      </td>
-    </tr>
-  </tbody>
-</table>#### HTTP 연결풀 설정
+| 파라미터 | 설 |
+| :--- | :--- |
+| maxConnections | 대상 호스트\(destination host\)에 대한 최대 HTTP1 / TCP 연결 갯수이고 기본값\(default\)은 2 ^ 32-1 개 입니다. |
+| connectTimeout | TCP 연결 시간 초과 \(connection timeout\) |
+| tcpKeepalive | 해당 속성이 설정된 경우 TCP Keepalives를 사용하기 위해서는 소켓\(socket\)에서 SO\_KEEPALIVE를 설정하세요.   |
 
-HTTP1.1 / HTTP2 / GRPC 연결에 적용 가능한 설정
+#### HTTP 커넥션 풀 설정
+
+HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 
 | 파라미 | 설 |
 | :--- | :--- |
@@ -148,18 +125,18 @@ HTTP1.1 / HTTP2 / GRPC 연결에 적용 가능한 설정
 
 ### 이상치 감지 \(Outlier Detection\)
 
-이상치 탐지\(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 부하분산풀\(load-balanced pool\)에서 비정상적인 호스트\(unhealthy host\)를 방출\(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트\(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성\(availability\)을 높일 수 있습니다.
+이상치 탐지\(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트\(unhealthy host\)를 방출\(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트\(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성\(availability\)을 높일 수 있습니다.
 
-업스트림 서비스에서 각 개별 호스트의 상태를 추적하는 회로 차단기로서 HTTP 및 TCP 서비스 모두에 적용 가능합니다.
+업스트림 서비스에서 각 개별 호스트의 상태를 추적하는 써킷 브레이커 \(circuit breaker\) 로서 HTTP 및 TCP 서비스 모두에 적용 가능합니다.
 
-* HTTP 서비스의 경우 API 호출에 대해 5xx 오류와 같은 연속적인 오류\(consecutive error\)를 반환하는 호스트는 사전 정의 된 기간\(baseEjectionTime\) 동안 부하분산풀에서 방출\(eject\)됩니다. 
-* TCP 서비스의 경우 연속적인 오류 메트릭\(consecutive errors metric\)을 측정 할 때 지정된 호스트에 대한 연결 시간 초과\(connection timeouts\) 또는 연결 실패\(connection failures\)가 오류\(error\)로 계산됩니다.
+* HTTP 서비스의 경우 API 호출에 대해 5xx 오류와 같은 연속적인 오류\(consecutive error\)를 반환하는 호스트는 사전 정의 된 기간\(baseEjectionTime\) 동안 로드 밸런싱 풀에서 방출\(eject\)됩니다. 
+* TCP 서비스의 경우 연속적인 오류 메트릭\(consecutive errors metric\)을 측정 할 때 지정된 호스트에 대한 연결 시간 초과\(connection timeouts\) 또는 연결 실패 \(connection failures\)가 오류\(error\)로 계산됩니다.
 
 아래 설정을 사용하면 업스트림 서비스\(upstream service, 종속 서비스/dependent service\)가 1초 마다 검색\(scan\)되고 5xx 오류 코드\(error code\)로 1번 이상 실패\(fail\)하는 호스트\(host\)가 있으면 로드 밸런스 풀\(load-balanced pool\)에서 3분 동안 방출\(eject\)됩니다.
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_073751.png)
 
-* consecutiveGatewayErrors: 연결 풀에서 호스트를 방출\(eject\) 전의 게이트웨이 오류\(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류\(gateway errors\)로 규정하고 불명확한 TCP 연결\(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 연결 오류/실패 이벤트\(connection error/failure events\)가 게이트웨이 오류\(connect timeouts\)로 간주되며 이 기능은 기본적으로\(default\) 또는 값 0으로 설정되면 비활성화됩니다.
+* consecutiveGatewayErrors: 연결 풀에서 호스트를 방출\(eject\) 전의 게이트웨이 오류\(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류\(gateway errors\)로 규정하고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 연결 오류/실패 이벤트\(connection error/failure events\)가 게이트웨이 오류\(connect timeouts\)로 간주되며 이 기능은 기본적으로\(default\) 또는 값 0으로 설정되면 비활성화됩니다.
 * consecutive5xxErrors : 호스트가 연결 풀에서 방출\(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료\(connect timeouts\), 연결 오류/실패\(connection error/failure\) 및 요청 실패 이벤트\(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
 
 \[참고사항\] consecutiveGatewayErrors/consecutive5xxErrors
@@ -170,20 +147,18 @@ consecutivegatewayerrors 및 consecutive5xxerrors는 개별적으로 또는 함�
 
 * baseEjectionTime : 최소 방출 시간 \(maximum ejection duration\)으로 호스트는 최소 방출 지속 시간과 호스트 방출 횟수와 같은 기간 동안 방출 상태를 유지하며 이 기술을 통해 시스템은 비정상 업스트림 서버의 방출 기간을 자동으로 늘릴 수 있습니다. 형식은 "1 h/1 m/1 s/1 ms" 이고 1 ms 이상이여야 하며 기본값은 30초입니다.
 * interval : 방출 분석 \(ejection sweep analysis\) 사이의 시간 간격이고 형식은 "1 h/1 m/1 s/1 ms" 가지며 최소 1 ms 이상으로 기본값은 10입니다.
-* maxEjectionPercent : 부하분산풀\(load-balanced pool\)에서 방출할 수 있는 \(eject\) 호스트의 최대 비율로 기본값은 10% 이고 예를 들어 이 매개변수\(parameter\)를 100으로 설정하면 연속적인 오류를 발생시키는 비정상적인 호스트\(unhealthy host\)를 방출\(eject\) 할 수 있고 요청은 다시 정상적인 호스트\(healthy host\) 경로로 다시 전송합니다.
-* minHealthPercent : 연관된 부하분산풀\(load balancing pool\)에 정상 모드\(healthy mode\)에서 최소 상태 백분율 \(min-health percent, minHealthPercent\) 호스트가 있으면 이상치 감지\(Outlier detection\)가 사용 가능합니다. 부하분산풀\(load balancing pool\)의 정상 호스트\(healthy hosts \) 백분율이 임계값\(threshold\) 아래로 떨어지면 이상치 감지가\(Outlier detection\) 비활성화되고 프록시는 풀\(pool\)내 비정상 호스트\(unhealthy host\)를 포함한 모든 호스트 대상으로 부하분산\(load balance\)을 수행합니다. 임계값\(threshold\)은 0%로 설정하여 비활성화 할 수 있고 서비스별 포드 수가 적은 K8S 환경에서는 일반적으로 적용할 수 없으므로 기본값은 0%입니다.
+* maxEjectionPercent : 로드 밸런싱 풀\(load-balanced pool\)에서 방출할 수 있는 \(eject\) 호스트의 최대 비율로 기본값은 10% 이고 예를 들어 이 파라미터\(parameter\)를 100으로 설정하면 연속적인 오류를 발생시키는 비정상적인 호스트\(unhealthy host\)를 방출\(eject\) 할 수 있고 요청은 다시 정상적인 호스트\(healthy host\) 경로로 다시 전송합니다.
+* minHealthPercent : 연관된 로드 밸런싱 풀 \(load balancing pool\)에 정상 모드\(healthy mode\)에서 최소 상태 백분율 \(min-health percent, minHealthPercent\) 호스트가 있으면 이상치 감지\(Outlier detection\)가 사용 가능합니다.  로드 밸런싱 풀 \(load balancing pool\)의 정상 호스트\(healthy hosts \) 백분율이 임계값\(threshold\) 아래로 떨어지면 이상치 감지가\(Outlier detection\) 비활성화되고 프록시는 풀\(pool\)내 비정상 호스트\(unhealthy host\)를 포함한 모든 호스트 대상으로 부하분산\(load balance\)을 수행합니다. 임계값\(threshold\)은 0%로 설정하여 비활성화 할 수 있고 서비스별 포드 수가 적은 K8S 환경에서는 일반적으로 적용할 수 없으므로 기본값은 0%입니다.
 
-이상치 감지\(Outlier Detection\)는 부하분산풀\(load balancing pool\)에 연결된 최소 수의 정상 호스트\(healthy host\)가 있을 때까지 사용 가능하게 됩니다.
+이상치 감지\(Outlier Detection\)는 로드 밸런싱 풀 \(load balancing pool\)에 연결된 최소 수의 정상 호스트\(healthy host\)가 있을 때까지 사용 가능하게 됩니다.
 
 ### 클라이언트 추가 \(Adding a client\)
 
-httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다.. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트\(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출\(outgoing HTTP calls\)에 대한 연결\(connections\) 갯수, 동시성\(concurrency\) 및 시간 지연\(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙\(Destination Rule\)에서 설정 한 전송 경로 차단기 \(회로 차단기 정책, circuit breaker policies\)을 "개폐\(trip\)" 합니다.
+httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트\(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출 \(outgoing HTTP calls\)에 대한 커넥션 \(connections\) 갯수, 동시성 \(concurrency\) 및 시간 지연 \(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙 \(Destination Rule\)에서 설정 한 써킷 브레이커 정책 \(회로 차단기 정책, circuit breaker policies\)을 "개폐 \(trip\)" 합니다.
 
-Inject the client with the Istio sidecar proxy so network interactions are governed by Istio.
+1. 네트워크 상호 작용이 Istio에 의해 통제되도록 클라이언트에 Istio 사이드카 프록시 \(Istio sidecar proxy\)를 주입 \(inject\)하세요.
 
-1. 네트워크 상호 작용이 Istio에 의해 통제되도록 클라이언트에 Istio 사이드카 프록시\(Istio sidecar proxy\)를 주입\(inject\)하세요.
-
-   자동 사이드카 주입\(automatic sidecar injection\)을 사용하도록 설정 한 경우에는 아래와 같이 fortio 서비스를 배포하세요.
+   자동 사이드카 주입 \(automatic sidecar injection\)을 사용하도록 설정 하는 경우에는 아래와 같이 fortio 서비스를 배포하세요.
 
    ```bash
     $kubectl apply -f samples/httpbin/sample-client/fortio-deploy.yaml
@@ -233,13 +208,13 @@ Inject the client with the Istio sidecar proxy so network interactions are gover
               name: grpc-ping
    ```
 
-   그렇지 않으면 fortio 어플리케이션을 배포하기 전에 사이드카\(sidecar\)를 수동으로 주입\(inject\)해야 합니다.
+   그렇지 않으면 fortio 어플리케이션을 배포하기 전에 사이드카 \(sidecar\)를 수동으로 주입 \(inject\)해야 합니다.
 
    ```bash
     $kubectl apply -f <(istioctl kube-inject -f samples/httpbin/sample-client/fortio-deploy.yaml)
    ```
 
-2. 아래는 클라이언트 파드\(client pod\)에 로그인하고 fortio 툴\(tool\)을 사용하여 httpbin을 호출하는 것으로 우선 fortio 파드\(pod\) ID를 환경 변수에 저장하고 해당 환경변수를 이용해 curl 명령어\(command\)를 fortio 파드\(pod\)에 전달해 한번만 실행합니다.       
+2. 아래는 클라이언트 파드\(client pod\)에 로그인하고 fortio 툴 \(tool\)을 사용하여 httpbin을 호출하는 것으로 우선 fortio 파드 \(pod\) ID를 환경 변수에 저장하고 해당 환경변수를 이용해 curl 명령어\(command\)를 fortio 파드\(pod\)에 전달해 한번만 실행합니다.       
 
 ```text
 
@@ -271,13 +246,13 @@ x-envoy-upstream-service-time: 36
  
 ```
 
-모든 것이 제대로 설정이 되면 위의 같이 요청\(request\)가 성공하는 것을 볼 수 있습니다.
+모든 것이 제대로 설정이 되면 위의 같이 요청 \(request\)가 성공하는 것을 볼 수 있습니다.
 
-### 전송경로 차단기 개폐 \(회로 차단기 개폐, Tripping the circuit breaker\)
+### 써킷 브레이커 개폐 \(Tripping the circuit breaker\)
 
-대상 규칙\(Destination Rule\) 설정\(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설했습니다.이 규칙은 둘 이상의 연결과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 요청 및 연결\(connection and request\)에 대해 전송 경로\(회로, circuit\)를 오픈할 때 오류가 \(failures\) 발생하는 것을 볼 수 있습니다.
+대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청\(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로\(circuit\)를 오픈할 때 오류가 \(failures\) 발생하는 것을 볼 수 있습니다.
 
-1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자\(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 연결\(concurrent connections\)로 서비스를 호출\(call\)하고 20개의 요청을 보냅니다.
+1. 환경변수에 저장된 fortio의 파드 ID를 이용해 해당 파드 내에서 fortio 실행하면서 인자 \(argument\)로 "-c 2", "-n 20" 지정하여 두 개의 동시 커넥션\(concurrent connections\) 으로 서비스를 호출 \(call\)하고 20개의 요청을 보냅니다.
 
    ```bash
     $kubectl exec -it $FORTIO_POD  -c fortio /usr/bin/fortio -- load -c 2 -qps 0 -n 20 -loglevel Warning http://httpbin:8000/get
@@ -395,7 +370,7 @@ x-envoy-upstream-service-time: 36
      </tbody>
    </table>
 
-2. 동시 연결 \(concurrent connections\) 갯수를 최대 3으로 설정해 fortio를 실행합니다.
+2. 동시 커넥션 \(concurrent connections\) 갯수를 최대 3으로 설정해 fortio를 실행합니다.
 
    ```bash
     $kubectl exec -it $FORTIO_POD  -c fortio /usr/bin/fortio -- load -c 3 -qps 0 -n 30 -loglevel Warning http://httpbin:8000/get
@@ -448,7 +423,7 @@ x-envoy-upstream-service-time: 36
     All done 30 calls (plus 0 warmup) 4.000 ms avg, 577.0 qps
    ```
 
-   이제 예상되는 전송 경로 차단 동작 \(회로 차단 동작, circuit breaking behavior\)을 확인하세요. 요청\(requests\)의 36.7%만이 성공했으며 나머지는 전송 경로 차단\(회로 차단, circuit breaking\)으로 인해 갇혔습니다.
+   이제 예상되는 써킷 브레이킹 동작 \(circuit breaking behavior\)을 확인하세요. 요청 \(requests\)의 36.7%만이 성공했으며 나머지는 써킷 브레이킹 동작 \(circuit breaking\) 으로 인해 갇혔습니다.
 
    ```text
     Code 200 : 11 (36.7 %)
@@ -467,11 +442,11 @@ x-envoy-upstream-service-time: 36
     cluster.outbound|8000||httpbin.default.svc.cluster.local.upstream_rq_pending_total: 29
    ```
 
-   upstream\_rq\_pending\_overflow 값에 대해 21을 볼 수 있습니다. 이는 지금까지 21개의 호출\(calls\)이 전송 경로 차단 \(회로 차단, circuit breaking\)으로 플래그 지정되었음을 의미합니다.
+   upstream\_rq\_pending\_overflow 값에 대해 21을 볼 수 있습니다. 이는 지금까지 21개의 호출 \(calls\)이 써킷 브레이킹 \(circuit breaking\) 으로 플래그 \(Flag\) 지정되었음을 의미합니다.
 
 ### 정리
 
-1. httpbin에 대한 대상 규칙 \(destination rule\) 삭제합니다.
+1. httpbin에 대한 대상 규칙 \(destination rule\) 을 삭제합니다.
 
    ```bash
    $kubectl delete destinationrule httpbin

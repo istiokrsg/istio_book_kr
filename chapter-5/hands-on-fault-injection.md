@@ -5,7 +5,7 @@
 * 설치 안내서의 지침에 따라 Istio를 설정하세요.   [https://istio.io/docs/setup/kubernetes/install/](https://istio.io/docs/setup/kubernetes/install/)
 * 기본 대상 규칙\(default destination rules\)이 포함된 Bookinfo 샘플 어플리케이션\(Application\)을 배포합니다.  [https://istio.io/docs/examples/bookinfo/](https://istio.io/docs/examples/bookinfo/)
 * 시작하기 전에 서비스 복원성\(Service Resiliency\)에서 결함주입\(Fault Injection\)을 다시 한번 보세요.
-* 요청 라우팅 작업\(request routing task\)을 수행하거나 다음 명령을 실행하여 어플리케이션 버전 별 전송 경로\(routing\)를 적용합니다.
+* 요청 라우팅 작업\(request routing task\)을 수행하거나 다음 명령을 실행하여 어플리케이션 버전 별 라우팅\(routing\) 적용합니다.
 
   ```bash
     $kubectl apply -f samples/bookinfo/networking/virtual-service-all-v1.yaml
@@ -93,7 +93,7 @@
             subset: v1
   ```
 
-  위의 설정으로 요청 흐름 방식은 다음과 같습니다. 
+  위의 설정으로 요청 처리 흐름 방식은 다음과 같습니다. 
 
 * productpage -&gt; review:v2 -&gt; ratings \(사용자가 jason인 경우\) 
 * productpage -&gt; review:v1 \(이외 모든 사용자인 경우\)  
@@ -102,11 +102,11 @@
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_205527.png)
 
-### HTTP 지연 결함 주입하기 \(Injecting an HTTP delay fault\)
+### HTTP 시간 지연 결함 주입하기 \(Injecting an HTTP delay fault\)
 
 서비스 복원성\(service resiliency\)을 위한 Bookinfo 어플리케이션\(Application\) 마이크로 서비스\(Microservice\)를 테스트하기 위해서 사용자가 jason인 경우 reviews:v2와 ratings 마이크로 서비스 사이에 7초의 시간 지연 \(delay\)을 주입\(inject\)한 테스트는 Bookinfo 어플리케이션에 의도적으로 주입된 결함을 발견할 수 있습니다.
 
-reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 제한 \(connection timeout\)을 10초로 어플리케이션내 **하드 코딩 \(hard-coded\)** 되어 있다는 것을 주의하세요. 적용한 7초의 지연 시간 \(delay\)에도 불구하고 여전히 오류\(errors\)없이 종단 간 흐름\(end-to-end flow\)을 계속 진행되는 것을 기대합니다.
+reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 제한 \(connection timeout\)을 10초로 어플리케이션내 **하드 코딩 \(hard-coded\)** 되어 있다는 것을 주의하세요. 적용한 7초의 지연 시간 \(delay\)에도 불구하고 여전히 오류 \(errors\)없이 종단 간 흐름 \(end-to-end flow\)을 계속 진행되는 것을 기대합니다.
 
 1. 테스트 사용자인 jason에서 오는 트래픽을 지연시키는 결함 주입 규칙\(fault injection rule\)을 설정합니다.
 
@@ -114,7 +114,7 @@ reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 �
     $kubectl apply -f samples/bookinfo/networking/virtual-service-ratings-test-delay.yaml
    ```
 
-2. 설정된 결함 주입 규칙\(fault injection rule\)을 확인합니다.
+2. 설정된 결함 주입 규칙 \(fault injection rule\)을 확인합니다.
 
    ```bash
     $kubectl get virtualservice ratings -o yaml
@@ -149,7 +149,7 @@ reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 �
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_210621.png)
 
-### 지연 설정 테스트 하기 \(Testing the delay configuration\)
+### 시간 지연 설정 테스트 하기 \(Testing the delay configuration\)
 
 1. 웹 브라우저에서 Bookinfo 웹 어플리케이션 \(Application\)을 엽니다.
 2. /productpage 웹페이지에서 사용자 jason으로 로그인하세요.
@@ -177,16 +177,16 @@ reviews:v2 서비스는 ratings 서비스 호출하기 위해서 연결 시간 �
 
 reviews 서비스에 있는 시간 초과\(timeout\)의 하드 코딩\(hard-coded\) 때문에 서비스 실패를 발생시키는 버그 \(bug\)를 발견할 수 있습니다.
 
-예상되는 것은 \(1\) reviews와 ratings 서비스 간의 시간 제한\(timeout\)이 10 초로 하드 코딩\(hard coded\)되어 있기 때문에 \(2\) 적용된 7초 지연\(delay\)은 reviews 서비스에는 영향이 없을 것입니다. 
+예상되는 것은 \(1\) reviews와 ratings 서비스 간의 시간 제한\(timeout\)이 10 초로 하드 코딩\(hard coded\)되어 있기 때문에 \(2\) 적용된 7초 시간 지연\(delay\)은 reviews 서비스에는 영향이 없을 것입니다. 
 
-그러나 \(3\) productpage와 reviews 서비스간에 하드 코딩 된 시간 제한\(hard-coded timeout\)으로 총 6초 동안 3초\(timeout\) + 1회 재시도\(retry\)로 코딩 되어 있으므로 결과적으로 productpage가 reviews 서비스 호출이 예상한 것 보다 너무 빠른 6초 후에 시간 초과\(timeout\)가 발생하는 오류\(error\)가 있습니다.
+그러나 \(3\) productpage와 reviews 서비스간에 하드 코딩 된 시간 제한\(hard-coded timeout\)으로 총 6초 동안 3초 \(timeout\) + 1회 재시도 \(retry\)로 코딩 되어 있으므로 결과적으로 productpage가 reviews 서비스 호출이 예상한 것 보다 너무 빠른 6초 후에 시간 초과 \(timeout\)가 발생하는 오류 \(error\)가 있습니다.
 
 ![&#xADF8;&#xB9BC;](../.gitbook/assets/requesttimeouts24.png)
 
 * 결함 주입 테스트\(fault injection test\)는 로그인 사용자가 jason일 때에만 수행된다는 점에 유의하세요. \(reviews:v2 전송경로 설정된/routing 경우\)
 * 다른 사용자로 로그인하면 지연이 발생하지 않습니다.  \(reviews:v1 또는 reviews:v3로 라우팅 되는 경우\)
 
-이와 같은 버그\(bug\)는 다른 팀이 서로 다른 마이크로 서비스를 독립적으로 개발하는 일반적인 엔터프라이즈 응용 프로그램 \(Enterprise application\)에서 발생할 수 있습니다. Istio의 결함 주입 규칙 \(Fault injection rules\)은 최종 사용자에게 영향을 미치지 않으면서 이러한 이상\(anomalies\)을 식별하는데 도움이 됩니다.
+이와 같은 버그\(bug\)는 다른 팀이 서로 다른 마이크로 서비스를 독립적으로 개발하는 일반적인 엔터프라이즈 응용 프로그램 \(Enterprise application\)에서 발생할 수 있습니다. Istio의 결함 주입 규칙 \(Fault injection rules\)은 최종 사용자에게 영향을 미치지 않으면서 이러한 이상 \(anomalies\)을 식별하는데 도움이 됩니다.
 
 #### 참고 URL
 
@@ -328,7 +328,7 @@ Integer timeout = star_color.equals("black") ? 10000 : 2500
 
 ### 정리
 
-* 어플리케이션 전송 경로 규칙\(routing rule\) 제거
+* 어플리케이션 라우팅 룰 \(routing rule\) 제거
 
   ```bash
     $kubectl delete -f samples/bookinfo/networking/virtual-service-all-v1.yaml

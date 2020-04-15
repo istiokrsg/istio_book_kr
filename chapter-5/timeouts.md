@@ -11,5 +11,5 @@
 
 다음 예제는 ratings 서비스 대상으로 v1 이라는 하위 집합\(subset\) 대상으로 호출 \(Call\)의 10초 시간 초과 \(timeout\)를 설정하는 가상 서비스입니다.
 
-![\[&#xADF8;&#xB9BC;\] &#xC2DC;&#xAC04;&#xCD08;&#xACFC; \(Timeout\)](https://github.com/istiokrsg/istio_book_kr/tree/679c8930ee4abe655802ee56d309ffd014573b90/.gitbook/assets/requesttimeouts11.png)
+![\[&#xADF8;&#xB9BC;\] &#xC2DC;&#xAC04;&#xCD08;&#xACFC; \(Timeout\)](../.gitbook/assets/requesttimeouts11.png)
 

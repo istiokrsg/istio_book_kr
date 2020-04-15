@@ -15,15 +15,17 @@
 
 \[용어 설명\] 업스트림 \(upstream\)은 클라이언트나 로컬 기기 \(일반적으로 컴퓨터나 모바일기기\)에서 서버나 원격 호스트 \(이하 서버\)로 보내지는 \(전송되는\) 데이터 또는 보내는 것을 의미한다.
 
-예를 들어 가상 서비스 \(Virtual Service\)는 1,000 개의 서비스 요청\(Requests\) 중 1개의 Ratings 서비스 호출에 대하여 5초 정도의 시간 지연 \(Delay\)을 발생시킵니다.
+예를 들어 가상 서비스 \(Virtual Service\)는 1,000 개의 서비스 요청\(Requests\) 중 1개의 Ratings 서비스 호출에 대하여  5초 정도의 시간 지연 \(Delay\)을 발생시킵니다.
 
-![&#xADF8;&#xB9BC;](https://github.com/istiokrsg/istio_book_kr/tree/679c8930ee4abe655802ee56d309ffd014573b90/.gitbook/assets/delay_ex.png)
+![&#xADF8;&#xB9BC;](../.gitbook/assets/delay_ex.png)
 
 다음은 작동 중단\(abort\)를 구성하여 결함\(Fault\)을 시뮬레이션을 할 수 있습니다.
 
+
+
 ![](../.gitbook/assets/20200409_211236.png)
 
-마지막으로는 시간 지연\(delay\)과 작동 중단\(abort\) 결함\(fault\)을 함께 사용하는 것으로 review 서비스의 v2 하위집합 \(subset\)에서 ratings 서비스의 v1 하위집합\(Subset\)까지의 모든 HTTP 요청\(Request\)에 대해 5초 정도의 시간 지연 \(Delay\)을 발생시키고 그 중 0.1%에 대해서는 작동 중단\(Abort\)을 시켜 HTTP 400 오류 \(error\)를 발생시킵니다.
+마지막으로는 시간 지연\(delay\)과 작동 중단\(abort\) 결함\(fault\)을 함께 사용하는 것으로 review 서비스의 v2 하위집합 \(subset\)에서 ratings 서비스의 v1 하위집합\(Subset\)까지의 모든 HTTP 요청\(Request\)에 대해 5초 정도의 시간 지연 \(Delay\)을 발생시키고 그 중 0.1%에 대해서는 작동 중단\(Abort\)을 시켜 HTTP 400 오류 \(error\)를 발생시킵니다. 
 
 ![](../.gitbook/assets/20200409_211645.png)
 

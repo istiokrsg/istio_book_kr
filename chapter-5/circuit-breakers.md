@@ -1,6 +1,6 @@
 # 써킷 브레이커 \(Circuit Breakers\)
 
-집과 공장 등에서도 서비스 복원성 \(Service Resiliency\)를 제공해주기 위한 것들이 있습니다. 집안에서는 과전압으로 인한 가전기기 손상이나 화재를 예방하기 위해서 과전압이 발생하면 집안에 전력 공급을 차단하는 써킷 브레이커\(Circuit Breaker\), 일명 두꺼비집 및 퓨즈\(Fuse\)가 있고 공장에서는 파이프내의 압력 증가 등으로 인하여 발생할 수 있는 폭발 위험으로 부터 공장 전체를 보호하기 위하여 압력등을 배출할 수 있는 안전밸브 \(Safety Valve\) 및 파열 \(Rupture Disc\) 등이 있습니다. 
+집과 공장 등에서도 서비스 복원성 \(Service Resiliency\)를 제공해주기 위한 것들이 있습니다. 집안에서는 과전압으로 인한 가전기기 손상이나 화재를 예방하기 위해서 과전압이 발생하면 집안에 전력 공급을 차단하는 써킷 브레이커\(Circuit Breaker\), 일명 두꺼비집 및 퓨즈\(Fuse\)가 있고 공장에서는 파이프내의 압력 증가 등으로 인하여 발생할 수 있는 폭발 위험으로 부터 공장 전체를 보호하기 위하여 압력등을 배출할 수 있는 안전밸브 \(Safety Valve\) 및 파열 \(Rupture Disc\) 등이 있습니다.
 
 ![\(&#xC88C;\) &#xAC00;&#xC815;&#xB0B4;&#xC758; &#xC368;&#xD0B7; &#xBE0C;&#xB808;&#xC774;&#xCEE4;, \(&#xC6B0;\) &#xACF5;&#xC7A5;&#xB0B4;&#xC5D0; &#xC124;&#xCE58;&#xB418;&#xC5B4; &#xC788;&#xB294; &#xC548;&#xC804;&#xBC38;&#xBE0C; &#xBC0F; &#xD30C;&#xC5F4;&#xD310;](../.gitbook/assets/20200408_203529.png)
 
@@ -12,7 +12,5 @@
 
 다음 예제는 샘플 서비스인 Reviews에 있는 v1 하위집합의 작업 부하 \(workload\)에 대하여 동시 연결 수\(concurrent connections\)를 100개로 제한합니다.
 
-![\[&#xADF8;&#xB9BC;\] &#xC368;&#xD0B7; &#xBE0C;&#xB808;&#xC774;&#xCEE4; \(Circuit Breakers\)](../.gitbook/assets/circuit_breaker_ex.png)
-
-### 
+![\[&#xADF8;&#xB9BC;\] &#xC368;&#xD0B7; &#xBE0C;&#xB808;&#xC774;&#xCEE4; \(Circuit Breakers\)](https://github.com/istiokrsg/istio_book_kr/tree/464b5afc6cefeeebdf188fe4182a4b8e17b46c4b/.gitbook/assets/circuit_breaker_ex.png)
 

@@ -12,7 +12,7 @@
 
 다음 예제는 초기 호출 실패 \(initial call failure\)하면 매 2초의 시간 초과\(timeout\)가 있는 서비스 하위 집합 대상으로 연결하기 위하여 최대 3번의 재시도를 설정한 것입니다.
 
-![\[&#xADF8;&#xB9BC;\] &#xC7AC;&#xC2DC;&#xB3C4; \(Retries\)](https://github.com/istiokrsg/istio_book_kr/tree/464b5afc6cefeeebdf188fe4182a4b8e17b46c4b/.gitbook/assets/requesttimeouts12.png)
+![\[&#xADF8;&#xB9BC;\] &#xC7AC;&#xC2DC;&#xB3C4; \(Retries\)](../.gitbook/assets/requesttimeouts12.png)
 
 ```text
 apiVersion: networking.istio.io/v1alpha3
@@ -33,25 +33,27 @@ spec:
       retryOn: gateway-error,connect-failure,refused-stream
 ```
 
-## 재시도 관련 파라미터
+#### 재시도 관련 파라미터 
 
 | 파라미 | 데이터타 | 필수여 | 설 |
 | :--- | :--- | :--- | :--- |
-| attempts | int32 | 필수 | 호출한 요청에 대한 재시도 횟수이고 재시도 간격은 자동으로 결정되며 \(25 ms +\) 시도한 실제 재시도 횟수는 HTTP 경로 \(HTTP route\)의 요청 시간 초과\(timeout\)에 따라 다릅니다. |
-| perTryTimeout | Duration | 선택 | 호출한 요청에 대한 재 시도당 시간 초과이고 형식으로는 "1 h/1 m/1 s/1 ms" 으로 1 ms 이상이여야 합니다. |
-| retryOn | string | 선택 | 재시도 조건을 설정하는 것으로 코마 "," 구분으로 목록을 사용할 수 있으며 하나 이상의 정책을 설정할 수 있습니다. |
+| attempts  | int32 | 필수 | 호출한 요청에 대한 재시도 횟수이고 재시도 간격은 자동으로 결정되며 \(25 ms +\) 시도한 실제 재시도 횟수는 HTTP 경로 \(HTTP route\)의 요청 시간 초과\(timeout\)에 따라 다릅니다. |
+| perTryTimeout  | Duration  | 선택 | 호출한 요청에 대한 재 시도당 시간 초과이고 형식으로는 "1 h/1 m/1 s/1 ms" 으로 1 ms 이상이여야 합니다. |
+| retryOn | string  | 선택 | 재시도 조건을 설정하는 것으로 코마 "," 구분으로 목록을 사용할 수 있으며 하나 이상의 정책을 설정할 수 있습니다. |
 
 **HTTP 재시도 정책**
-
-| 정책종류 | 설명 |
-| :--- | :--- |
-
 
 <table>
   <thead>
     <tr>
-      <th style="text-align:left">5xx</th>
-      <th style="text-align:left">
+      <th style="text-align:left">&#xC815;&#xCC45;&#xC885;&#xB958;</th>
+      <th style="text-align:left">&#xC124;&#xBA85;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:left">5xx</td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xAC00;
           5xx &#xC751;&#xB2F5; &#xCF54;&#xB4DC;&#xB85C; &#xC751;&#xB2F5;&#xD558;&#xAC70;&#xB098;
           &#xC804;&#xD600; &#xC751;&#xB2F5;&#xD558;&#xC9C0; &#xC54A;&#xC73C;&#xBA74;</p>
@@ -59,69 +61,49 @@ spec:
           &#xC2DC;&#xAC04; &#xCD08;&#xACFC;) &#xC7AC;&#xC2DC;&#xB3C4;&#xB97C; &#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;.</p>
         <p>(&#xC5F0;&#xACB0; &#xC2E4;&#xD328; &#xBC0F; &#xAC70;&#xBD80; &#xC2A4;&#xD2B8;&#xB9BC;
           &#xD3EC;&#xD568;)</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">gateway-error</th>
-      <th style="text-align:left">
+      <td style="text-align:left">gateway-error</td>
+      <td style="text-align:left">
         <p>&#xC774; &#xC815;&#xCC45;&#xC740; 5xx &#xC815;&#xCC45;&#xACFC; &#xC720;&#xC0AC;&#xD558;&#xC9C0;&#xB9CC;
           502, 503 &#xB610;&#xB294; 504&#xB97C; &#xBC1C;&#xC0DD;&#xC2DC;&#xD0A4;&#xB294;</p>
         <p>&#xC694;&#xCCAD;&#xB9CC; &#xC7AC;&#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;.</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">reset</th>
-      <th style="text-align:left">
+      <td style="text-align:left">reset</td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xAC00;
           &#xC804;&#xD600; &#xC751;&#xB2F5;&#xD558;&#xC9C0; &#xC54A;&#xC73C;&#xBA74;
           &#xC7AC;&#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;.</p>
         <p>(&#xC5F0;&#xACB0;&#xD574;&#xC81C; / &#xC7AC;&#xC124;&#xC815; / &#xC77D;&#xAE30;
           &#xC2DC;&#xAC04; &#xCD08;&#xACFC;).</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">connect-failure</th>
-      <th style="text-align:left">
+      <td style="text-align:left">connect-failure</td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xC5D0;
           &#xB300;&#xD55C; &#xC5F0;&#xACB0; &#xC2E4;&#xD328; (&#xC5F0;&#xACB0; &#xC2DC;&#xAC04;
           &#xCD08;&#xACFC; &#xB4F1;)&#xB85C; &#xC778;&#xD574; &#xC694;&#xCCAD;&#xC774;</p>
         <p>&#xC2E4;&#xD328;&#xD558;&#xBA74; &#xC7AC;&#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;.
           (5xx&#xC5D0; &#xD3EC;&#xD568;)</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">retriable-4xx</th>
-      <th style="text-align:left">
+      <td style="text-align:left">retriable-4xx</td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xAC00;
           &#xC7AC;&#xC2DC;&#xB3C4; &#xAC00;&#xB2A5;&#xD55C; 4xx &#xC751;&#xB2F5;
           &#xCF54;&#xB4DC;&#xB85C; &#xC751;&#xB2F5;&#xD558;&#xBA74;</p>
         <p>&#xC7AC;&#xC2DC;&#xB3C4;&#xD558;&#xACE0; &#xD604;&#xC7AC; &#xC774; &#xCE74;&#xD14C;&#xACE0;&#xB9AC;&#xC758;
           &#xC720;&#xC77C;&#xD55C; &#xC751;&#xB2F5; &#xCF54;&#xB4DC;&#xB294; 409&#xC785;&#xB2C8;&#xB2E4;.</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">refused-stream</th>
-      <th style="text-align:left">
+      <td style="text-align:left">refused-stream</td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xAC00;
           REFUSED_STREAM &#xC624;&#xB958; &#xCF54;&#xB4DC;&#xB85C; &#xC2A4;&#xD2B8;&#xB9BC;&#xC744;</p>
         <p>&#xC7AC;&#xC124;&#xC815;&#xD558;&#xBA74; &#xC7AC;&#xC2DC;&#xB3C4;&#xD558;&#xACE0;
@@ -129,28 +111,27 @@ spec:
           &#xC7AC;&#xC2DC;&#xB3C4;&#xD574;&#xB3C4; &#xC548;&#xC804;&#xD558;&#xB2E4;&#xB294;
           &#xAC83;&#xC744;</p>
         <p>&#xB098;&#xD0C0;&#xB0C5;&#xB2C8;&#xB2E4;. (5xx&#xC5D0; &#xD3EC;&#xD568;)</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table><table>
-  <thead>
     <tr>
-      <th style="text-align:left">retriable-status-codes</th>
-      <th style="text-align:left">
+      <td style="text-align:left">
+        <p></p>
+        <p>retriable-status-codes</p>
+      </td>
+      <td style="text-align:left">
         <p>Envoy&#xB294; &#xC5C5;&#xC2A4;&#xD2B8;&#xB9BC; &#xC11C;&#xBC84;&#xAC00;
           &#xC7AC;&#xC2DC;&#xB3C4; &#xC815;&#xCC45; &#xB610;&#xB294; x-envoy-retriable-status-codes</p>
         <p>&#xD5E4;&#xB354;&#xC5D0; &#xC815;&#xC758;&#xB41C; &#xC751;&#xB2F5; &#xCF54;&#xB4DC;&#xB85C;
           &#xC751;&#xB2F5;&#xD558;&#xB294; &#xACBD;&#xC6B0; &#xC7AC;&#xC2DC;&#xB3C4;&#xD569;&#xB2C8;&#xB2E4;.</p>
-      </th>
+      </td>
     </tr>
-  </thead>
-  <tbody></tbody>
-</table>* 해당 재시도 정책이 설정되면 다른 재시도 정책을 통해 재 시도 할 수 있는 상태 코드 외에도 재시도 가능한 상태 코드 목록이 재시도 가능한 것으로 간주됩니다.
+  </tbody>
+</table>* 이 헤더를 설정하면 재시도 가능한 상태 코드 재시도 정책과 함께 사용될 때 재 시도 할 수 있는 상태 코드에 대해 Envoy에 알립니다. 
+* 해당 재시도 정책이 설정되면 다른 재시도 정책을 통해 재 시도 할 수 있는 상태 코드 외에도 재시도 가능한 상태 코드 목록이 재시도 가능한 것으로 간주됩니다.
 * 목록은 쉼표로 구분 된 정수 목록으로 "409"는 409를 재시도 할 수 있는 반면 "504,409"는 504와 409를 모두 재시도 할 수 있는 것으로 간주합니다.
 * 이 헤더는 내부 클라이언트의 요청에만 적용됩니다.
 
-## gRPC 재시도 정책
+#### gRPC 재시도 정책
 
 다음과 같은 응답 헤더의 gRPC 상태 코드로 설정할 수 있습니다.
 

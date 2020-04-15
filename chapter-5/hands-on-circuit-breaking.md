@@ -6,7 +6,7 @@
 
 또한 이 예제에서는 써킷 브레이킹 \(circuit breaking\)을 구성한 다음 써킷 브레이커 \(circuit breaker\)를 의도적으로 "개폐 \(tripping\)"하여 구성한 것을 테스트 합니다.
 
-## 준비 작업
+### 준비 작업
 
 * 아래 사이트에 있는 설치 안내서의 지침에 따라 Istio를 설정하세요. [https://istio.io/docs/setup/kubernetes/install/](https://istio.io/docs/setup/kubernetes/install/)
 * httpbin 샘플을 실행하세요. 자동 사이드카 주입 \(automatic sidecar injection\)을 사용하고 있다면 다음과 같이 httpbin 서비스를 배포\(deploy\)하세요.
@@ -23,7 +23,7 @@
 
 httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 합니다.
 
-## 써킷 브레이커을 구성하기 \(Configuring the circuit breaker\)
+### 써킷 브레이커을 구성하기 \(Configuring the circuit breaker\)
 
 1. httpbin 서비스를 호출 할 때 써킷 브레이킹 \(circuit breaking\) 설정을 적용 할 대상 규칙\(destination rule\)을 설정하세요.
 
@@ -50,7 +50,7 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
     EOF
    ```
 
-   상호 TLS 인증 \(mutual TLS authentication\)을 사용하여 Istio를 설치/구성한 경우에는 적용 전에 대상 규칙 \(Destination Rule\)에 TLS 트래픽 정책 모드 \(TLS traffic policy mode, trafficPolicy\)에 ISTIO\_MUTUAL을 추가해야 합니다. 그렇지 않으면 요청 \(request\)은 아래에서 설명한 대로 503 오류 \(errors\)가 발생됩니다.
+   상호 TLS 인증 \(mutual TLS authentication\)을 사용하여 Istio를 설치/구성한 경우에는 적용 전에 대상 규칙 \(Destination Rule\)에 TLS 트래픽 정책 모드 \(TLS traffic policy mode, trafficPolicy\)에 ISTIO\_MUTUAL을 추가해야 합니다. 그렇지 않으면 요청 \(request\)은 아래에서 설명한 대로 503 오류 \(errors\)가 발생됩니다.  
 
 2. 대상 규칙 \(destination rule\)이 올바르게 설정되었는지를 확인하세요.
 
@@ -77,7 +77,7 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
           maxEjectionPercent: 100
    ```
 
-### **대상 규칙 \(destination rule\) 적용 후 503 오류가 발생하는 경우**
+#### **대상 규칙 \(destination rule\) 적용 후 503 오류가 발생하는 경우**
 
 대상 규칙 \(Destination Rule\)을 적용한 후 서비스 요청 \(service request\)으로 HTTP 503 오류가 바로 발생하기 시작하면 대상 규칙 \(Destination Rule\)을 제거하거나 되돌릴 때까지 오류 \(errors\)가 계속된다면 대상 규칙 \(Destination Rule\)이 서비스에 대해 TLS 충돌을 발생시킬 수 있습니다.
 
@@ -93,15 +93,15 @@ httpbin 어플리케이션은 이 예제에서는 백엔드 서비스 역할을 
 
 대상 규칙 \(Destination Rule\)을 적용할 때마다 트래픽 정책 \(trafficPolicy\) TLS 모드가 전역적인 \(global\) 서버 구성과 일치하는지를 확인하세요.
 
-## 써킷 브레이커 \(circuit breaker\)
+### 써킷 브레이커 \(circuit breaker\)
 
 사이드카 프록시 \(sidecar proxy, Envoy proxy\)는 어플리케이션의 서비스에서 활용할 사용 가능한 사전 동의 오류 복구 기능 \(opt-in failure recovery features\)을 제공합니다. 동시 연결의 갯수와 요청 대기 갯수를 제한할 수 있어서 시스템이 과도한 요청으로 인한 장애 상태가 되지 않도록 합니다.
 
-![&#xADF8;&#xB9BC;](https://github.com/istiokrsg/istio_book_kr/tree/464b5afc6cefeeebdf188fe4182a4b8e17b46c4b/.gitbook/assets/20200329_074845.png)
+![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_074845.png)
 
 써킷 브레이커 \(circuit breaker\)는 대상 규칙\(Destination Rule\)의 트래픽 정책\(trafficPolicy\)에서 커넥션 풀\(connection pool\)에서 아래와 같이 설정할 수 있습니다.
 
-### TCP 커넥션 풀 설정
+#### TCP 커넥션 풀 설정
 
 HTTP 및 TCP 업스트림 커넥션\(upstream connection\)에 대한 공통적인 설정
 
@@ -109,9 +109,9 @@ HTTP 및 TCP 업스트림 커넥션\(upstream connection\)에 대한 공통적�
 | :--- | :--- |
 | maxConnections | 대상 호스트\(destination host\)에 대한 최대 HTTP1 / TCP 연결 갯수이고 기본값\(default\)은 2 ^ 32-1 개 입니다. |
 | connectTimeout | TCP 연결 시간 초과 \(connection timeout\) |
-| tcpKeepalive | 해당 속성이 설정된 경우 TCP Keepalives를 사용하기 위해서는 소켓\(socket\)에서 SO\_KEEPALIVE를 설정하세요. |
+| tcpKeepalive | 해당 속성이 설정된 경우 TCP Keepalives를 사용하기 위해서는 소켓\(socket\)에서 SO\_KEEPALIVE를 설정하세요.   |
 
-### HTTP 커넥션 풀 설정
+#### HTTP 커넥션 풀 설정
 
 HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 
@@ -123,7 +123,7 @@ HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 | maxRetries | 지정된 시간에 클러스터내의 모든 호스트에서 처리될 수 있는 최대 재시도 횟수입니다. 기본값은 2 ^ 32-1 입니다. |
 | idleTimeout | 업스트림 연결 풀 연결에 대한 유휴 시간 제한\(idle timeout\). 유휴 시간 제한은 활성 요청이 없는 기간으로 정의되고 설정하지 않으면 기본값은 1 시간으로 유휴 시간 초과에 도달하면 연결이 닫힙니다. 요청 기반 시간 제한은 HTTP/2 핑\(PING\)이 연결을 유지하지 않음을 의미하는 것으로 HTTP1.1 및 HTTP2 연결에 모두 적용됩니다. |
 
-## 이상치 감지 \(Outlier Detection\)
+### 이상치 감지 \(Outlier Detection\)
 
 이상치 탐지 \(Outlier Detection\)는 비정상적인 호스트 동작을 감지하고 클러스터 내의 로드 밸런싱 풀 \(load-balanced pool\)에서 비정상적인 호스트 \(unhealthy host\)를 방출 \(eject\)하는 Istio 복원성 전략 \(Istio Resiliency strategy\)으로 정상적인 호스트 \(healthy host\)만 사용자 요청을 처리하는데 참여함으로써 서비스의 전체 가용성 \(availability\)을 높일 수 있습니다.
 
@@ -134,7 +134,7 @@ HTTP1.1 / HTTP2 / GRPC 커넥션에 적용 가능한 설정
 
 아래 설정을 사용하면 업스트림 서비스 \(upstream service, 종속 서비스/dependent service\)가 1초 마다 검색 \(scan\)되고 5xx 오류 코드 \(error code\)로 1번 이상 실패 \(fail\)하는 호스트 \(host\)가 있으면 로드 밸런스 풀\(load-balanced pool\)에서 3분 동안 방출 \(eject\)됩니다.
 
-![&#xADF8;&#xB9BC;](https://github.com/istiokrsg/istio_book_kr/tree/464b5afc6cefeeebdf188fe4182a4b8e17b46c4b/.gitbook/assets/20200329_073751.png)
+![&#xADF8;&#xB9BC;](../.gitbook/assets/20200329_073751.png)
 
 * consecutiveGatewayErrors: 커넥션 풀에서 호스트를 방출 \(eject\) 전의 게이트웨이 오류 \(gateway errors\) 발생 횟수이고 업스트림 호스트가 HTTP를 통해 액세스해서 리턴 코드가 502, 503 또는 504 이면 게이트웨이 오류 \(gateway errors\)로 규정하고 불명확한 TCP 커넥션 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스하면 연결 시간 초과 \(connect timeouts\) 및 커넥션 오류/실패 이벤트 \(connection error/failure events\)가 게이트웨이 오류 \(connect timeouts\)로 간주되며 이 기능은 기본적으로 \(default\) 또는 값 0으로 설정되면 비활성화됩니다.
 * consecutive5xxErrors : 호스트가 커넥션 풀에서 방출 \(Inject\)되기 전의 연속적으로 오류 \(consecutive errors\) 발생 횟수이고 불명확한 TCP 연결 \(opaque TCP connection\)을 통해 업스트림 호스트에 액세스 한 경우에는 연결 시간 종료 \(connect timeouts\), 커넥션 오류/실패 \(connection error/failure\) 및 요청 실패 이벤트 \(request failure events\)는 5xx 오류로 규정되며 기본값은 5이지만 값을 0으로 설정하여 비활성화 할 수 있습니다.
@@ -152,7 +152,7 @@ consecutivegatewayerrors 및 consecutive5xxerrors는 개별적으로 또는 함�
 
 이상치 감지 \(Outlier Detection\)는 로드 밸런싱 풀 \(load balancing pool\)에 연결된 최소 수의 정상 호스트 \(healthy host\)가 있을 때까지 사용 가능하게 됩니다.
 
-## 클라이언트 추가 \(Adding a client\)
+### 클라이언트 추가 \(Adding a client\)
 
 httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다. 클라이언트는 Fortio라는 간단한 로드 테스트 클라이언트 \(load-testing client\) 입니다. Fortio를 사용하면 발신 HTTP 호출 \(outgoing HTTP calls\)에 대한 커넥션 \(connections\) 갯수, 동시성 \(concurrency\) 및 시간 지연 \(delays\) 갯수를 제어 할 수 있습니다. 이 클라이언트를 사용하여 대상 규칙 \(Destination Rule\)에서 설정 한 써킷 브레이커 정책 \(회로 차단기 정책, circuit breaker policies\)을 "개폐 \(trip\)" 합니다.
 
@@ -214,9 +214,10 @@ httpbin 서비스로 트래픽을 보낼 클라이언트를 만듭니다. 클라
     $kubectl apply -f <(istioctl kube-inject -f samples/httpbin/sample-client/fortio-deploy.yaml)
    ```
 
-2. 아래는 클라이언트 파드\(client pod\)에 로그인하고 fortio 툴 \(tool\)을 사용하여 httpbin을 호출하는 것으로 우선 fortio 파드 \(pod\) ID를 환경 변수에 저장하고 해당 환경변수를 이용해 curl 명령어\(command\)를 fortio 파드\(pod\)에 전달해 한번만 실행합니다.
+2. 아래는 클라이언트 파드\(client pod\)에 로그인하고 fortio 툴 \(tool\)을 사용하여 httpbin을 호출하는 것으로 우선 fortio 파드 \(pod\) ID를 환경 변수에 저장하고 해당 환경변수를 이용해 curl 명령어\(command\)를 fortio 파드\(pod\)에 전달해 한번만 실행합니다.       
 
 ```text
+
 $FORTIO_POD=$(kubectl get pod | grep fortio | awk '{ print $1 }')
 $kubectl exec -it $FORTIO_POD  -c fortio /usr/bin/fortio -- load -curl http://httpbin:8000/get
 HTTP/1.1 200 OK
@@ -242,11 +243,12 @@ x-envoy-upstream-service-time: 36
   "origin": "127.0.0.1",
   "url": "http://httpbin:8000/get"
 }
+ 
 ```
 
 모든 것이 제대로 설정이 되면 위의 같이 요청 \(request\)가 성공하는 것을 볼 수 있습니다.
 
-## 써킷 브레이커 개폐 \(Tripping the circuit breaker\)
+### 써킷 브레이커 개폐 \(Tripping the circuit breaker\)
 
 대상 규칙 \(Destination Rule\) 설정 \(settings\)에서 maxConnections : 1 및 http1MaxPendingRequests : 1을 설정했습니다. 이 규칙은 둘 이상의 커넥션과 요청 \(connection and request\)을 동시에 초과하면 istio-proxy가 앞으로 추가되는 커넥션과 요청 \(connection and request\)에 대해 전송 경로 \(circuit\)를 오픈할 때 오류 \(failures\) 가 발생하는 것을 볼 수 있습니다.
 
@@ -442,7 +444,7 @@ x-envoy-upstream-service-time: 36
 
    upstream\_rq\_pending\_overflow 값에 대해 21을 볼 수 있습니다. 이는 지금까지 21개의 호출 \(calls\)이 써킷 브레이킹 \(circuit breaking\) 으로 플래그 \(Flag\) 지정되었음을 의미합니다.
 
-## 정리
+### 정리
 
 1. httpbin에 대한 대상 규칙 \(destination rule\) 을 삭제합니다.
 

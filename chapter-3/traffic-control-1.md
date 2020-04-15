@@ -45,8 +45,6 @@ Check bookinfo app : http://localhost:80/productpage
 
 스크립트 수행결과 보여지는 링크를 따라 가면 제대로 어플리케이션이 구동되었음을 확인 할 수 있습니다.
 
-![](../.gitbook/assets/image%20%281%29.png)
-
 ### gateway, virtualservice, destinationrule install
 
 #### gateway
@@ -145,7 +143,7 @@ productpage   ClusterIP   10.104.71.146   <none>        9080/TCP   105m
 
 > `bookinfo-gateway 를 통해 들어오는 트래픽중에 uri 가 /productpage, login, logout 과 일치하거나, static, api/v1/products 로 시작하는 트래픽들은 productpage 서비스의 9080 port 로 전달한다`
 
-#### Monitor \(Kiali\)
+#### Monitor (Kiali)
 
 * 이스티오는 sidecar 패턴으로 동작하는 envoy proxy 를 통하는 모든 네트워크 트래픽을 모니터링하고 제어할 수 있습니다. 이를 통해 전체 네트워크 topology 를 모니터링을 도와주는 kiali 를 default 로 제공합니다. 이 또한 실행 하는 스크립트를 제공합니다.
 
@@ -157,13 +155,11 @@ Run Kiali
 Default login ID/PW is [admin/admin]
 ./../downloads/istio/istio-1.5.0/bin/istioctl dashboard kiali
 http://localhost:20001/kiali
+
 ```
 
-![](../.gitbook/assets/image%20%282%29.png)
 
-default ID/PW 는 admin/admin 입니다. 접속하면 다음과 같은 화면을 볼 수 있습니다.
 
-![](../.gitbook/assets/image.png)
 
 ### 트래픽 변경 적용
 

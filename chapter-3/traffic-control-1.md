@@ -167,15 +167,98 @@ default ID/PW 는 admin/admin 입니다. 접속하면 다음과 같은 화면을
 
 ### 트래픽 변경 적용
 
+* kiali 에서 보는 화면은 최근 트래픽 발생을 기준입니다. 만약 트래픽 흐름이 변경되면 이를 kiali 화면을 통해 모니터링 할 수 있습니다. 우선 최근 1분간의 트래픽 발생을 기준으로 화면을 보기 위해 Graph 화면 오른쪽 위에 위치한 `Last 1m` 을 선택합니다.
+
+
+* 이제 주기적으로 curl 을 실행하여 외부에서 트래픽을 발생시켜봅시다. 이를 위한 스크립트는 다음의 위치에 있습니다.
+
 ```bash
-$ kubectl ...
+$ cd hanson/3-traffic-control
+$ ./load-periodically.sh
+1 : curl localhost/productpage
+2 : curl localhost/productpage
+3 : curl localhost/productpage
+...
 ```
+
+* 현재 상태를 보면 productpage 서비스는 details, reviews 서비스를 호출하고 reviews 서비스중 v2, v3 subset(istio concept) 서비스는 ratings 서비스를 호출하고 있습니다. 이는 subset 에 대한 설정을 하지 않았기 때문에 모든 버전을 round robin 방식으로 트래픽을 보내고 있는 것입니다.
+
+* 이를 모든 v1 subset 으로만 보내도록 변경해보겠습니다. 역시 스크립트로 제공합니다.
+
+```bash
+$ cd hanson/3-traffic-control
+$ ././ch-only-v1.sh
+kubectl apply -f ...
+
+```
+
+* 스크립트는 다음 두가지 설정을 합니다.
+  * destination rule 은 모두 열어둡니다.
+  * virtual service 를 통해 제어합니다.
+
+```yaml
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: productpage
+spec:
+  hosts:
+  - productpage
+  http:
+  - route:
+    - destination:
+        host: productpage
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+  - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings
+spec:
+  hosts:
+  - ratings
+  http:
+  - route:
+    - destination:
+        host: ratings
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: details
+spec:
+  hosts:
+  - details
+  http:
+  - route:
+    - destination:
+        host: details
+        subset: v1
+```
+
+subset 이 v1 인것을 찾아서 매핑되는 pod 로 보내도록 설정되었습니다.
+
+
 
 ## [Concept](traffic-control-1.md) \(개념 이해하기\)
 
 이스티오의 대표 기능은 트래픽 컨트롤이다. 트래픽 컨트롤은 담당하고 있는 서비스에 대해 내부 및 외부와의 통신등의 제어를 의미한다. 이스티오의 [Pilot](traffic-control-1.md), [Envoy](traffic-control-1.md) 등 두개의 구성요소가 트래픽 컨트롤 제어를 담당하고 있다. 특별한점은 어플리케이션 서비스를 직접 수정하지 않고 [configuration](traffic-control-1.md) 의 수정만으로 트래픽 컨트롤 기능을 제공하고 있다는 점이다. 그리고 [Pilot](traffic-control-1.md), [Envoy](traffic-control-1.md) 이기 때문에 [service discovery](traffic-control-1.md), [traffic routing](traffic-control-1.md), [load balancing](traffic-control-1.md) 등의 특징을 가지게 된다.
 
-자세히 살펴보기 전에 간단히 요약해보면
+간단히 요약해보면
 
 이스티오의 [Pilot](traffic-control-1.md) 은 트래픽 제어를 담당하고 있는 구성요소이다. 이스티오의 [Envoy](traffic-control-1.md) 는 [Pilot](traffic-control-1.md) 을 통해 설정된 구성과 정책을 수행하는 [Proxy](traffic-control-1.md)이다.
 
@@ -183,7 +266,7 @@ $ kubectl ...
 
 ### Pilot
 
-![pilot architecture](https://github.com/istiokrsg/istio_book_kr/tree/dff5a54ab2a1ab044559fecf95f241ace042dba0/.gitbook/assets/pilot_architecture.png)
+![pilot architecture](../.gitbook/assets/pilot_architecture.png)
 
 위 그림은 이스티오 공식 문서에 나와있다. 그림에서 보면 [Abstract model](traffic-control-1.md) 을 통해 [Kubernetes](traffic-control-1.md) 뿐 아니라 다른 플랫폼 위에서도 트래픽 컨트롤 기능을 제공할 수 있음을 알수 있다. 예를 들어, Kubernetes 어댑터는 Kubernetes API 서버에서 pod 등록 정보 및 서비스 리소스를 변경하는 것을 watch 하는 컨트롤러를 구현했다. Kubernetes 어댑터는 이 데이터를 [Abstract model](traffic-control-1.md) 로 변환한다.
 
@@ -206,6 +289,8 @@ Rules API, Network API 등을 사용하여 Pilot 에게 더욱 구체적인 conf
 * [CI/CD pipeline](traffic-control-1.md) 개념에서 [CD](traffic-control-1.md) 를 구현하기 위한 다양한 방식들이 있다. 하지만 결국 중요한점은 서비스중인 어플리케이션과 새로 배포할 어플리케이션을 놓고 사용자의 트래픽을 어디로 보낼것인지 결정할때 서비스의 중단이 없어야 한다는 것이다. 이를 구현하기 위해 [Canary Deploy](traffic-control-1.md), [Dark Launch](traffic-control-1.md), [A/B Test](traffic-control-1.md) 등의 방식이 있다. 이스티오가 나오기전에는 어플리케이션에서 지원하거나 [Spinnaker](traffic-control-1.md) 등의 배포 전용 툴을 사용해야 했다. 여기서는 이스티오의 트래픽 컨트롤을 활용하여 각 배포방식을 어떻게 구현했는지 확인해 본다.
 
 ### 스마트 카나리
+
+
 
 ### 다크 런칭
 

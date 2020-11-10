@@ -1,2 +1,2 @@
-# chapter-7
+# chapter-7 Observability
 

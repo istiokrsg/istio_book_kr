@@ -6,7 +6,7 @@ Istio 장애 복구 기능 \(failure recovery features\)은 어플리케이션\(
 
 어플리케이션내 API 호출 서비스에 대한 2초 시간 초과\(timeout\)를 코딩한 다음 가상 서비스\(Virtual Service\)에서 1번의 재시도\(Retry\)로 3초 시간 초과\(timeout\)를 설정 하는 경우에는 어플리케이션 코드의 시간 초과\(timeout\)가 먼저 실행이 되기 때문에 가상 서비스\(Virtual Service\)에서 설정한 시간 초과\(timeout\) 및 재시도\(retry\)는 효과가 없습니다.
 
-![&#xADF8;&#xB9BC;](../.gitbook/assets/app_fault_inject.png)
+![&#xADF8;&#xB9BC;](https://github.com/istiokrsg/istio_book_kr/tree/50e9e3d699dffedd253f64968a6b6fe18f85539d/.gitbook/assets/app_fault_inject.png)
 
 Istio 장애 복구 기능 \(failure recovery features\)은 메시에서 서비스의 신뢰성 \(reliability\)과 가용성 \(availability\)을 향상시키는 반면, 어플리케이션은 실패 \(failure\)나 오류 \(error\)를 처리하고 적절한 대비책에 대한 조치 \(fallback action\)를 실행해야 합니다.
 

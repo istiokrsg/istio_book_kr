@@ -1,4 +1,4 @@
-# chapter-3 Traffic Management
+# 3. Traffic Management
 
 ## Traffic control
 

@@ -1,5 +1,7 @@
 # 결함 주입 \(Fault injection\)
 
+Istio 에서는 다소 간단한 방법을 제공하는데, istio-proxy 가 네트워크 트래픽을 모두 가로채기 때문에 응답을 수정하거나 응답 시간을 조절할 수 있습니다. 즉, Istio 에서는 응답을 수정하여 HTTP 오류를 응답하므로 응답 오류 장애, 응답에 전달 시간 지연을 주는 네트워크 지연 장애를 주입할 수 있습니다.
+
 장애 복구 정책 \(failure recovery policies\)을 포함하여 네트워크를 구성한 후 Istio의 결함 주입 메커니즘 \(fault injection mechanisms\)을 사용하여 어플리케이션의 전체에 대한 장애 복구 능력 \(failure recovery capacity\)을 테스트 할 수 있습니다.
 
 결함 주입 \(Fault injection\)은 시스템 내부에 오류 \(errors\)를 주입하여 해당 오류 조건 \(error conditions\)에 대한 극복 및 복구할 수 있도록 하는 테스트 방법 입니다.

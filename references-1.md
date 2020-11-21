@@ -2,5 +2,5 @@
 description: 'envoy, service mesh extension, multi-cluster, etc.'
 ---
 
-# References
+# 7. References
 

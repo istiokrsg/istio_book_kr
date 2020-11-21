@@ -1,2 +1,2 @@
-# chapter-7 Observability
+# 6. Observability
 

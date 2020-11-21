@@ -1,2 +1,2 @@
-# charter-1 Introduce
+# 1. Introduce
 

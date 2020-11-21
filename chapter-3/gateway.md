@@ -1,2 +1,2 @@
-# Gateway
+# Istio Gateway
 

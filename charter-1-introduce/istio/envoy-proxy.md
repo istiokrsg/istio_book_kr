@@ -1,4 +1,4 @@
-# Envoy Proxy
+# Envoy
 
 Envoy Proxy 는 Service Mesh 구조에서 특정 서비스에서 발생하는 모든 in/outbound 트래픽을 제어할 수 있는 C++로 개발된 고성능 Proxy 서버 입니다. Istio 는 Sidecar Pattern을 통해 Envoy Proxy 를 특정 서비스에 자동 배포하여 트래픽 제어를 위한 다양한 기능을 제공합니다. 
 

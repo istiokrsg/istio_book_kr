@@ -1,4 +1,4 @@
-# Service Resiliency \(JJ\)
+# Service Resiliency \(SW\)
 
 {% embed url="https://istio.io/docs/concepts/traffic-management/\#network-resilience-and-testing" %}
 

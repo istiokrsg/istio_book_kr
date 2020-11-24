@@ -4,7 +4,7 @@
 * [1. Introduce \(HK & PH\)](charter-1-introduce/README.md)
   * [Istio 소개 \(HK\)](charter-1-introduce/istio-1.md)
   * [Service Mesh 소개 \(HK\)](charter-1-introduce/service-mesh/README.md)
-    * [MSA](charter-1-introduce/service-mesh/msa.md)
+    * [마이크로서비스 아키텍처](charter-1-introduce/service-mesh/msa.md)
     * [Service Mesh](charter-1-introduce/service-mesh/service-mesh.md)
   * [Istio Architecture \(PH\)](charter-1-introduce/istio/README.md)
     * [Data Plane](charter-1-introduce/istio/data-plane.md)

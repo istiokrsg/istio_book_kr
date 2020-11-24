@@ -61,7 +61,7 @@
   * [Jaeger](chapter-7/jaeger.md)
   * [Prometheus & Grafana](chapter-7/prometheus-and-grafana.md)
   * [Observability](chapter-7/observability.md)
-* [7. References](references-1.md)
+* [7. Best Practice \(PH\)](7.-best-practice-ph.md)
 
 ## howto <a id="references"></a>
 

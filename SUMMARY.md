@@ -56,6 +56,7 @@
     * [mTLS \(mutual TLS\)](chapter-4/4.1-authentication/mtls-mutual-tls.md)
   * [4.2 Authorization](chapter-4/4.2-authorization.md)
 * [6. Observability \(BM\)](chapter-7/README.md)
+  * [Untitled](chapter-7/untitled.md)
   * [TCP Metric 수집](chapter-7/tcp-metric.md)
   * [Kiali](chapter-7/kiali.md)
   * [Jaeger](chapter-7/jaeger.md)

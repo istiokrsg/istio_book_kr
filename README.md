@@ -128,7 +128,8 @@ PyungHo Yoon
 * 문형권, 하승완, 강승형, 김병민, 윤평호, 김잠제
 
 ## 대상 istio 1.6
+
 ```text
 doc-release-1.6/content/en/docs
-
 ```
+

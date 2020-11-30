@@ -5,5 +5,3 @@ contents
 * virtual service
 * destination rule
 
-
-

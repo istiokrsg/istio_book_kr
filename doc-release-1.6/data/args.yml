@@ -1,0 +1,44 @@
+# The primary Istio version identifier the docs describe, used throughout the site
+version: "1.6"
+
+# The full Istio version identifier the docs describe
+full_version: "1.6.8"
+
+# The previous Istio version identifier the docs describe, used for upgrade documentation
+previous_version: "1.5"
+
+# The year to display in copyright notices
+copyright_year: 2020
+
+# Controls the incarnation of the site
+#
+# when preliminary=false and archive=false, we're building for istio.io
+# When preliminary=true, we're building for preliminary.istio.io
+# when archive=true, we're building for archive.istio.io
+# when archive_landing=true, we're building the landing page for archive.istio.io
+preliminary: false
+archive: true
+archive_landing: false
+
+# When archive=true above, these values must be filled in
+archive_date: 2020-08-21
+archive_search_refinement: "V1.6"
+
+# GitHub branch names used when the docs have links to GitHub
+source_branch_name: release-1.6
+doc_branch_name: release-1.6
+
+# The list of supported versions described by the docs
+supported_kubernetes_versions: ["1.15", "1.16", "1.17", "1.18"]
+
+####### Static values
+
+# we use different search engines for each incarnation of the site
+main_search_engine_id: "002184991200833970123:veyyqmfmpj4"
+preliminary_search_engine_id: "002184991200833970123:dmevwrvc6os"
+archive_search_engine_id: "002184991200833970123:iwwf17ikgf4"
+
+# we use different site analytics ids for each incarnation of the site
+main_analytics_id: "UA-98480406-1"
+preliminary_analytics_id: "UA-98480406-3"
+archive_analytics_id: "UA-98480406-2"

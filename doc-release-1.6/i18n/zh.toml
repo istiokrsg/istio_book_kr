@@ -1,0 +1,290 @@
+[download_desc]
+other = "立刻下载 Istio %s"
+
+[discuss_istio_io_desc]
+other = "加入 Istio discussion board 参与讨论获取帮助"
+
+[twitter_desc]
+other = "关注我们的 Twitter 来获取最新信息"
+
+[stackoverflow_desc]
+other = "Stack Overflow 中列举了针对实际问题以及部署、配置和使用 Istio 的各项回答"
+
+[for_everyone]
+other = "对于用户"
+
+[for_developers]
+other = "对于开发者"
+
+[github_desc]
+other = "Istio 的代码在 GitHub 上开发"
+
+[team_drive_desc]
+other = "如果您想深入了解 Istio 的技术细节，请查看我们日益完善的设计文档"
+
+[working_group_desc]
+other = "如果您想为 Istio 项目做出贡献，请考虑加入我们的工作组"
+
+[slack_desc]
+other = "在 Slack 上与 Istio 社区交互讨论开发问题（仅限邀请）"
+
+[report_site_bugs]
+other = "报告网站上的 Bug"
+
+[edit_on_github]
+other = "在 GitHub 上编辑此页"
+
+[light_theme]
+other = "亮主题"
+
+[dark_theme]
+other = "暗主题"
+
+[other_versions_of_site]
+other = "本站的其它版本"
+
+[current_release]
+other = "当前版本"
+
+[next_release]
+other = "下个版本"
+
+[archived_releases]
+other = "旧版本"
+
+[options_menu]
+other = "选项和设置"
+
+[search]
+other = "搜索 istio.io"
+
+[search_label]
+other = "搜索"
+
+[search_cancel]
+other = "取消搜索"
+
+[footer_istio]
+other = "Istio"
+
+[footer_istio_preliminary]
+other = "Istio 预览版"
+
+[footer_istio_archive]
+other = "Istio 归档"
+
+[footer_archived_on]
+other = "归档于 %s"
+
+[footer_last_modified]
+other = "本页最后更新于：%s"
+
+[footer_date_format]
+other = "2006年1月2日"
+
+[footer_privacy_policy]
+other = "隐私政策"
+
+[page_publish_date_format]
+other = "2006年1月2日"
+
+[page_last_update_format]
+other = "（更新于 %s）"
+
+[page_word_count]
+other = "%d 字"
+
+[page_reading_time]
+other = "阅读大约需要 %v 分钟"
+
+[relnote_update_advice]
+other = "在下载 ％s 之前，您应该知道有一个更新的补丁版本，这个版本修复了已知的 Bug 并且在一定程度上提升了性能。"
+
+[relnote_update_button]
+other = "了解 Istio %s"
+
+[relnote_update_notice]
+other = "更新提示"
+
+[relnote_change_notes_title]
+other = "更新记录"
+
+[relnote_change_notes_detail]
+other = "获取变更详细列表。"
+
+[relnote_before_you_upgrade_title]
+other = "升级之前"
+
+[relnote_before_you_upgrade_detail]
+other = "升级前须知。"
+
+[relnote_download_title]
+other = "下载"
+
+[relnote_download_detail]
+other = "下载安装该发行版。"
+
+[relnote_docs_title]
+other = "文档"
+
+[relnote_docs_detail]
+other = " 访问该发行版的文档。"
+
+[relnote_helm_changes_title]
+other = "Helm 变更"
+
+[relnote_helm_changes_detail]
+other = "了解 Helm 安装选项中的变更。"
+
+[relnote_source_changes_title]
+other = "代码变更"
+
+[relnote_source_changes_detail]
+other = "查看源码变更的详细信息。"
+
+[page_attribution]
+other = "作者 "
+
+[button_copy]
+other = "复制到剪切板"
+
+[button_print]
+other = "打印"
+
+[button_download]
+other = "下载"
+
+[button_top]
+other = "回到顶部"
+
+[button_sidenav]
+other = "折叠导航栏"
+
+[partner_component_notice]
+other = "该组件由 Istio 合作伙伴创建并维护，如有问题请直接与合作伙伴联系。"
+
+[partner_component_partner]
+other = "合作伙伴"
+
+[partner_component_contact]
+other = "联系"
+
+[partner_component_support_site]
+other = "支持站点"
+
+[partner_component_source_code]
+other = "源码"
+
+[partner_component_latest_release]
+other = "最新版本"
+
+[partner_component_helm_chart]
+other = "Helm Chart"
+
+[partner_component_istio_versions]
+other = "%s 已在如下 Istio 版本中测试通过"
+
+[partner_component_supported_templates]
+other = "支持的模版"
+
+[adapter]
+other = "适配器"
+
+[supported_templates]
+other = "支持的模板"
+
+[adapters]
+other = "适配器"
+
+[template]
+other = "模版"
+
+[subscribe]
+other = "订阅"
+
+[see_also]
+other = "相关内容"
+
+[links]
+other = "链接"
+
+[generated_file]
+other = "这是一个自动生成的文件，要修改其中的内容，请修改 %s 仓库中的源码。"
+
+[switch_lang]
+other = "切换到英文版"
+
+[advisory]
+other = "中文内容由 ServiceMesher 社区维护，部分文档可能稍微滞后于英文版本，同步工作持续进行中"
+
+[syntax_coloring]
+other = "代码高亮"
+
+[analysis_name]
+other = "消息名称"
+
+[analysis_code]
+other = "消息代码"
+
+[analysis_description]
+other = "描述"
+
+[analysis_level]
+other = "等级"
+
+[target_release]
+other = "该博客文章是在 Istio %v 的版本下编写的，因此其中某些内容现在可能已过时。"
+
+[security_disclosure]
+other = "安全漏洞"
+
+[security_related]
+other = "关联"
+
+[security_date]
+other = "日期"
+
+[security_affected_releases]
+other = "受影响的版本"
+
+[security_impact_score]
+other = "影响评分"
+
+[mark_all_as_read]
+other = "全部标位已读"
+
+[security_bulletin_title]
+other = "安全漏洞详情"
+
+[security_bulletin_cves]
+other = "CVE(s)"
+
+[security_bulletin_cvss]
+other = "CVSS 影响评分"
+
+[security_bulletin_affected_releases]
+other = "受影响的版本"
+
+[feedback_title]
+other = "这些信息有用吗？"
+
+[feedback_yes]
+other = "是的"
+
+[feedback_no]
+other = "没有"
+
+[log_month_format]
+other = "2006-01"
+
+[log_change_format]
+other = "2006/01/02"
+
+[log_when]
+other = "日期"
+
+[log_doc]
+other = "文档"
+
+[log_change]
+other = "更改"

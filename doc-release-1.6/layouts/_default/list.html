@@ -1,0 +1,103 @@
+{{ define "main" }}
+
+{{ .Scratch.Set "skipSeeAlso" true }}
+
+{{ partial "primary_top.html" . }}
+
+{{ if not .Params.skip_list }}
+    <p>{{ .Description }}</p>
+{{ end }}
+
+{{ if .Params.list_below }}
+    {{ .Content }}
+{{ end }}
+
+{{ if not .Params.skip_list }}
+    <div class="section-index">
+        {{ $pages := (where .Site.Pages "Section" .Section) }}
+
+        {{ if .Params.list_by_publishdate }}
+            {{ $pages = sort $pages ".Params.publishdate" "desc" }}
+        {{ end }}
+
+        {{ $parent := .Page }}
+        {{ $parentDir := (path.Dir .Page.File.Dir) }}
+
+        {{ if $parent.Params.simple_list }}
+            <ul>
+                {{ range $pages }}
+                    {{ $pageLocation := (path.Dir (path.Dir .File.Dir)) }}
+                    {{ if and (eq $parentDir $pageLocation) (not .Params.draft) }}
+                        {{- $info := "" -}}
+                        {{ if or .Params.attribution (gt .Page.ReadingTime 1) (ne .PublishDate.Year 0001) }}
+                            {{- if .Params.attribution -}}
+                                {{- $info = printf "%s %s" (i18n "page_attribution") .Params.attribution -}}
+                            {{- end -}}
+
+                            {{- if ne .PublishDate.Year 0001 -}}
+                                {{- if gt (len $info) 0 -}}
+                                    {{- $info = printf "%s\n" $info -}}
+                                {{- end -}}
+                                {{- $info = printf "%s%s" $info (.PublishDate.Format (i18n "page_publish_date_format")) -}}
+                            {{- end -}}
+
+                            {{- if gt .Page.ReadingTime 1 -}}
+                                {{- if gt (len $info) 0 -}}
+                                    {{- $info = printf "%s\n" $info -}}
+                                {{- end -}}
+                                {{- $info = printf "%s%s" $info (printf (i18n "page_reading_time") .Page.ReadingTime) -}}
+                            {{- end -}}
+                        {{ end }}
+
+                        <li><a title="{{ $info }}" href="{{ .Permalink }}">{{- .Title -}}</a></li>
+                    {{ end }}
+                {{ end }}
+            </ul>
+        {{ else }}
+            {{- $decoration := .Params.decoration -}}
+            {{ range $pages }}
+                {{ $pageLocation := (path.Dir (path.Dir .File.Dir)) }}
+                {{ if and (eq $parentDir $pageLocation)  (not .Params.draft) }}
+
+                    {{- $info := "" -}}
+                    {{ if or .Params.attribution (gt .Page.ReadingTime 1) }}
+                        {{- if .Params.attribution -}}
+                            {{- $info = printf "%s %s" (i18n "page_attribution") .Params.attribution -}}
+                        {{- end -}}
+
+                        {{- if gt .Page.ReadingTime 1 -}}
+                            {{- if gt (len $info) 0 -}}
+                                {{- $info = printf "%s\n" $info -}}
+                            {{- end -}}
+                            {{- $info = printf "%s%s" $info (printf (i18n "page_reading_time") .Page.ReadingTime) -}}
+                        {{- end -}}
+                    {{ end }}
+
+                    <div class="entry" title="{{ $info }}">
+                        <h5>
+                            <a href="{{ .Permalink }}">
+                                {{- if .Params.icon -}}<i class="page-icon">{{- partial "icon.html" .Params.icon -}}</i>{{- end -}}{{- .Title -}}
+
+                                {{- if $decoration -}}
+                                    <i class="{{ $decoration }}" data-prefix="{{ .RelPermalink }}"></i>
+                                {{- end -}}
+                            </a>
+                        </h5>
+                        {{- if ne .PublishDate.Year 0001 -}}
+                            <em>{{- printf "%s" (.PublishDate.Format (i18n "page_publish_date_format")) -}}</em>
+                        {{- end -}}
+                        <p>{{ .Description }}</p>
+                    </div>
+                {{ end }}
+            {{ end }}
+        {{ end }}
+    </div>
+{{ end }}
+
+{{ if not .Params.list_below }}
+    {{ .Content }}
+{{ end }}
+
+{{ partial "primary_bottom.html" . }}
+
+{{ end }}

@@ -1,0 +1,6 @@
+{{- /* Inserts a text block into the HTML. See https://preliminary.istio.io/about/contribute/creating-and-editing-pages/#embedding-preformatted-blocks for details */ -}}
+{{- partial "code_block.html" . -}}
+
+{{- if .Inner -}}
+    {{- /* Hugo needs this reference as a trigger to indicate this shortcode has a content area. */ -}}
+{{- end -}}

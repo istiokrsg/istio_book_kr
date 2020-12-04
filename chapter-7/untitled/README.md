@@ -1,5 +1,7 @@
 # Example Observability
 
+메시\[mesh\]에서 원격 측정 정보를 수집하는 방법을 다음 예시에서 보여줍니다.
+
 Demonstrates how to collect telemetry information from the mesh.
 
 

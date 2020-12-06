@@ -38,9 +38,5 @@ master branch 에서 공동작업 할것이기 때문에 master branch only 를 
 
 ![](../.gitbook/assets/gitbooksync_complete.png)
 
-진행중 잘 안되시면 문의주세요. 
-
-문의처 1 : gelius7@gmail.com
-
-문의처 2: claud.kim81@gmail.com
+진행중 잘 안되시면 문의주세요. gelius7@gmail.com
 

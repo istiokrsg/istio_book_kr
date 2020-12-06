@@ -131,7 +131,5 @@ PyungHo Yoon
 
 ```text
 doc-release-1.6/content/en/docs
-
-https://istio.io/v1.6/docs/
 ```
 

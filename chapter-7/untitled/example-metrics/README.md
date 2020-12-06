@@ -2,8 +2,6 @@
 
 Demonstrates the collection and querying of metrics within Istio.
 
-
-
 * **Collecting Metrics for TCP Services**
   * This task shows you how to configure Istio to collect metrics for TCP services.
 * **Customizing Istio Metrics**

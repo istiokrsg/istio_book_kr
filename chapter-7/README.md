@@ -1,10 +1,10 @@
 # 6. Observability \(BM\)
 
-ref: [https://istio.io/v1.6/docs/concepts/observability/](https://istio.io/v1.6/docs/concepts/observability/)
+ref: [https://istio.io/v1.7/docs/concepts/observability/](https://istio.io/v1.7/docs/concepts/observability/)
 
 ## Observability
 
-Istio는 메시\[mesh\] 내의 모든 서비스 통신에 대한 상세 원격 분석\[telemetry\]을 생성할 수 있습니다. 이 원격 측정\[telemetry\]은 서비스 동작에 대한 관찰성\[observability\]을 제공하여 운영자가 서비스 개발자에게 추가 부담을 주지 않고 애플리케이션 문제를 해결하고, 유지 관리하고 최적화 할 수 있게 유용한 정보를 제공 받을 수 있게 합니다. Istio를 통해 운영자는 모니터링 되는 서비스가 다른 서비스 및 Istio 구성 요소와 상호 작용하는 방식을 이해할 수 있게 도와 줍니다.
+Istio는 메시\[mesh\] 내의 모든 서비스 통신에 대한 상세  원격 분석\[telemetry\]을 생성할 수 있습니다. 이 원격 측정\[telemetry\]은 서비스 동작에 대한 관찰성\[observability\]을 제공하여 운영자가 서비스 개발자에게 추가 부담을 주지 않고 애플리케이션 문제를 해결하고, 유지 관리하고 최적화 할 수 있게 유용한 정보를 제공 받을 수 있게 합니다. Istio를 통해 운영자는 모니터링 되는 서비스가 다른 서비스 및 Istio 구성 요소와 상호 작용하는 방식을 이해할 수 있게 도와 줍니다.
 
 Istio는 전체적인 서비스 메시\[mesh\] 관찰성\[observability\]을 제공하기 위해 다음 유형의 원격 분석\[telemetry\]을 생성합니다.
 
@@ -30,6 +30,8 @@ Envoy에서 생성 된 메트릭\[metrics\]은 Envoy 리소스 \(예 : 리스너
 
 Envoy 설명서 사이트에는 Envoy 통계 수집에 대한 자세한 개요가 포함되어 있습니다. Envoy Statistics의 운영 가이드는 프록시 수준 메트릭 생성 제어에 대한 자세한 정보를 제공합니다.
 
+
+
 프록시 레벨 메트릭 예시 \[Example proxy-level Metrics\]:
 
 ```text
@@ -48,9 +50,15 @@ envoy_cluster_internal_upstream_rq{response_code="503",cluster_name="xds-grpc"} 
 
 프록시 수준 메트릭 외에도 Istio는 서비스 통신 모니터링을 위한 서비스 지향 메트릭\[metrics\] 집합을 제공합니다. 이러한 메트릭\[metrics\]은 지연\[latency\], 트래픽\[traffic\], 오류\[errors\] 및 포화\[saturation\]라는 네 가지 기본 서비스 모니터링 요구 사항을 다룹니다. Istio는 이러한 메트릭\[metrics\]을 기반으로 서비스 동작을 모니터링\[monitoring\]하기 위한 기본 대시 보드 세트와 함께 제공됩니다.
 
+
+
 표준 Istio 메트릭\[metrics\]은 기본적으로 프로메테우스\[Prometheus\]로 내보내집니다.
 
+
+
 서비스 수준 메트릭\[metrics\]의 사용은 전적으로 선택 사항입니다. 운영자는 개별 요구 사항을 충족하기 위해 이러한 메트릭\[metrics\]의 생성 및 수집을 해제 할 수 있습니다.
+
+
 
 서비스 수준 메트릭 \[Example service-level metric\]:
 
@@ -85,7 +93,11 @@ istio_requests_total{
 
 Istio 컨트롤 플레인\[control plane\]은 자체 모니터링 메트릭\[metrics\] 모음도 제공합니다. 이러한 메트릭\[metrics\]을 사용하면 Istio 자체의 동작을 모니터링\[monitoring\] 할 수 있습니다 \(메시 내의 서비스 동작과 구별됨\).
 
-유지 관리되는 메트릭\[metrics\]에 대한 자세한 내용은 참조 문서\[[https://istio.io/v1.6/docs/reference/commands/pilot-discovery/\#metrics](https://istio.io/v1.6/docs/reference/commands/pilot-discovery/#metrics)\]를 참고 하세요.
+
+
+유지 관리되는 메트릭\[metrics\]에 대한 자세한 내용은 참조 문서\[[https://istio.io/v1.7/docs/reference/commands/pilot-discovery/\#metrics](https://istio.io/v1.7/docs/reference/commands/pilot-discovery/#metrics)\]를 참고 하세요.
+
+
 
 ### 분산 추적 \[Distributed traces\] <a id="distributed-traces"></a>
 
@@ -93,21 +105,29 @@ Istio 컨트롤 플레인\[control plane\]은 자체 모니터링 메트릭\[met
 
 Distributed tracing provides a way to monitor and understand behavior by monitoring individual requests as they flow through a mesh. Traces empower mesh operators to understand service dependencies and the sources of latency within their service mesh.
 
+
+
 Istio는 Envoy 프록시를 통해 분산 추적을 지원합니다. 프록시는 프록시하는 애플리케이션을 대신하여 추적 범위를 자동으로 생성하므로 애플리케이션이 적절한 요청 컨텍스트를 전달하기 만하면됩니다.
 
 Istio supports distributed tracing through the Envoy proxies. The proxies automatically generate trace spans on behalf of the applications they proxy, requiring only that the applications forward the appropriate request context.
 
-Istio는 Zipkin, Jaeger, Lightstep 및 Datadog을 비롯한 여러 추적 백엔드를 지원합니다. 운영자는 추적 생성을위한 샘플링 비율 \(즉, 요청 당 추적 데이터가 생성되는 비율\)을 제어합니다. 이를 통해 작업자는 메시에 대해 생성되는 추적 데이터의 양과 속도를 제어 할 수 있습니다.
+
+
+Istio는 Zipkin\[[https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/zipkin/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/zipkin/)\], Jaeger\[[https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/jaeger/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/jaeger/)\], Lightstep\[[https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/lightstep/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/lightstep/)\] 및 Datadog\[[https://www.datadoghq.com/blog/monitor-istio-with-datadog/](https://www.datadoghq.com/blog/monitor-istio-with-datadog/)\]을 비롯한 여러 추적 백엔드를 지원합니다. 운영자는 추적 생성을위한 샘플링 비율 \(즉, 요청 당 추적 데이터가 생성되는 비율\)을 제어합니다. 이를 통해 작업자는 메시에 대해 생성되는 추적 데이터의 양과 속도를 제어 할 수 있습니다.
 
 Istio supports a number of tracing backends, including Zipkin, Jaeger, Lightstep, and Datadog. Operators control the sampling rate for trace generation \(that is, the rate at which tracing data is generated per request\). This allows operators to control the amount and rate of tracing data being produced for their mesh.
 
-Istio를 사용한 분산 추적에 대한 자세한 내용은 분산 추적에 대한 FAQ에서 찾을 수 있습니다.
 
-More information about Distributed Tracing with Istio is found in our FAQ on Distributed Tracing.
+
+Istio를 사용한 분산 추적에 대한 자세한 내용은 분산 추적에 대한 FAQ\[[https://istio.io/v1.7/faq/distributed-tracing/](https://istio.io/v1.7/faq/distributed-tracing/)\]에서 찾을 수 있습니다.
+
+
 
 단일 요청에 대한 Istio 생성 분산 추적의 예\[Example Istio-generated distributed trace for a single request\]:
 
-![](../.gitbook/assets/istio-tracing-details-zipkin.png)
+![](../.gitbook/assets/istio-tracing-details-zipkin%20%281%29.png)
+
+###  <a id="access-logs"></a>
 
 ### 접속 로그 \[Access logs\] <a id="access-logs"></a>
 
@@ -115,9 +135,11 @@ More information about Distributed Tracing with Istio is found in our FAQ on Dis
 
 Access logs provide a way to monitor and understand behavior from the perspective of an individual workload instance.
 
-Istio는 구성 가능한 형식 집합으로 서비스 트래픽에 대한 액세스 로그를 생성하여 운영자에게 로깅 방법, 내용,시기 및 위치를 완벽하게 제어 할 수 있습니다. 자세한 내용은 Envoy의 액세스 로그 가져 오기를 참조하세요.
 
-Istio can generate access logs for service traffic in a configurable set of formats, providing operators with full control of the how, what, when and where of logging. For more information, please refer to Getting Envoy’s Access Logs.
+
+Istio는 구성 가능한 형식 집합으로 서비스 트래픽에 대한 액세스 로그를 생성하여 운영자에게 로깅 방법, 내용,시기 및 위치를 완벽하게 제어 할 수 있습니다. 자세한 내용은 Envoy의 액세스 로그\[[https://istio.io/v1.7/docs/tasks/observability/logs/access-log/](https://istio.io/v1.7/docs/tasks/observability/logs/access-log/)\] 가져 오기를 참조하세요.
+
+
 
 Istio 액세스 로그 예 \[Example Istio access log\]:
 

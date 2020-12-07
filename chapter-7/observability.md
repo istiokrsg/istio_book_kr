@@ -19,15 +19,13 @@
 
 마이크로 서비스 아키텍처에 대해 이해해야 할 첫 번째 사항은 [end-user](observability.md) 트랜잭션이 구체적으로 어떤 마이크로 서비스와 관련되어 있는지를 보는 것입니다.
 
-만약, 여러분이 많은 팀을 가지고 있고, 그 팀들이 수십 개의 마이크로 서비스를 서로 독립적으로 배포하는 경우, 서비스는 [mesh](observability.md) 전반에 걸친 의존성을 이해하는 것이 어려울 수 있습니다. If many teams are deploying their dozens of microservices, all independently of one another, it is often challenging to understand the dependencies across that“mesh” of services.
+만약, 여러분이 많은 팀을 가지고 있고, 그 팀들이 수십 개의 마이크로 서비스를 서로 독립적으로 배포하는 경우, 서비스는 [mesh](observability.md) 전반에 걸친 의존성을 이해하는 것이 어려울 수 있습니다.
 
 [Istio](observability.md)의 [Mixer](observability.md)는 배포된 마이크로 서비스에서 [tracing](observability.md) 범위를 가져올 수 있는 기능을 기본적으로 제공합니다. 이것은 [tracing](observability.md)이 프로그래밍 언어에 무관하다는 것을 의미하므로 다른 마이크로 서비스가 있는 여러 팀이 서로 다른 프로그래밍 언어와 서로 다른 프레임 워크를 사용하여 여러 언어로 기능을 사용할 수 있는 것을 의미합니다.
 
-Istio’s Mixer comes “out of the box” with the ability to pull tracing spans from your distributed microservices. This means that tracing is programming-language agnostic so that you can use this capability in a polyglot world where different teams, each with its own microservice, can be using different programming languages and frameworks.
-
 [Istio](observability.md)는 [Zipkin](observability.md)과 [Jaeger](observability.md)를 모두 지원하지만 우리는 [Jaeger](observability.md)에 중점을 두도록 하겠습니다. [Jaeger](observability.md)는 벤더 중립적 [tracing](observability.md) [API](observability.md)인 [OpenTracing](observability.md)을 구현하고 있습니다. [Jaeger](observability.md)는 [Uber Technologies](observability.md)팀이 제공 한 독창적인 오픈 소스 프로그램이었으며 특별히 마이크로 서비스 아키텍처에 중점을 둔 분산형 추적 시스템입니다. 여러분이 이해해야 할 한 가지 중요한 용어는 [span](observability.md)이며, [Jaeger](observability.md)는 [span](observability.md)을 "시스템에서 작업 이름, 시작 시간 및 지속 기간이 있는 논리적 작업 단위로 정의합니다. [span](observability.md)은 중첩되어 인과 관계를 모델링하게 하는 명령의 집합입니다. [RPC](observability.md)호출이 [span](observability.md)의 하나의 예시입니다. "
 
-Although Istio supports both Zipkin and Jaeger, for our purposes we focus on Jaeger, which implements OpenTracing, a vendor neutral tracing API. Jaeger was original open sourced by the Uber Technologies team and is a distributed tracing system specifically focused on microservices architecture. One important term to understand is span, and Jaeger defines span as “a logical unit of work in the system that has an operation name, the start time of the oper‐ ation, and the duration. Spans can be nested and ordered to model causal rela‐ tionships. An RPC call is an example of a span.”
+
 
 또, 이해해야 할 또 다른 중요한 용어는 [trace](observability.md)이며 [Jaeger](observability.md)는 [trace](observability.md)를 "시스템을 통한 데이터/실행 경로"로 정의하며 범위의 비순환 지시 그래프로 간주 할 수 있습니다. 여러분은 다음 명령을 사용하여 [Jaeger](observability.md) 콘솔을 실행:
 
@@ -87,11 +85,5 @@ var-source=All
 minishift openshift service prometheus --in-browser
 ```
 
-## Metrics
-
-By default, Istio’s default configuration will gather telemetry data across the ser‐ vice mesh. Simply installing Prometheus and Grafana is enough to get started with this important service, however do keep in mind many other backend met‐ rics/telemetry-collection services are supported. In Chapter Chapter 2, you saw the following four commands to install and expose the metrics system:
-
-oc apply -f install/kubernetes/addons/prometheus.yaml oc apply -f install/kubernetes/addons/grafana.yaml oc expose svc grafana oc expose svc prometheus
-
-You can then launch the Grafana console using the minishift service command: open "$\(minishift openshift service grafana -u\)/dashboard/db/istiodashboard?var-source=All" Make sure to select Istio Dashboard in the upper left of the Grafana dashboard, as demonstrated in Figure 6-2. Figure 6-2. e Grafana dashboard—selecting Istio dashboard As of this writing, you do need to append ?var-source=All to the Grafana dash‐ board URL. This is likely to change in the future, watch the istio-tutorial for changes. Here’s an example URL: [http://grafana-istio-system.192.168.99.101.nip.io/dashboard/db/istio-dashboard?](http://grafana-istio-system.192.168.99.101.nip.io/dashboard/db/istio-dashboard?) var-source=All Figure 6-3 shows the dashboard. You can also visit the Prometheus dashboard directly at the following \(note, this will open the URL in a browser for you; you could use --url instead of --in-browser to get just the URL\): minishift openshift service prometheus --in-browser
+## 
 

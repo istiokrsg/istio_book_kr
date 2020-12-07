@@ -1,6 +1,248 @@
 # Classifying Metrics Based on Request or Response \(Experimental\)
 
-ref : [https://istio.io/v1.6/docs/tasks/observability/metrics/classify-metrics/](https://istio.io/v1.6/docs/tasks/observability/metrics/classify-metrics/)
+ref : [https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/](https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/)
+
+
+
+It’s useful to visualize telemetry based on the type of requests and responses handled by services in your mesh. For example, a bookseller tracks the number of times book reviews are requested. A book review request has this structure:
+
+```text
+GET /reviews/{review_id}
+```
+
+Counting the number of review requests must account for the unbounded element `review_id`. `GET /reviews/1` followed by `GET /reviews/2` should count as two requests to get reviews.  
+
+
+Istio lets you create classification rules using the [AttributeGen plugin](https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/) that groups requests into a fixed number of logical operations. For example, you can create an operation named `GetReviews`, which is a common way to identify operations using the [`Open API Spec operationId`](https://swagger.io/docs/specification/paths-and-operations/). This information is injected into request processing as `istio_operationId` attribute with value equal to `GetReviews`. You can use the attribute as a dimension in Istio standard metrics. Similarly, you can track metrics based on other operations like `ListReviews` and `CreateReviews`.  
+
+
+For more information, see the [reference content](https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/).  
+
+
+Istio uses the Envoy proxy to generate metrics and provides its configuration in the `EnvoyFilter` at [`manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml`](https://github.com/istio/istio/blob/release-1.7/manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml). As a result, writing classification rules involves adding attributes to the `EnvoyFilter`.  
+
+
+### Classify metrics by request <a id="classify-metrics-by-request"></a>
+
+
+
+You can classify requests based on their type, for example `ListReview`, `GetReview`, `CreateReview`.
+
+1. Create a file, for example `attribute_gen_service.yaml`, and save it with the following contents. This adds the `istio.attributegen` plugin to the `EnvoyFilter`. It also creates an attribute, `istio_operationId` and populates it with values for the categories to count as metrics.
+
+   This configuration is service-specific since request paths are typically service-specific.
+
+   ```text
+   apiVersion: networking.istio.io/v1alpha3
+   kind: EnvoyFilter
+   metadata:
+     name: istio-attributegen-filter
+   spec:
+     workloadSelector:
+       labels:
+         app: reviews
+     configPatches:
+     - applyTo: HTTP_FILTER
+       match:
+         context: SIDECAR_INBOUND
+         proxy:
+           proxyVersion: '1\.6.*'
+         listener:
+           filterChain:
+             filter:
+               name: "envoy.http_connection_manager"
+               subFilter:
+                 name: "istio.stats"
+       patch:
+         operation: INSERT_BEFORE
+         value:
+           name: istio.attributegen
+           typed_config:
+             "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+             type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+             value:
+               config:
+                 configuration: |
+                   {
+                     "attributes": [
+                       {
+                         "output_attribute": "istio_operationId",
+                         "match": [
+                           {
+                             "value": "ListReviews",
+                             "condition": "request.url_path == '/reviews' && request.method == 'GET'"
+                           },
+                           {
+                             "value": "GetReview",
+                             "condition": "request.url_path.matches('^/reviews/[[:alnum:]]*$') && request.method == 'GET'"
+                           },
+                           {
+                             "value": "CreateReview",
+                             "condition": "request.url_path == '/reviews/' && request.method == 'POST'"
+                           }
+                         ]
+                       }
+                     ]
+                   }
+                 vm_config:
+                   runtime: envoy.wasm.runtime.null
+                   code:
+                     local: { inline_string: "envoy.wasm.attributegen" }
+
+   ```
+
+  2. Apply your changes using the following command:
+
+```text
+$ kubectl -n istio-system apply -f attribute_gen_service.yaml
+
+```
+
+
+
+  3. Find the `stats-filter-1.6` `EnvoyFilter` resource from the `istio-system` namespace, using the following command:
+
+```text
+kubectl -n istio-system get envoyfilter | grep ^stats-filter-1.6
+stats-filter-1.6                    2d
+```
+
+
+
+  4. Create a local file system copy of the `EnvoyFilter` configuration, using the following command:
+
+```text
+$ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filter-1.6.yaml
+```
+
+
+
+  5. Open `stats-filter-1.6.yaml` with a text editor and locate the `name: istio.stats` extension configuration. Update it to map `request_operation` dimension in the `requests_total` standard metric to `istio_operationId` attribute. The updated configuration file section should look like the following.
+
+```text
+name: istio.stats
+typed_config:
+  '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+  type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+  value:
+    config:
+      configuration: >
+        {
+          "debug": "true",
+          "stat_prefix": "istio",
+          "metrics": [
+           {
+             "name": "requests_total",
+             "dimensions": {
+               "request_operation": "istio_operationId"
+             }
+           }]
+        }
+
+```
+
+  6. Save `stats-filter-1.6.yaml` and then apply the configuration using the following command:
+
+```text
+$ kubectl -n istio-system apply -f stats-filter-1.6.yaml
+```
+
+  7. Generate metrics by sending traffic to your application.
+
+  8. After the changes take effect, visit Prometheus and look for the new or changed dimensions, for example `istio_requests_total`.
+
+### Classify metrics by response <a id="classify-metrics-by-response"></a>
+
+
+
+You can classify responses using a similar process as requests.
+
+  1. Create a file, for example `attribute_gen_service.yaml`, and save it with the following contents. This add the `istio.attributegen` plugin to the `EnvoyFilter` and generates the `istio_responseClass` attribute used by the stats plugin. This example classifies various responses, such as grouping all response codes in the `200` range as a `2xx` dimension.
+
+```text
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: istio-attributegen-filter
+spec:
+  workloadSelector:
+    labels:
+      app: productpage
+  configPatches:
+  - applyTo: HTTP_FILTER
+    match:
+      context: SIDECAR_INBOUND
+      proxy:
+        proxyVersion: '1\.6.*'
+      listener:
+        filterChain:
+          filter:
+            name: "envoy.http_connection_manager"
+            subFilter:
+              name: "istio.stats"
+    patch:
+      operation: INSERT_BEFORE
+      value:
+        name: istio.attributegen
+        typed_config:
+          "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+          type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+          value:
+            config:
+              configuration: >
+                {
+                  "attributes": [
+                    {
+                      "output_attribute": "istio_responseClass",
+                      "match": [
+                        {
+                          "value": "2xx",
+                          "condition": "response.code >= 200 && response.code <= 299"
+                        },
+                        {
+                          "value": "3xx",
+                          "condition": "response.code >= 300 && response.code <= 399"
+                        },
+                        {
+                          "value": "404",
+                          "condition": "response.code == 404"
+                        },
+                        {
+                          "value": "429",
+                          "condition": "response.code == 429"
+                        },
+                        {
+                          "value": "503",
+                          "condition": "response.code == 503"
+                        },
+                        {
+                          "value": "5xx",
+                          "condition": "response.code >= 500 && response.code <= 599"
+                        },
+                        {
+                          "value": "4xx",
+                          "condition": "response.code >= 400 && response.code <= 499"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              vm_config:
+                runtime: envoy.wasm.runtime.null
+                code:
+                  local: { inline_string: "envoy.wasm.attributegen" }
+
+```
+
+
+
+  2. Apply your changes using the following command:
+
+
+
+  3. 
+
+
 
 
 

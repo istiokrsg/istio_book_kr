@@ -34,20 +34,92 @@ The Bookinfo\[[https://istio.io/v1.7/docs/examples/bookinfo/](https://istio.io/v
 
 ### Enable custom metrics
 
-1. The default telemetry v2 EnvoyFilter configuration is equivalent to the following installation options: `bash`  To customize telemetry v2 metrics, for example, to add request\_host and destination\_port dimensions to the requests\_total metric emitted by both gateways and sidecars in the inbound and outbound direction, change the installation options as follows:    
-2. Apply the following annotation to all injected pods with the list of the dimensions to extract into a Prometheus time series using the following command:  
+  1. The default telemetry v2 EnvoyFilter configuration is equivalent to the following installation options:  
+`bash`  
   
+To customize telemetry v2 metrics, for example, to add request\_host and destination\_port dimensions to the requests\_total metric emitted by both gateways and sidecars in the inbound and outbound direction, change the installation options as follows:  
 
 
+{% hint style="info" %}
+
+{% endhint %}
+
+  
+  2. Apply the following annotation to all injected pods with the list of the dimensions to extract into a Prometheus time series using the following command:  
 
 
-   This step is needed only if your dimensions are not already in [DefaultStatTags list](https://github.com/istio/istio/blob/release-1.7/pkg/bootstrap/config.go)
+{% hint style="info" %}
+This step is needed only if your dimensions are not already in DefaultStatTags list
+{% endhint %}
+
+```bash
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  template: # pod template
+    metadata:
+      annotations:
+        sidecar.istio.io/extraStatTags: destination_port,request_host  
+```
 
 ### Verify the results
 
+Send traffic to the mesh. For the Bookinfo sample, visit http://$GATEWAY\_URL/productpage in your web browser or issue the following command:
+
+```bash
+$ curl "http://$GATEWAY_URL/productpage"
+```
+
+{% hint style="info" %}
+$GATEWAY\_URL is the value set in the Bookinfo example.
+{% endhint %}
+
+Use the following command to verify that Istio generates the data for your new or modified dimensions:
+
+```bash
+$ kubectl exec "$(kubectl get pod -l app=productpage -o jsonpath='{.items[0].metadata.name}')" -c istio-proxy -- curl 'localhost:15000/stats/prometheus' | grep istio_requests_total
+
+```
+
+For example, in the output, locate the metric istio\_requests\_total and verify it contains your new dimension.
 
 
-1. 2. 
+
+### Use expressions for values
+
+The values in the metric configuration are common expressions, which means you must double-quote strings in JSON, e.g. “‘string value’”. Unlike Mixer expression language, there is no support for the pipe \(\|\) operator, but you can emulate it with the has or in operator, for example:
+
+```bash
+has(request.host) ? request.host : "unknown"
+```
+
+For more information, see [Common Expression Language](https://opensource.google/projects/cel).  
+
+
+Istio exposes all standard [Envoy attributes](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/security/rbac_filter#condition). Additionally, you can use the following extra attributes.  
+
+
+| Attribute | Type | Value |
+| :---: | :---: | :---: |
+| `listener_direction` | int64 | Enumeration value for [listener direction](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/base.proto#envoy-api-enum-core-trafficdirection) |
+| `listener_metadata` | [metadata](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/base.proto#core-metadata) | Per-listener metadata |
+| `route_metadata` | [metadata](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/base.proto#core-metadata) | Per-route metadata |
+| `cluster_metadata` | [metadata](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/base.proto#core-metadata) | Per-cluster metadata |
+| `node` | [node](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/base.proto#core-node) | Node description |
+| `cluster_name` | string | Upstream cluster name |
+| `route_name` | string | Route name |
+| `filter_state` | map\[string, bytes\] | Per-filter state blob |
+| `plugin_name` | string | Wasm extension name |
+| `plugin_root_id` | string | Wasm root instance ID |
+| `plugin_vm_id` | string | Wasm VM ID |
+
+
+
+For more information, see [configuration reference](https://istio.io/v1.7/docs/reference/config/proxy_extensions/stats/).  
+
+
+
+
 
 
 

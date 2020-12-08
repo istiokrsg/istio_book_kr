@@ -2,7 +2,7 @@
 
 ref : [https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/](https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/)
 
-
+### Classifying Metrics Based on Request or Response \(Experimental\)
 
 It’s useful to visualize telemetry based on the type of requests and responses handled by services in your mesh. For example, a bookseller tracks the number of times book reviews are requested. A book review request has this structure:
 
@@ -238,9 +238,99 @@ spec:
 
   2. Apply your changes using the following command:
 
+```text
+$ kubectl -n istio-system apply -f attribute_gen_service.yaml
+
+```
+
+  3. Find the `stats-filter-1.6` `EnvoyFilter` resource from the `istio-system` namespace, using the following command:
+
+```text
+$ kubectl -n istio-system get envoyfilter | grep ^stats-filter-1.6
+stats-filter-1.6                    2d
+```
+
+  4. Create a local file system copy of the `EnvoyFilter` configuration, using the following command:
+
+```text
+$ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filter-1.6.yaml
 
 
-  3. 
+```
+
+  5. Open `stats-filter-1.6.yaml` with a text editor and locate the `name: istio.stats` extension configuration. Update it to map `response_code` dimension in the `requests_total` standard metric to `istio_responseClass` attribute. The updated configuration file section should look like the following.
+
+```text
+name: istio.stats
+typed_config:
+  '@type': type.googleapis.com/udpa.type.v1.TypedStruct
+  type_url: type.googleapis.com/envoy.extensions.filters.http.wasm.v3.Wasm
+  value:
+    config:
+      configuration: >
+        {
+          "debug": "true",
+          "stat_prefix": "istio",
+          "metrics": [
+           {
+             "name": "requests_total",
+             "dimensions": {
+               "response_code": "istio_responseClass"
+             }
+           }]
+        }
+
+```
+
+  6. Save `stats-filter-1.6.yaml` and then apply the configuration using the following command:
+
+```text
+$ kubectl -n istio-system apply -f stats-filter-1.6.yaml
+
+
+```
+
+
+
+### Verify the results
+
+
+
+  1. Generate metrics by sending traffic to your application.
+
+  2. Visit Prometheus and look for the new or changed dimensions, for example 2xx. Alternatively, use the following command to verify that Istio generates the data for your new dimension:
+
+```text
+$ kubectl exec pod-name -c istio-proxy -- curl 'localhost:15000/stats/prometheus' | grep istio_
+
+```
+
+    In the output, locate the metric \(e.g. `istio_requests_total`\) and verify the presence of the new or changed dimension.
+
+
+
+### Troubleshooting
+
+
+
+If classification does not occur as expected, check the following potential causes and resolutions.
+
+Review the Envoy proxy logs for the pod that has the service on which you applied the configuration change. Check that there are no errors reported by the service in the Envoy proxy logs on the pod, \(pod-name\), where you configured classification by using the following command:
+
+```text
+$ kubectl logs pod-name -c istio-proxy | grep -e "Config Error" -e "envoy wasm"
+
+```
+
+
+
+Additionally, ensure that there are no Envoy proxy crashes by looking for signs of restarts in the output of the following command:
+
+```text
+$ kubectl get pods pod-name
+
+
+```
 
 
 

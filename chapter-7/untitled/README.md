@@ -11,7 +11,7 @@ Demonstrates how to collect telemetry information from the mesh.
 * **Logs**
   * Demonstrates the collection of logs within Istio.
 * **Distributed Tracing**
-  * 이 태스크는 추적 스팬을 수집하도록 Istio 사용 애플리케이션을 구성하는 방법을 보여줍니다.
+  * 이 태스크는 추적 스팬을 수집하도록 Istio 사용하여 애플리케이션을 구성하는 방법을 보여줍니다.
 * **Visualizing Your Mesh**
   * 이 작업은 Istio 메시 내에서 서비스를 시각화하는 방법을 보여줍니다.
 * **Remotely Accessing Telemetry Addons**

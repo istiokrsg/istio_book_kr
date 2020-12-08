@@ -67,13 +67,12 @@
       * [Getting Envoy's Access Logs](chapter-7/untitled/example-logs/getting-envoys-access-logs.md)
     * [Example Distributed Tracing](chapter-7/untitled/example-distributed-tracing/README.md)
       * [Overview](chapter-7/untitled/example-distributed-tracing/overview.md)
-      * [Jaeger](chapter-7/untitled/example-distributed-tracing/jaeger.md)
-      * [Zipkin](chapter-7/untitled/example-distributed-tracing/zipkin.md)
+      * [Zipkin](chapter-7/untitled/example-distributed-tracing/jaeger.md)
+      * [Jaeger](chapter-7/untitled/example-distributed-tracing/zipkin.md)
       * [Lightstep](chapter-7/untitled/example-distributed-tracing/lightstep.md)
       * [Configurability \(Beta/Development\)](chapter-7/untitled/example-distributed-tracing/configurability-beta-development.md)
     * [Example Visualizing Your Mesh](chapter-7/untitled/example-visualizing-your-mesh-1.md)
     * [Example Remotely Accessing Telemetry Addons](chapter-7/untitled/example-remotely-accessing-telemetry-addons.md)
-  * [Observability](chapter-7/observability.md)
 * [7. Best Practice \(PH\)](7.-best-practice-ph.md)
 
 ## howto <a id="references"></a>

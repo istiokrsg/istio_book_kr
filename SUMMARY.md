@@ -28,7 +28,6 @@
       * [2.2.2 istio 설치](chapter-2/2.1.1.minikube-feature/2.2.1.istio-install-guide/2.2.2-istio.md)
       * [2.3.2 Bookinfo MSA 설치](chapter-2/2.1.1.minikube-feature/2.2.1.istio-install-guide/2.3.2-bookinfo-msa.md)
       * [2.2.3 Istio 삭제](chapter-2/2.1.1.minikube-feature/2.2.1.istio-install-guide/2.2.3-istio.md)
-    * [Untitled](chapter-2/2.1.1.minikube-feature/untitled.md)
     * [2.3 BookInfo MSA 소개](chapter-2/2.1.1.minikube-feature/2.3-bookinfo-msa/README.md)
       * [2.3.1 MSA \(Mirco Service Architecture\) 소개](chapter-2/2.1.1.minikube-feature/2.3-bookinfo-msa/2.3.1-msa-mirco-service-architecture.md)
       * [2.3.2 Bookinfo MSA 구조](chapter-2/2.1.1.minikube-feature/2.3-bookinfo-msa/2.3.2-bookinfo-msa.md)

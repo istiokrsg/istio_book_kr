@@ -73,7 +73,10 @@
     * [Example Remotely Accessing Telemetry Addons](chapter-7/untitled/example-remotely-accessing-telemetry-addons.md)
     * [Example Using Mixer for Telemetry](chapter-7/untitled/example-using-mixer-for-telemetry.md)
   * [Observability](chapter-7/observability.md)
-* [7. Best Practice \(PH\)](7.-best-practice-ph.md)
+* [7. Best Practice \(PH\)](7.-best-practice-ph/README.md)
+  * [일반적인 베스트프랙티스](7.-best-practice-ph/undefined/README.md)
+    * [메트릭 개수 줄이기](7.-best-practice-ph/undefined/undefined.md)
+  * [멀티 클러스터 서비스 매쉬 구성](7.-best-practice-ph/undefined-1.md)
 
 ## howto <a id="references"></a>
 

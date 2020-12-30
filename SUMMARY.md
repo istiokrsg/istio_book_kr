@@ -7,10 +7,12 @@
     * [마이크로서비스 아키텍처](charter-1-introduce/service-mesh/msa.md)
     * [Service Mesh](charter-1-introduce/service-mesh/service-mesh.md)
   * [Istio Architecture \(PH\)](charter-1-introduce/istio/README.md)
-    * [데이터 플레인](charter-1-introduce/istio/undefined/README.md)
-      * [Envoy](charter-1-introduce/istio/undefined/envoy-proxy.md)
-    * [제어 플레인](charter-1-introduce/istio/undefined-1/README.md)
-      * [istiod](charter-1-introduce/istio/undefined-1/pilot.md)
+    * [Data Plane](charter-1-introduce/istio/data-plane.md)
+    * [Control Plane](charter-1-introduce/istio/control-plane.md)
+    * [Envoy](charter-1-introduce/istio/envoy-proxy.md)
+    * [Pilot](charter-1-introduce/istio/pilot.md)
+    * [Citadel](charter-1-introduce/istio/citadel.md)
+    * [Gallery](charter-1-introduce/istio/gallery.md)
 * [2. Setup & Installation \(HK\)](chapter-2/README.md)
   * [Kubernetes 설치](chapter-2/2.1-kubernetes/README.md)
     * [Minikube](chapter-2/2.1-kubernetes/minikube/README.md)
@@ -73,10 +75,7 @@
     * [Example Remotely Accessing Telemetry Addons](chapter-7/untitled/example-remotely-accessing-telemetry-addons.md)
     * [Example Using Mixer for Telemetry](chapter-7/untitled/example-using-mixer-for-telemetry.md)
   * [Observability](chapter-7/observability.md)
-* [7. Best Practice \(PH\)](7.-best-practice-ph/README.md)
-  * [일반적인 베스트프랙티스](7.-best-practice-ph/undefined/README.md)
-    * [메트릭 개수 줄이기](7.-best-practice-ph/undefined/undefined.md)
-  * [멀티 클러스터 서비스 매쉬 구성](7.-best-practice-ph/undefined-1.md)
+* [7. Best Practice \(PH\)](7.-best-practice-ph.md)
 
 ## howto <a id="references"></a>
 

@@ -1,0 +1,34 @@
+# Eclipse artifacts
+.project
+.pydevproject
+*.iml
+.idea/
+.vscode
+tmp/
+*.bak
+.DS_Store
+.tools
+.htmlproofer
+public
+resources
+node_modules
+generated
+
+# install generated files
+install/**
+
+# contains samples to demo Istio
+samples/**
+
+# copied from istio repository
+tests/integration/**
+manifests/**
+
+# contains the built artifacts
+out/**
+
+# contains cloned istio repository
+go/**
+
+# archived site version
+archived_version

@@ -1,0 +1,110 @@
+defaultContentLanguage = "en"
+languageCode = "en-us"
+metaDataFormat = "yaml"
+title = "Istio"
+uglyURLs = false
+enableRobotsTXT = true
+pluralizeListTitles = false
+canonifyURLs = true
+disableKinds = ["taxonomy", "taxonomyTerm"]
+anchor = "smart"
+enableGitInfo = true
+enableEmoji = false
+buildFuture = true
+staticDir = ["static", "generated"]
+
+# we use Netlify server-side redirects instead of generated aliases
+disableAliases = false
+
+[markup]
+  defaultMarkdownHandler = "blackfriday"
+  [markup.blackfriday]
+    angledQuotes = false
+    footnoteAnchorPrefix = ""
+    footnoteReturnLinkContents = ""
+    fractions = true
+    hrefTargetBlank = false
+    latexDashes = true
+    nofollowLinks = false
+    noreferrerLinks = false
+    plainIDAnchors = true
+    skipHTML = false
+    smartDashes = true
+    smartypants = true
+    smartypantsQuotesNBSP = false
+    taskLists = true
+    extensions = [""]
+  [markup.goldmark]
+    [markup.goldmark.extensions]
+      definitionList = true
+      footnote = true
+      linkify = true
+      strikethrough = true
+      table = true
+      taskList = true
+      typographer = true
+    [markup.goldmark.parser]
+      attribute = true
+      autoHeadingID = true
+    [markup.goldmark.renderer]
+      hardWraps = false
+      unsafe = true
+      xHTML = false
+  [markup.highlight]
+    codeFences = true
+    hl_Lines = ""
+    lineNoStart = 1
+    lineNos = false
+    lineNumbersInTable = true
+    noClasses = true
+    style = "monokai"
+    tabWidth = 4
+  [markup.tableOfContents]
+    endLevel = 3
+    startLevel = 2
+
+[mediaTypes]
+    [mediaTypes."text/netlify"]
+        delimiter = ""
+
+[outputs]
+  home = ["HTML", "RSS", "REDIR", "JSON"]
+  section = ["HTML"]
+
+[outputFormats]
+    [outputFormats.RSS]
+        baseName = "feed"
+    [outputFormats.REDIR]
+        mediatype = "text/netlify"
+        baseName = "_redirects"
+        isPlainText = true
+        notAlternative = true
+    [outputFormats.JSON]
+        baseName = "_tracked_pages"
+
+[related]
+    # Only include matches with rank >= threshold. This is a normalized rank between 0 and 100.
+    threshold = 80
+
+    # To get stable "See also" sections we, by default, exclude newer related pages.
+    includeNewer = true
+
+    # Will lower case keywords in both queries and in the indexes.
+    toLower = false
+
+    [[related.indices]]
+        name = "keywords"
+        weight = 150
+
+    [[related.indices]]
+        name  = "tags"
+        weight = 100
+
+# internationalization
+[languages]
+    [languages.zh]
+        contentDir = "content/zh"
+    [languages.en]
+        contentDir = "content/en"
+    [languages.pt-br]
+        contentDir = "content/pt-br"

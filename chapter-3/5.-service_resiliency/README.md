@@ -17,3 +17,5 @@ Istio는 트래픽 관리 규칙 \(Traffic Management Rule\)을 통하여 메시
 
 ![](https://github.com/istiokrsg/istio_book_kr/tree/50e9e3d699dffedd253f64968a6b6fe18f85539d/.gitbook/assets/requesttimeouts10.png)
 
+
+

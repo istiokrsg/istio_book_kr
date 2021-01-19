@@ -10,7 +10,7 @@ Azure 명령 줄 인터페이스 \(Azure CLI\)는 Azure 리소스를 만들고 �
 
 #### 1. Azure CLI 설치
 
-Azure CLI 모든 설치 명령을 한 번에 실행하는 스크립트를 제공합니다. curl 및 pipe를 사용하여 bash에 직접 실행하거나 스크립트를 파일로 다운로드하여 실행 가능합니다. 아래와 같이  curl 명령어를 통해 한번에 Azure CLI 설치가 가능합니다.
+Azure CLI 모든 설치 명령을 한 번에 실행하는 스크립트를 제공합니다. curl 및 pipe를 사용하여 bash에 직접 실행하거나 스크립트를 파일로 다운로드하여 실행 가능합니다. 아래와 같이 curl 명령어를 통해 한번에 Azure CLI 설치가 가능합니다.
 
 ```text
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
@@ -20,7 +20,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
 #### Azure Login
 
-http://portal.azure.com 에서 생성한 계정 정보를 이용해서 아래와 같이 로그인이 가능합니다.
+[http://portal.azure.com](http://portal.azure.com) 에서 생성한 계정 정보를 이용해서 아래와 같이 로그인이 가능합니다.
 
 ```text
 az login -u your_id
@@ -42,7 +42,7 @@ az accout show
 
 ### Azure SP\(Service Principal\) 생성
 
-Azure 는 서비스 주체\(Service Principal\)을 통해 RBAC\(역할 기반 엑세스 제어\) 기능을 제공하고 있습니다. Azure AD\(Active Ditectory\) 를 통해 서비스 주체를 생성하고, AKS 리소스를 제어할 수 있는 RBAC 을 설정합니다. 아래와 같이 서비스 주체가 생성되면 서비스 주체를 식별하기 위한 정보들이 표시되고,  AKS 생성시, 아래 정보를 활용하게 되니 따로 저장 관리가 필요합니다.
+Azure 는 서비스 주체\(Service Principal\)을 통해 RBAC\(역할 기반 엑세스 제어\) 기능을 제공하고 있습니다. Azure AD\(Active Ditectory\) 를 통해 서비스 주체를 생성하고, AKS 리소스를 제어할 수 있는 RBAC 을 설정합니다. 아래와 같이 서비스 주체가 생성되면 서비스 주체를 식별하기 위한 정보들이 표시되고, AKS 생성시, 아래 정보를 활용하게 되니 따로 저장 관리가 필요합니다.
 
 ```text
 az ad sp create-for-rbac --skip-assignment
@@ -77,7 +77,7 @@ NODETYPE=Standard_B2ms
 AKS가 생성될 리소스 그룹을 생성합니다. 위 사전 정의된 값에 의해 아래 명령어를 실행하면 한국 중부\(koreacentral\)에 리소스 그룹\(prl-kc-aks-rg\)을 생서하게 됩니다. 이 리소스 그룹에 AKS 리소스를 생성할 예정입니다.
 
 ```text
-az group create --location $LOCATION --name $RGNAME 
+az group create --location $LOCATION --name $RGNAME
 ```
 
 ### AKS에서 사용 가능한 쿠버네티스 버전 확인
@@ -116,7 +116,7 @@ az aks create -n $CLUSTERNAME -g $RGNAME -s $NODETYPE \
 
 ### AKS 상태 확인
 
-일정 시간이 지나면 AKS의  ProvisioningState 가 Scceeded 상태로 변경되어 정상적으로 실행된 것을 확인할 수 있습니다.
+일정 시간이 지나면 AKS의 ProvisioningState 가 Scceeded 상태로 변경되어 정상적으로 실행된 것을 확인할 수 있습니다.
 
 ```text
 # verify aks cluster status
@@ -149,7 +149,7 @@ Metrics-server is running at https://prl-kc-k8s-prl-kc-aks-rg-203f8c-f911d974.hc
 
 ### AKS 삭제
 
-AKS 를 생성하는 순간부터 VM 노드에 대한 비용이 발생합니다. 따라서 필요에 따라 AKS를 삭제하거나,  클러스터 노드의 VMSS를 일시 deallocation 해야 비용을 절약할 수 있습니다.
+AKS 를 생성하는 순간부터 VM 노드에 대한 비용이 발생합니다. 따라서 필요에 따라 AKS를 삭제하거나, 클러스터 노드의 VMSS를 일시 deallocation 해야 비용을 절약할 수 있습니다.
 
 * VMSS list 확인
 
@@ -160,7 +160,6 @@ az vmss list --resource-group MC_prl-kc-aks-rg_prl-kc-k8s-istiobooks_koreacentra
 Name                         ResourceGroup                                        Location      Zones    Capacity    Overprovision    UpgradePolicy
 ---------------------------  ---------------------------------------------------  ------------  -------  ----------  ---------------  ---------------
 aks-nodepool1-18165888-vmss  MC_prl-kc-aks-rg_prl-kc-k8s-istiobooks_koreacentral  koreacentral           3           False            Manual
-
 ```
 
 * VMSS deallocation

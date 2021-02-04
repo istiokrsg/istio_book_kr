@@ -1,6 +1,6 @@
 # Kubernetes 소개
 
-## Kubernetes 
+## Kubernetes
 
 Kubernetes는 컨테이너 기반 애플리케이션과 관련 네트워킹 및 스토리지 구성 요소를 관리하는 플랫폼으로서 빠르게 진화하고 있습니다. 기본 인프라 구성 요소가 아니라 애플리케이션 워크로드에 중점을 두고 있습니다. Kubernetes는 관리 작업을 위한 강력한 API 집합을 통해 지원되는 선언적 배포 방식을 제공합니다.
 
@@ -20,11 +20,11 @@ p.64 \(그림 4.4\)
 
 ### Master
 
-Master는 API Server,  Scheduler, kubelet, Controller Manager 등 클러스터 전체를 관리하기 위한 여러개의 컴포넌트로 구성되어 있습니다. 클러스터 안에 있는 여러 노드들의 리소스 정보와  그 안에서 동작하는 컨테이너들의 상태를 관리하기 위한 모든 정보들을 관리하고 제어하는 역할을 담당합니다.
+Master는 API Server, Scheduler, kubelet, Controller Manager 등 클러스터 전체를 관리하기 위한 여러개의 컴포넌트로 구성되어 있습니다. 클러스터 안에 있는 여러 노드들의 리소스 정보와 그 안에서 동작하는 컨테이너들의 상태를 관리하기 위한 모든 정보들을 관리하고 제어하는 역할을 담당합니다.
 
 #### API Server
 
-kube-apiserver는 쿠버네티스 클러스터의 리소스 정보를 관리하기 위한 REST API 를 제공하는 프로세스입니다. kubectl 또는 쿠버네티스 대시보드와 같은 관리도구에서 클러스터를 제어하기 위한 모든 요청은 kube-apiserver를 통해서 다른 곳으로 전달되도록 되어 있습니다. 또한 클러스터로 API 요청이 왔을때 해당 요청의 유효성을 검증하는 역할을 담당합니다. kube-apiserver는 scale-out\(수평확장\) 을 통해 여러 개의 컨테이너를 실행할 수 있습니다. 
+kube-apiserver는 쿠버네티스 클러스터의 리소스 정보를 관리하기 위한 REST API 를 제공하는 프로세스입니다. kubectl 또는 쿠버네티스 대시보드와 같은 관리도구에서 클러스터를 제어하기 위한 모든 요청은 kube-apiserver를 통해서 다른 곳으로 전달되도록 되어 있습니다. 또한 클러스터로 API 요청이 왔을때 해당 요청의 유효성을 검증하는 역할을 담당합니다. kube-apiserver는 scale-out\(수평확장\) 을 통해 여러 개의 컨테이너를 실행할 수 있습니다.
 
 #### etcd
 
@@ -48,13 +48,11 @@ Controller Manager 는 쿠버네티스 클러스터의 상태를 감시하고, �
 
 #### kubelet
 
-Node 안에는 kubelet 에이전트가 실행되고 있습니다. kubelet 은 kube-apiserver, scheduler 를 통해 Pod 정의 파일\(CRD\)에 따라 컨테이너를 실행하거나, 스토리지 공간을 마운트 합니다. 또한 kubelet은 Node의 상태 정보를 주기적으로 모니터링 하여 API Server 에게 보고하고, etcd 에 저장하도록 합니다. 
+Node 안에는 kubelet 에이전트가 실행되고 있습니다. kubelet 은 kube-apiserver, scheduler 를 통해 Pod 정의 파일\(CRD\)에 따라 컨테이너를 실행하거나, 스토리지 공간을 마운트 합니다. 또한 kubelet은 Node의 상태 정보를 주기적으로 모니터링 하여 API Server 에게 보고하고, etcd 에 저장하도록 합니다.
 
 #### kube-proxy
 
 Node로 들어오는 네트워크 트래픽을 적절한 컨테이너로 라우팅하고, 로드밸런싱 등 Node에서 발생하는 in/out bound 네트워크 트래픽을 프록시하고, Node 와 Master 간의 네트워크 통신을 관리합니다.
-
-
 
 Ref
 

@@ -1,4 +1,7 @@
-# Example Distributed Tracing
+# Distributed Tracing
+
+
+### [뒤로 가기](../README.md)
 
 This task shows you how to configure Istio-enabled applications to collect trace spans.
 

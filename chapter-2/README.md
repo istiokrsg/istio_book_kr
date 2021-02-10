@@ -6,3 +6,4 @@ Kubernetes는 **sidecar-deployment** 와 같은 배포 개념을 기본으로하
 
 이번 장에서는 Kubernetes 클러스터 테스트/개발 환경 구축을 위해 [Minikube](https://kubernetes.io/ko/docs/tasks/xtools/install-minikube/) 와 [Kubectl](https://github.com/istiokrsg/istio_book_kr/tree/245f02167ebda3f8a54deb86de7d4723260e8a76/chapter-2/2.1.1.minikube-feature) 설치 방법과 Kubernetes 클러스터에 마이크로서비스 예제 애플리케이션 Bookinfo를 배포하여 Istio를 통해 서비스 간 트래픽 컨트롤, 서비스 제어, 보안, 정책, 모니터링 등 주요 기능을 테스트하기 위한 환경 구축 방벙에 대해 자세히 소개하겠습니다.
 
+### [목차로가기](../README.md)

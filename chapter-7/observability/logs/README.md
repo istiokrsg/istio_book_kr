@@ -1,4 +1,6 @@
-# Example Logs
+# Logs
+
+### [뒤로 가기](../README.md)
 
 Demonstrates the collection of logs within Istio.
 

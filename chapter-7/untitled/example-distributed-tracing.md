@@ -1,2 +1,0 @@
-# Example Distributed Tracing
-

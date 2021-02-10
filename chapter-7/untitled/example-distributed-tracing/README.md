@@ -2,6 +2,8 @@
 
 This task shows you how to configure Istio-enabled applications to collect trace spans.
 
+
+
 * **Overview**
   * Overview of distributed tracing in Istio.
 * **Jaeger**

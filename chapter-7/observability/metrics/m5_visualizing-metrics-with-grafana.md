@@ -147,7 +147,7 @@ For more on how to create, configure, and edit dashboards, please see the [Grafa
 
 
 
-
+### [뒤로 가기](./README.md)
 
 
 

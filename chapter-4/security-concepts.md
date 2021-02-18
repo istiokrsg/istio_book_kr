@@ -1,4 +1,4 @@
-# Security Concepts
+# Security Architecture
 
 ## Security
 

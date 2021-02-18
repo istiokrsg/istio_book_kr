@@ -1,0 +1,84 @@
+# Istio DNS Certificate Management
+
+이 작업은 자체 개인 키를 유지하지 않고 Kubernetes CA API를 사용하여 인증서에 서명하는 Istiod와 연결된 경량 구성 요소 인 Chiron을 사용하여 DNS 인증서를 프로비저닝하고 관리하는 방법을 보여줍니다. 이 기능을 사용하면 다음과 같은 이점이 있습니다.
+
+* Istiod와 달리 이 기능은 보안을 강화하는 개인 서명 키를 유지할 필요가 없습니다.
+* TLS 클라이언트에 대한 간단한 루트 인증서 배포. 클라이언트는 더 이상 Istiod가 CA 인증서를 생성하고 배포 할 때까지 기다릴 필요가 없습니다.
+
+## Before you begin
+
+* DNS 인증서가 구성된 istioctl을 통해 Istio를 설치합니다. Istiod가 시작될 때 구성을 읽습니다.
+
+```text
+cat <<EOF > ./istio.yaml
+apiVersion: install.istio.io/v1alpha1
+kind: IstioOperator
+spec:
+  meshConfig:
+    certificates:
+      - secretName: dns.example1-service-account
+        dnsNames: [example1.istio-system.svc, example1.istio-system]
+      - secretName: dns.example2-service-account
+        dnsNames: [example2.istio-system.svc, example2.istio-system]
+EOF
+istioctl install -f ./istio.yaml
+```
+
+### DNS certificate provisioning and management <a id="dns-certificate-provisioning-and-management"></a>
+
+Istio는 사용자가 제공 한 구성을 기반으로 DNS 인증서에 대한 DNS 이름과 비밀 이름을 프로비저닝합니다. 프로비저닝 된 DNS 인증서는 Kubernetes CA에 의해 서명되며 구성에 따라 비밀에 저장됩니다. Istio는 또한 교체 및 재생성을 포함하여 DNS 인증서의 수명주기를 관리합니다.
+
+### Configure DNS Certificates
+
+위의 istioctl 설치 명령에서 Istio를 구성하는 데 사용되는 IstioControlPlane 사용자 지정 리소스에는 예제 DNS 인증서 구성이 포함되어 있습니다. 내에서 dnsNames 필드는 인증서의 DNS 이름을 지정하고 secretName 필드는 인증서와 키를 저장하는 데 사용되는 Kubernetes 비밀의 이름을 지정합니다.
+
+### Check the provisioning of DNS certificates
+
+DNS 인증서를 생성하고 선택한 비밀에 저장하도록 Istio를 구성한 후 인증서가 프로비저닝되었고 제대로 작동하는지 확인할 수 있습니다.
+
+Istio가 예제에 구성된대로 dns.example1-service-account DNS 인증서를 생성했는지, 인증서에 구성된 DNS 이름이 포함되어 있는지 확인하려면 Kubernetes에서 비밀을 가져 와서 구문 분석하고 디코딩 한 후 텍스트를 확인해야합니다. 다음 명령으로 출력합니다.
+
+```text
+kubectl get secret dns.example1-service-account -n istio-system -o jsonpath="{.data['cert-chain\.pem']}" | base64 --decode | openssl x509 -in /dev/stdin -text -noout
+```
+
+텍스트 출력에는 다음이 포함되어야합니다.
+
+```text
+X509v3 Subject Alternative Name:
+    DNS:example1.istio-system.svc, DNS:example1.istio-system
+```
+
+## Regenerating a DNS certificate
+
+Istio는 실수로 삭제 된 DNS 인증서를 다시 생성 할 수도 있습니다. 다음으로 최근에 구성된 인증서를 삭제하고 Istio가 자동으로 다시 생성하는지 확인하는 방법을 보여줍니다.
+
+* Delete the secret storing the DNS certificate configured earlier:
+
+```text
+kubectl delete secret dns.example1-service-account -n istio-system
+```
+
+* Istio가 삭제 된 DNS 인증서를 다시 생성했는지, 인증서에 구성된 DNS 이름이 포함되어 있는지 확인하려면 Kubernetes에서 비밀을 가져 와서 구문 분석하고 디코딩 한 다음 다음 명령을 사용하여 텍스트 출력을 확인해야합니다.
+
+```text
+sleep 10; kubectl get secret dns.example1-service-account -n istio-system -o jsonpath="{.data['cert-chain\.pem']}" | base64 --decode | openssl x509 -in /dev/stdin -text -noout
+```
+
+실행 결과는 다음과 정보를 포함 합니다.
+
+```text
+X509v3 Subject Alternative Name:
+    DNS:example1.istio-system.svc, DNS:example1.istio-system
+```
+
+## Cleanup
+
+```text
+kubectl delete ns istio-system
+```
+
+
+
+
+

@@ -8,7 +8,7 @@ tags:
   - install
 ---
 
-# Istio 설치
+# 2.3 Istio 설치
 
 Istio 의 Service Mesh를 위한 다양한 기능을 테스트 하기 위해서는 기본적으로 Kubernetes, Kubectl, Helm와 같은 다양한 개발, 테스트 환경이 필요합니다.
 

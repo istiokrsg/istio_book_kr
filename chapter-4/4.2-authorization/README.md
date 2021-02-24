@@ -1,4 +1,4 @@
-# 5.2 Authorization
+# 5.5 Authorization
 
 ## Authorization
 

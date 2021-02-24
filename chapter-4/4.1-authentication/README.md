@@ -2,7 +2,7 @@
 description: 인증정책
 ---
 
-# 5.1 Authentication
+# 5.4 Authentication
 
 ## Authentication
 

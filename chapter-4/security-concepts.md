@@ -1,8 +1,8 @@
-# 5.2 Security Architecture
+# Security Architecture
 
 ## Security
 
-모노리식\(monolithic\) 애플리케이션을 원자 서비스로 분해하면 민첩성 향상, 확장성 향상, 서비스 재사용 능력 향상 등 다양한 이점이 제공됩니다. 그러나 마이크로 서비스에는 특정 보안 요구 사항이 필요합니다.
+모노리식 \(monolithic\) 애플리케이션을 원자 서비스로 분해하면 민첩성 향상, 확장성 향상, 서비스 재사용 능력 향상 등 다양한 이점이 제공됩니다. 그러나 마이크로 서비스에는 특정 보안 요구 사항이 필요합니다.
 
 * MITM\(man-in-the-middle\) 공격을 방어하기 위해서는 네트워크 구간별 트래픽 암호화가 필요합니다.
 * 유연한 서비스 접근제어를 제공하려면 상호 TLS 및 세분화 된 액세스 정책이 필요합니다.
@@ -10,8 +10,7 @@
 
 Istio Security는 이러한 문제를 해결하기위한 포괄적 인 보안 솔루션을 제공합니다. 이 페이지에서는 Istio 보안 기능을 사용하여 어디에서 실행하든 서비스를 보호하는 방법에 대한 개요를 제공합니다. 특히 Istio 보안은 데이터, 엔드 포인트, 통신 및 플랫폼에 대한 내부 및 외부 위협을 모두 완화합니다.
 
-<!-- ![Security Overview](../.gitbook/assets/image%20%281%29.png) -->
-![Security Overview](../images/security-overview)
+![Security Overview](../.gitbook/assets/image%20%281%29.png)
 
 Istio 보안 기능은 강력한 ID, 강력한 정책, 투명한 TLS 암호화, 인증, 권한 부여 및 감사 \(AAA\) 도구를 제공하여 서비스와 데이터를 보호합니다. Istio 보안의 목표는 다음과 같습니다.
 
@@ -125,7 +124,7 @@ Istio는 대상 엔드 포인트에 비동기 적으로 구성 정보를 보냅�
 
 요청을 보내는 클라이언트 서비스는 필요한 인증 메커니즘을 따를 책임이 있습니다. 요청 인증의 경우 애플리케이션은 JWT 자격 증명을 획득하고 요청에 첨부해야합니다. 피어 인증의 경우 Istio는 두 PEP 간의 모든 트래픽을 상호 TLS로 자동 업그레이드합니다. 인증 정책이 상호 TLS 모드를 비활성화하는 경우 Istio는 PEP간에 계속 평문 통신을 사용합니다. 이 동작을 재정의하려면 대상 규칙을 사용하여 상호 TLS 모드를 명시 적으로 비활성화합니다. 상호 TLS 인증 섹션에서 상호 TLS 작동 방식에 대해 자세히 알아볼 수 있습니다.
 
-![Authentication Architecture](../images/authentication-architecture.png)
+![Authentication Architecture](../.gitbook/assets/image%20%2840%29.png)
 
 ### Authentication Policies
 
@@ -265,7 +264,7 @@ Istio의 인증 기능은 메시의 워크로드에 대해 메시, 네임 스페
 
 각 Envoy 프록시는 런타임에 요청을 승인하는 승인 엔진을 실행합니다. 프록시에 요청이 들어 오면 권한 부여 엔진은 현재 권한 부여 정책에 대해 요청 컨텍스트를 평가하고 권한 결과를 ALLOW 또는 DENY로 반환합니다. 운영자는 .yaml 파일을 사용하여 Istio 권한 부여 정책을 지정합니다.
 
-![Authorization Architecture](../images/authorization-architecture.png)
+![Authorization Architecture](../.gitbook/assets/image%20%2842%29.png)
 
 ### Implicit Enablement
 

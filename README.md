@@ -1,5 +1,5 @@
 ---
-description: 이스티오 전문서적 한글판
+description: istio  전문서적 한글판
 ---
 
 # istio\_book\_kr

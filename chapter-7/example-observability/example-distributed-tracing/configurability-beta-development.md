@@ -1,2 +1,0 @@
-# Configurability \(Beta/Development\)
-

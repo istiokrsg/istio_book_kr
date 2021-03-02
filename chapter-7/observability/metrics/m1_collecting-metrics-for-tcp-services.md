@@ -5,6 +5,7 @@
 
 This task shows how to configure Istio to automatically gather telemetry for TCP services in a mesh. At the end of this task, you can query default TCP metrics for your mesh.
 
+
 [Bookinfo](https://istio.io/v1.7/docs/examples/bookinfo/) 샘플 애플리케이션은 이 태스크 전체에서 예제로 사용됩니다.
 
 The [Bookinfo](https://istio.io/v1.7/docs/examples/bookinfo/) sample application is used as the example throughout this task.
@@ -12,12 +13,15 @@ The [Bookinfo](https://istio.io/v1.7/docs/examples/bookinfo/) sample application
 
 ## Before you begin 
 
-* 클러스터에 [Istio를 설치](https://istio.io/v1.7/docs/setup)하고 애플리케이션을 배포합니다. [Prometheus](https://istio.io/v1.7/docs/ops/integrations/prometheus/)도 설치해야합니다.
-* Install Istio in your cluster and deploy an application. You must also install Prometheus.
-* 이 작업에서는 Bookinfo 샘플이 기본 네임 스페이스에 배포된다고 가정합니다. 다른 네임 스페이스를 사용하는 경우 예제 구성 및 명령을 업데이트하십시오.
-* This task assumes that the Bookinfo sample will be deployed in the default namespace. If you use a different namespace, update the example configuration and commands.
+ * 클러스터에 [Istio를 설치](https://istio.io/v1.7/docs/setup)하고 애플리케이션을 배포합니다. [Prometheus](https://istio.io/v1.7/docs/ops/integrations/prometheus/)도 설치해야합니다.
 
-## Collecting new telemetry data <a id="collecting-new-telemetry-data"></a>
+* Install Istio in your cluster and deploy an application. You must also install Prometheus.
+
+ * 이 작업에서는 Bookinfo 샘플이 기본 네임 스페이스에 배포된다고 가정합니다. 다른 네임 스페이스를 사용하는 경우 예제 구성 및 명령을 업데이트하십시오.
+
+ * This task assumes that the Bookinfo sample will be deployed in the default namespace. If you use a different namespace, update the example configuration and commands.
+
+## Collecting new telemetry data
 
 1. 몽고DB를 사용하는 Bookinfo 셋업하는 방법 - Setup Bookinfo to use MongoDB.
    1. ratings 서비스 버전2를 설치합니다. - Install v2 of the ratings service.  
@@ -33,41 +37,82 @@ The [Bookinfo](https://istio.io/v1.7/docs/examples/bookinfo/) sample application
       `bash  
       $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo-ratings-v2.yaml)`
 
-      *`deployment "ratings-v2" configured`*                                              
+      *`deployment "ratings-v2"configured`*                                              
 
-   2. Install the `mongodb` service: If you are using a cluster with automatic sidecar injection enabled, deploy the services using kubectl: `bash $` If you are using manual sidecar injection, run the following command instead: `bash $`
+   2. Install the `mongodb` service: 
+   
+      If you are using a cluster with automatic sidecar injection enabled, deploy the services using kubectl: 
+      
+      `bash 
+      $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo-db.yaml`
+      
+      *`service/mongodb created`*
+      *`deployment.apps/mongodb-v1 created`*
+
+      If you are using manual sidecar injection, run the following command instead: 
+      
+      `bash
+      $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo-db.yaml)`
+      
+      *`service "mongodb" configured`*
+      *`deployment "mongodb-v1" configured`*
+   
    3. The Bookinfo sample deploys multiple versions of each microservice, so begin by creating destination rules that define the service subsets corresponding to each version, and the load balancing policy for each subset.  
+      
       `bash  
-      $`
+      $ kubectl apply -f samples/bookinfo/networking/destination-rule-all.yaml`
 
       If you enabled mutual TLS, run the following command instead:  
+      
       `bash  
-      $`  
+      $ kubectl apply -f samples/bookinfo/networking/destination-rule-all-mtls.yaml`
+
       To display the destination rules, run the following command:
 
       `bash  
-      $`  
+      $ kubectl get destinationrules -o yaml`
+
       Wait a few seconds for destination rules to propagate before adding virtual services that refer to these subsets, because the subset references in virtual services rely on the destination rules.
 
-   4. Create ratings and reviews virtual services: `bash $`
+   4. Create ratings and reviews virtual services: 
+      `bash $ kubectl apply -f samples/bookinfo/networking/virtual-service-ratings-db.yaml`
+
+      *`virtualservice.networking.istio.io/reviews created`*
+      *`virtualservice.networking.istio.io/ratings created`*
+
 2. Send traffic to the sample application.  
 
 
    For the Bookinfo sample, visit `http://$GATEWAY_URL/productpage` in your web browser or use the following command:
 
-   `bash`
+   `bash 
+   $ curl http://"$GATEWAY_URL/productpage"`
 
 3. Verify that the TCP metric values are being generated and collected.  
-   In a Kubernetes environment, setup port-forwarding for Prometheus by using the following command:  
+   In a Kubernetes environment, setup port-forwarding for Prometheus by using the following command:
+
    `bash  
-   $`
+   $ istioctl dashboard prometheus`
 
    View the values for the TCP metrics in the Prometheus browser window. Select Graph. Enter the istio\_tcp\_connections\_opened\_total metric or istio\_tcp\_connections\_closed\_total and select Execute. The table displayed in the Console tab includes entries similar to:  
-   `bash  
-   $`                                                                                    
-   ---  
-   `bash  
-   $`  
+
+   `  
+   istio_tcp_connections_opened_total{
+   destination_version="v1",
+   instance="172.17.0.18:42422",
+   job="istio-mesh",
+   canonical_service_name="ratings-v2",
+   canonical_service_revision="v2"}
+   `
+
+   `
+   istio_tcp_connections_closed_total{
+   destination_version="v1",
+   instance="172.17.0.18:42422",
+   job="istio-mesh",
+   canonical_service_name="ratings-v2",
+   canonical_service_revision="v2"}
+   `
 
 ## Understanding TCP telemetry collection
 
@@ -83,14 +128,23 @@ Several TCP-specific attributes enable TCP policy and control within Istio. Thes
 2. TCP server, as a first sequence of bytes, sends a magic byte sequence and a length prefixed payload. These payloads are protobuf encoded serialized metadata.
 3. Client and server can write simultaneously and out of order. The extension filter in Envoy then does the further processing in downstream and upstream until either the magic byte sequence is not matched or the entire payload is read.
 
-/ 그림
-
+<figure style="width:100%">
+<a href="https://istio.io/">
+   <img src="https://istio.io/v1.7/docs/tasks/observability/metrics/tcp-metrics/alpn-based-tunneling-protocol.svg"
+         alt="TCP Attribute Flow" title="TCP Attribute Flow"/>
+   
+</a>
+<figcaption>TCP Attribute Flow</figcaption>
+</figure>
 
 
 ## Cleanup
 
-* Remove the port-forward process: `bash $ killall istioctl`                                                                     
-* If you are not planning to explore any follow-on tasks, refer to the Bookinfo cleanup instructions to shutdown the application.
+ * Remove the port-forward process: 
+
+   `bash $ killall istioctl`
+
+ * If you are not planning to explore any follow-on tasks, refer to the [Bookinfo cleanup](https://istio.io/v1.7/docs/examples/bookinfo/#cleanup) instructions to shutdown the application.
 
 
 

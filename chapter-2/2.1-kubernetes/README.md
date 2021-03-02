@@ -1,2 +1,0 @@
-# Kubernetes 설치
-

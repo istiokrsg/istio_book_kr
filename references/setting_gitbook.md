@@ -40,4 +40,5 @@ master branch 에서 공동작업 할것이기 때문에 master branch only 를 
 
 진행중 잘 안되시면 문의주세요. gelius7@gmail.com
 
-### [목차로가기](../README.md)
+### [목차로가기](../)
+

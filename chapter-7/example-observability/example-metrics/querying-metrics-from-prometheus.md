@@ -1,2 +1,0 @@
-# Querying Metrics from Prometheus
-

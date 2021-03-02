@@ -1,2 +1,0 @@
-# Visualizing Metrics with Grafana
-

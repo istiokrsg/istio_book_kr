@@ -1,36 +1,30 @@
-# Classifying Metrics Based on Request or Response \(Experimental\)
+# 요청 또는 응답을 기반으로 메트릭 분류 \(Experimental\)
 
-ref : [https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/](https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/)
 
-### Classifying Metrics Based on Request or Response \(Experimental\)
-
-It’s useful to visualize telemetry based on the type of requests and responses handled by services in your mesh. For example, a bookseller tracks the number of times book reviews are requested. A book review request has this structure:
+메시의 서비스에서 처리하는 요청 및 응답 유형을 기반으로 원격 분석을 시각화하는 것이 유용합니다. 예를 들어 서점은 리뷰가 요청 된 횟수를 추적합니다. 리뷰 요청의 구조는 다음과 같습니다.
 
 ```text
 GET /reviews/{review_id}
 ```
 
-Counting the number of review requests must account for the unbounded element `review_id`. `GET /reviews/1` followed by `GET /reviews/2` should count as two requests to get reviews.  
+검토 요청 수를 계산할 때는 제한되지 않은 'review_id'요소를 고려해야합니다. `GET / reviews / 1` 다음에`GET / reviews / 2`가 오는 2 개의 리뷰 요청으로 계산되어야합니다. 
+
+Istio를 사용하면 요청을 고정 된 수의 논리적 작업으로 그룹화하는 [AttributeGen 플러그인] (https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/)을 사용하여 분류 규칙을 만들 수 있습니다. 예를 들어 [`Open API Spec operationId`] (https://swagger.io/docs/specification/paths-and-operations/)를 사용하여 작업을 식별하는 일반적인 방법 인`GetReviews`라는 작업을 만들 수 있습니다. ). 이 정보는 `GetReviews`와 동일한 값을 갖는 `istio_operationId`속성으로 요청 처리에 삽입됩니다. 이 속성을 Istio 표준 메트릭의 차원으로 사용할 수 있습니다. 마찬가지로 `ListReviews`및 `CreateReviews`와 같은 다른 작업을 기반으로 측정 항목을 추적 할 수 있습니다.
 
 
-Istio lets you create classification rules using the [AttributeGen plugin](https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/) that groups requests into a fixed number of logical operations. For example, you can create an operation named `GetReviews`, which is a common way to identify operations using the [`Open API Spec operationId`](https://swagger.io/docs/specification/paths-and-operations/). This information is injected into request processing as `istio_operationId` attribute with value equal to `GetReviews`. You can use the attribute as a dimension in Istio standard metrics. Similarly, you can track metrics based on other operations like `ListReviews` and `CreateReviews`.  
+자세한 내용은 [참조 콘텐츠](https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/)를 참조하세요.  
+
+Istio는 Envoy 프록시를 사용하여 측정 항목을 생성하고  `EnvoyFilter`에 [`manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml`](https://github.com/istio/istio/blob/release-1.7/manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml). 결과적으로 분류 규칙 작성에는`EnvoyFilter`에 속성 추가가 포함됩니다.  
 
 
-For more information, see the [reference content](https://istio.io/v1.7/docs/reference/config/proxy_extensions/attributegen/).  
+### 요청별로 메트릭 분류(Classify metrics by request)
 
+유형에 따라 요청을 분류 할 수 있습니다 (예: `ListReview`, `GetReview`, `CreateReview`).
 
-Istio uses the Envoy proxy to generate metrics and provides its configuration in the `EnvoyFilter` at [`manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml`](https://github.com/istio/istio/blob/release-1.7/manifests/charts/istio-control/istio-discovery/templates/telemetryv2_1.6.yaml). As a result, writing classification rules involves adding attributes to the `EnvoyFilter`.  
+1. 예를 들어 파일을 만듭니다.
+`attribute_gen_service.yaml`을 작성하고 다음 내용으로 저장합니다. 이것은`istio.attributegen` 플러그인을`EnvoyFilter`에 추가합니다. 또한`istio_operationId` 속성을 생성하고이를 측정 항목으로 계산할 카테고리 값으로 채웁니다.
 
-
-### Classify metrics by request <a id="classify-metrics-by-request"></a>
-
-
-
-You can classify requests based on their type, for example `ListReview`, `GetReview`, `CreateReview`.
-
-1. Create a file, for example `attribute_gen_service.yaml`, and save it with the following contents. This adds the `istio.attributegen` plugin to the `EnvoyFilter`. It also creates an attribute, `istio_operationId` and populates it with values for the categories to count as metrics.
-
-   This configuration is service-specific since request paths are typically service-specific.
+   요청 경로는 일반적으로 서비스별로 다르기 때문에이 구성은 서비스별로 다릅니다.
 
    ```text
    apiVersion: networking.istio.io/v1alpha3
@@ -91,7 +85,7 @@ You can classify requests based on their type, for example `ListReview`, `GetRev
 
    ```
 
-  2. Apply your changes using the following command:
+  2. 다음 명령을 사용하여 변경 사항을 적용하십시오.
 
 ```text
 $ kubectl -n istio-system apply -f attribute_gen_service.yaml
@@ -100,7 +94,7 @@ $ kubectl -n istio-system apply -f attribute_gen_service.yaml
 
 
 
-  3. Find the `stats-filter-1.6` `EnvoyFilter` resource from the `istio-system` namespace, using the following command:
+  3. 다음 명령어를 사용하여`istio-system` 네임 스페이스에서`stats-filter-1.6`, `EnvoyFilter` 리소스를 찾습니다.
 
 ```text
 kubectl -n istio-system get envoyfilter | grep ^stats-filter-1.6
@@ -109,7 +103,7 @@ stats-filter-1.6                    2d
 
 
 
-  4. Create a local file system copy of the `EnvoyFilter` configuration, using the following command:
+  4. 다음 명령을 사용하여`EnvoyFilter` 구성의 로컬 파일 시스템 복사본을 만듭니다.
 
 ```text
 $ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filter-1.6.yaml
@@ -117,7 +111,7 @@ $ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filte
 
 
 
-  5. Open `stats-filter-1.6.yaml` with a text editor and locate the `name: istio.stats` extension configuration. Update it to map `request_operation` dimension in the `requests_total` standard metric to `istio_operationId` attribute. The updated configuration file section should look like the following.
+  5. 텍스트 편집기로 `stats-filter-1.6.yaml`을 열고 `name : istio.stats` 확장 구성을 찾습니다. `requests_total`표준 측정 항목의 `request_operation`측정 기준을 `istio_operationId`속성에 매핑하도록 업데이트하세요. 업데이트 된 구성 파일 섹션은 다음과 같아야합니다.
 
 ```text
 name: istio.stats
@@ -141,23 +135,22 @@ typed_config:
 
 ```
 
-  6. Save `stats-filter-1.6.yaml` and then apply the configuration using the following command:
+  6. `stats-filter-1.6.yaml`을 저장하고 다음 명령어를 사용하여 구성을 적용합니다.
 
 ```text
 $ kubectl -n istio-system apply -f stats-filter-1.6.yaml
 ```
 
-  7. Generate metrics by sending traffic to your application.
+  7. 애플리케이션에 트래픽을 전송하여 메트릭을 생성합니다.
 
-  8. After the changes take effect, visit Prometheus and look for the new or changed dimensions, for example `istio_requests_total`.
+  8. 변경 사항이 적용된 후 Prometheus를 방문하여 새 차원 또는 변경된 차원 (예 :`istio_requests_total`)을 찾으십시오.
 
-### Classify metrics by response <a id="classify-metrics-by-response"></a>
+### 응답으로 메트릭 분류(Classify metrics by response)
 
 
+요청과 유사한 프로세스를 사용하여 응답을 분류 할 수 있습니다.
 
-You can classify responses using a similar process as requests.
-
-  1. Create a file, for example `attribute_gen_service.yaml`, and save it with the following contents. This add the `istio.attributegen` plugin to the `EnvoyFilter` and generates the `istio_responseClass` attribute used by the stats plugin. This example classifies various responses, such as grouping all response codes in the `200` range as a `2xx` dimension.
+  1. 예를 들어`attribute_gen_service.yaml`과 같은 파일을 만들고 다음 내용으로 저장합니다. 이렇게하면 `istio.attributegen` 플러그인이 `EnvoyFilter`에 추가되고 통계 플러그인에서 사용하는 `istio_responseClass` 속성이 생성됩니다. 이 예에서는 `200`범위의 모든 응답 코드를 `2xx`측정 기준으로 그룹화하는 등 다양한 응답을 분류합니다.
 
 ```text
 apiVersion: networking.istio.io/v1alpha3
@@ -236,21 +229,21 @@ spec:
 
 
 
-  2. Apply your changes using the following command:
+  2. 다음 명령을 사용하여 변경 사항을 적용하십시오.
 
 ```text
 $ kubectl -n istio-system apply -f attribute_gen_service.yaml
 
 ```
 
-  3. Find the `stats-filter-1.6` `EnvoyFilter` resource from the `istio-system` namespace, using the following command:
+  3. 다음 명령어를 사용하여`istio-system` 네임 스페이스에서 `stats-filter-1.6` `EnvoyFilter` 리소스를 찾습니다.
 
 ```text
 $ kubectl -n istio-system get envoyfilter | grep ^stats-filter-1.6
 stats-filter-1.6                    2d
 ```
 
-  4. Create a local file system copy of the `EnvoyFilter` configuration, using the following command:
+  4. 다음 명령을 사용하여 `EnvoyFilter` 구성의 로컬 파일 시스템 복사본을 만듭니다.
 
 ```text
 $ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filter-1.6.yaml
@@ -258,7 +251,8 @@ $ kubectl -n istio-system get envoyfilter stats-filter-1.6 -o yaml > stats-filte
 
 ```
 
-  5. Open `stats-filter-1.6.yaml` with a text editor and locate the `name: istio.stats` extension configuration. Update it to map `response_code` dimension in the `requests_total` standard metric to `istio_responseClass` attribute. The updated configuration file section should look like the following.
+  5. 텍스트 편집기로`stats-filter-1.6.yaml`을 열고`name : istio.stats` 확장 구성을 찾습니다. `requests_total`표준 측정 항목의 `response_code`측정 기준을 `istio_responseClass`속성에 매핑하도록 업데이트하세요. 업데이트 된 구성 파일 섹션은 다음과 같아야합니다.
+
 
 ```text
 name: istio.stats
@@ -282,7 +276,7 @@ typed_config:
 
 ```
 
-  6. Save `stats-filter-1.6.yaml` and then apply the configuration using the following command:
+  6. `stats-filter-1.6.yaml`을 저장하고 다음 명령어를 사용하여 구성을 적용합니다.
 
 ```text
 $ kubectl -n istio-system apply -f stats-filter-1.6.yaml
@@ -292,30 +286,29 @@ $ kubectl -n istio-system apply -f stats-filter-1.6.yaml
 
 
 
-### Verify the results
+### 결과 확인(Verify the results)
 
 
+  1. 애플리케이션에 트래픽을 전송하여 메트릭을 생성합니다.
 
-  1. Generate metrics by sending traffic to your application.
-
-  2. Visit Prometheus and look for the new or changed dimensions, for example 2xx. Alternatively, use the following command to verify that Istio generates the data for your new dimension:
+  2. Prometheus를 방문하여 새 치수 또는 변경된 치수 (예 : 2xx)를 찾으십시오. 또는 다음 명령을 사용하여 Istio가 새 차원에 대한 데이터를 생성하는지 확인합니다.
 
 ```text
 $ kubectl exec pod-name -c istio-proxy -- curl 'localhost:15000/stats/prometheus' | grep istio_
 
 ```
 
-    In the output, locate the metric \(e.g. `istio_requests_total`\) and verify the presence of the new or changed dimension.
+    출력에서 측정 항목 \ (예 :`istio_requests_total` \)을 찾고 새 측정 기준 또는 변경된 측정 기준이 있는지 확인합니다.
 
 
 
-### Troubleshooting
+### 문제해결(Troubleshooting)
 
 
+예상대로 분류되지 않으면 다음과 같은 잠재적 인 원인과 해결 방법을 확인하십시오.
 
-If classification does not occur as expected, check the following potential causes and resolutions.
+구성 변경을 적용한 서비스가있는 포드의 Envoy 프록시 로그를 검토합니다. 다음 명령을 사용하여 분류를 구성한 \(pod-name\) 포드의 Envoy 프록시 로그에 서비스에서보고 한 오류가 없는지 확인합니다.
 
-Review the Envoy proxy logs for the pod that has the service on which you applied the configuration change. Check that there are no errors reported by the service in the Envoy proxy logs on the pod, \(pod-name\), where you configured classification by using the following command:
 
 ```text
 $ kubectl logs pod-name -c istio-proxy | grep -e "Config Error" -e "envoy wasm"
@@ -323,8 +316,7 @@ $ kubectl logs pod-name -c istio-proxy | grep -e "Config Error" -e "envoy wasm"
 ```
 
 
-
-Additionally, ensure that there are no Envoy proxy crashes by looking for signs of restarts in the output of the following command:
+또한 다음 명령의 출력에서 재시작 징후를 찾아 Envoy 프록시 충돌이 없는지 확인합니다.
 
 ```text
 $ kubectl get pods pod-name
@@ -332,7 +324,7 @@ $ kubectl get pods pod-name
 
 ```
 
-
+### [docs](https://istio.io/v1.7/docs/tasks/observability/metrics/classify-metrics/)
 ### [뒤로 가기](./README.md)
 
 

@@ -1,9 +1,5 @@
 # Example Remotely Accessing Telemetry Addons
 
-### [뒤로 가기](./README.md)
-
-ref : [https://istio.io/v1.7/docs/tasks/observability/gateways/](https://istio.io/v1.7/docs/tasks/observability/gateways/)
-
 ## Remotely Accessing Telemetry Addons <a id="title"></a>
 
 This task shows how to configure Istio to expose and access the telemetry addons outside of a cluster.
@@ -541,4 +537,7 @@ $ kubectl create -n istio-system secret tls telemetry-gw-cert --key=${CERT_DIR}/
   ```
 
 
+### [뒤로 가기](./README.md)
+
+ref : [https://istio.io/v1.7/docs/tasks/observability/gateways/](https://istio.io/v1.7/docs/tasks/observability/gateways/)
 

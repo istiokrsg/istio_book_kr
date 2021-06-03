@@ -1,7 +1,5 @@
 # Overview
 
-ref : [https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/)
-
 
 
 ## Overview <a id="title"></a>
@@ -75,3 +73,4 @@ public Response bookReviewsById(@PathParam("productId") int productId, @Context 
 
 When you make downstream calls in your applications, make sure to include these headers.
 
+ref : [https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/)

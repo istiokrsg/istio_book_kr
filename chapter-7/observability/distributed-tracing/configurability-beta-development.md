@@ -1,9 +1,5 @@
 # Configurability \(Beta/Development\)
 
-ref : [https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/configurability/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/configurability/)
-
-
-
 
 
 ## Configurability \(Beta/Development\) <a id="title"></a>
@@ -168,5 +164,8 @@ spec:
         max_path_tag_length: <VALUE>
 ```
 
+
+
+ref : [https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/configurability/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/configurability/)
 
 

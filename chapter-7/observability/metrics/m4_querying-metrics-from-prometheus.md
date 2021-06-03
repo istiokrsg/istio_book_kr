@@ -118,8 +118,12 @@ For more on querying Prometheus, please read their [querying docs](https://prome
 ### Cleanup
 
 
+<<<<<<< Updated upstream
 
 * Remove any istioctl processes that may still be running using control-C or:
+=======
+* control-C 또는 다음을 사용하여 여전히 실행중인 모든 istioctl 프로세스를 제거합니다.
+>>>>>>> Stashed changes
 
 > ```text
 > $ killall istioctl

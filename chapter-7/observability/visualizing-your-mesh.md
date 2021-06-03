@@ -1,11 +1,5 @@
 # Example Visualizing Your Mesh
 
-### [뒤로 가기](./README.md)
-
-ref : [https://istio.io/v1.7/docs/tasks/observability/kiali/](https://istio.io/v1.7/docs/tasks/observability/kiali/)
-
-
-
 
 
 ## Visualizing Your Mesh <a id="title"></a>
@@ -162,3 +156,6 @@ If you are not planning any follow-up tasks, remove the Bookinfo sample applicat
 $ kubectl delete -f https://raw.githubusercontent.com/istio/istio/release-1.7/samples/addons/kiali.yaml
 ```
 
+### [뒤로 가기](./README.md)
+
+ref : [https://istio.io/v1.7/docs/tasks/observability/kiali/](https://istio.io/v1.7/docs/tasks/observability/kiali/)

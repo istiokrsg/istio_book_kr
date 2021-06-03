@@ -1,8 +1,5 @@
-# Getting Envoy's Access Logs
+# Envoy의 액세스 로그 가져 오기
 
-ref : [https://istio.io/v1.7/docs/tasks/observability/logs/access-log/](https://istio.io/v1.7/docs/tasks/observability/logs/access-log/)
-
-## Getting Envoy's Access Logs <a id="title"></a>
 
 The simplest kind of Istio logging is [Envoy’s access logging](https://www.envoyproxy.io/docs/envoy/latest/configuration/observability/access_log/usage). Envoy proxies print access information to their standard output. The standard output of Envoy’s containers can then be printed by the `kubectl logs` command.
 
@@ -127,5 +124,6 @@ $ istioctl install --set profile=default
 ✔ Installation complete
 ```
 
+ref : [https://istio.io/v1.7/docs/tasks/observability/logs/access-log/](https://istio.io/v1.7/docs/tasks/observability/logs/access-log/)
 
-
+### [뒤로 가기](./README.md)

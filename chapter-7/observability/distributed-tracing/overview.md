@@ -2,17 +2,22 @@
 
 
 
-## Overview <a id="title"></a>
 
-Distributed tracing enables users to track a request through mesh that is distributed across multiple services. This allows a deeper understanding about request latency, serialization and parallelism via visualization.
+분산 추적을 통해 사용자는 여러 서비스에 분산 된 메시를 통해 요청을 추적 할 수 있습니다. 이를 통해 시각화를 통해 요청 대기 시간, 직렬화 및 병렬 처리에 대해 더 깊이 이해할 수 있습니다.
 
-Istio leverages [Envoy’s distributed tracing](https://www.envoyproxy.io/docs/envoy/v1.12.0/intro/arch_overview/observability/tracing) feature to provide tracing integration out of the box. Specifically, Istio provides options to install various tracing backend and configure proxies to send trace spans to them automatically. See [Zipkin](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/zipkin/), [Jaeger](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/jaeger/) and [Lightstep](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/lightstep/) task docs about how Istio works with those tracing systems.
+Istio는 [Envoy의 분산 추적](https://www.envoyproxy.io/docs/envoy/v1.12.0/intro/arch_overview/observability/tracing) 기능을 활용하여 즉시 추적 통합을 제공합니다. 특히 Istio는 다양한 추적 백엔드를 설치하고 자동으로 추적 스팬을 전송하도록 프록시를 구성하는 옵션을 제공합니다. 
 
-### Trace context propagation <a id="trace-context-propagation"></a>
+이러한 추적 시스템에서 Istio가 작동하는 방식에 대한 작업 문서:
+[Zipkin](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/zipkin/)
+[Jaeger](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/jaeger/)
+[Lightstep](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/lightstep/) 
 
-Although Istio proxies are able to automatically send spans, they need some hints to tie together the entire trace. Applications need to propagate the appropriate HTTP headers so that when the proxies send span information, the spans can be correlated correctly into a single trace.
 
-To do this, an application needs to collect and propagate the following headers from the incoming request to any outgoing requests:
+### 컨텍스트 전파 추적(Trace context propagation)
+
+Istio 프록시는 자동으로 스팬을 보낼 수 있지만 전체 추적을 연결하려면 몇 가지 힌트가 필요합니다. 애플리케이션은 프록시가 스팬 정보를 보낼 때 스팬이 단일 추적으로 올바르게 상호 연관 될 수 있도록 적절한 HTTP 헤더를 전파해야합니다.
+
+이를 위해 애플리케이션은 수신 요청에서 발신 요청으로 다음 헤더를 수집하고 전파해야합니다.:
 
 * `x-request-id`
 * `x-b3-traceid`
@@ -22,13 +27,13 @@ To do this, an application needs to collect and propagate the following headers 
 * `x-b3-flags`
 * `x-ot-span-context`
 
-Additionally, tracing integrations based on [OpenCensus](https://opencensus.io/) \(e.g. Stackdriver\) propagate the following headers:
+또한 [OpenCensus](https://opencensus.io/) \(예 : Stackdriver\) 기반 추적 통합은 다음 헤더를 전파합니다.:
 
 * `x-cloud-trace-context`
 * `traceparent`
 * `grpc-trace-bin`
 
-If you look at the sample Python `productpage` service, for example, you see that the application extracts the required headers from an HTTP request using [OpenTracing](https://opentracing.io/) libraries:
+예를 들어 샘플 Python`productpage` 서비스를 보면 애플리케이션이 [OpenTracing] (https://opentracing.io/) 라이브러리를 사용하여 HTTP 요청에서 필요한 헤더를 추출하는 것을 볼 수 있습니다.:
 
 ```text
 def getForwardHeaders(request):
@@ -58,7 +63,7 @@ def getForwardHeaders(request):
     return headers
 ```
 
-The reviews application \(Java\) does something similar using `requestHeaders`:
+리뷰 애플리케이션 \(Java\)는`requestHeaders`를 사용하여 유사한 작업을 수행합니다:
 
 ```text
 @GET
@@ -71,6 +76,6 @@ public Response bookReviewsById(@PathParam("productId") int productId, @Context 
     JsonObject ratingsResponse = getRatings(Integer.toString(productId), requestHeaders);
 ```
 
-When you make downstream calls in your applications, make sure to include these headers.
+애플리케이션에서 dowmnstream 호출을 할 때 이러한 헤더를 포함해야합니다.
 
 ref : [https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/](https://istio.io/v1.7/docs/tasks/observability/distributed-tracing/overview/)
